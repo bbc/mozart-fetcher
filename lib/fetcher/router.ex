@@ -17,7 +17,9 @@ defmodule Fetcher.Router do
     body = decode(body)
     resp = Fetcher.Fetcher.process(body["components"])
 
-    send_resp(conn, 200, resp)
+    conn
+    |> put_resp_content_type("application/json")
+    |> send_resp(200, resp)
   end
 
   match _ do
