@@ -14,12 +14,17 @@ defmodule Fetcher.Router do
 
   post "/collect" do
     {:ok, body, conn} = read_body(conn)
-    body = Poison.decode!(body)
-    IO.inspect(body)
-    send_resp(conn, 201, "created: #{get_in(body, ["message"])}")
+    body = decode(body)
+    resp = Fetcher.Fetcher.process(body["components"])
+
+    send_resp(conn, 200, resp)
   end
 
   match _ do
     send_resp(conn, 404, "not found")
+  end
+
+  def decode(body) do
+    Poison.decode!(body, as: %{"components" => [%Component{}]})
   end
 end
