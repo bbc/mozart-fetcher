@@ -1,10 +1,14 @@
 defmodule MozartFetcher.FakeClient do
   def returning(:success) do
-    { :ok, successful_response() }
+    {:ok, successful_response()}
   end
 
   def returning(:timeout) do
-    { :error, timeout_response() }
+    {:error, %HTTPoison.Error{reason: :timeout}}
+  end
+
+  def returning(:down) do
+    {:error, %HTTPoison.Error{reason: :econnrefused}}
   end
 
   defp successful_response() do
@@ -13,9 +17,5 @@ defmodule MozartFetcher.FakeClient do
       body:        "{\"some\":\"data\"}",
       headers:     []
     }
-  end
-
-  defp timeout_response() do
-    %HTTPoison.Error{reason: :timeout}
   end
 end
