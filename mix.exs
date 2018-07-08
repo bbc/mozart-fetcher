@@ -1,4 +1,4 @@
-defmodule Fetcher.MixProject do
+defmodule MozartFetcher.MixProject do
   use Mix.Project
 
   def project do
@@ -15,7 +15,7 @@ defmodule Fetcher.MixProject do
   def application do
     [
       extra_applications: [:logger, :cowboy, :plug, :poison, :httpoison],
-      mod: {Fetcher.Application, []}
+      mod: {MozartFetcher.Application, []}
     ]
   end
 
@@ -25,7 +25,8 @@ defmodule Fetcher.MixProject do
       {:cowboy, "~> 2.4"},
       {:plug, "~> 1.6.1"},
       {:poison, "~> 3.1"},
-      {:httpoison, "~> 1.0"}
+      {:httpoison, "~> 1.0"},
+      {:mock, "~> 0.3.0", only: :test}
     ]
   end
 end

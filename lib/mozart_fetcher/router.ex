@@ -1,4 +1,6 @@
-defmodule Fetcher.Router do
+defmodule MozartFetcher.Router do
+  alias MozartFetcher.{Fetcher, Component}
+
   use Plug.Router
   use Plug.Debugger
   require Logger
@@ -15,7 +17,7 @@ defmodule Fetcher.Router do
   post "/collect" do
     {:ok, body, conn} = read_body(conn)
     body = decode(body)
-    resp = Fetcher.Fetcher.process(body["components"])
+    resp = Fetcher.process(body["components"])
 
     conn
     |> put_resp_content_type("application/json")

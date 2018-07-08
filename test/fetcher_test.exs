@@ -1,8 +1,11 @@
-defmodule FetcherTest do
-  use ExUnit.Case
-  doctest Fetcher
+defmodule MozartFetcher.FetcherTest do
+  alias MozartFetcher.{Fetcher}
 
-  test "greets the world" do
-    assert Fetcher.hello() == :world
+  use ExUnit.Case
+
+  doctest MozartFetcher.Fetcher
+
+  test "it returns an error id the component list is empy" do
+    assert Fetcher.process([]) == {:error}
   end
 end
