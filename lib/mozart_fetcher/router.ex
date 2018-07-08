@@ -11,7 +11,9 @@ defmodule MozartFetcher.Router do
   plug(:dispatch)
 
   get "/status" do
-    send_resp(conn, 200, "OK")
+    conn
+    |> put_resp_content_type("text/plain")
+    |> send_resp(200, "OK")
   end
 
   post "/collect" do

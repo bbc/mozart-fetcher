@@ -1,7 +1,7 @@
 defmodule MozartFetcher.EnvelopeTest do
   use ExUnit.Case
 
-  alias MozartFetcher.{Envelope}
+ alias MozartFetcher.{Envelope}
 
   doctest Envelope
 
