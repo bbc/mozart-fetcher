@@ -10,7 +10,11 @@ defmodule MozartFetcher.Application do
     children = [
       # Starts a worker by calling: MozartFetcher.Worker.start_link(arg)
       # {Fetcher.Worker, arg},
-      Plug.Adapters.Cowboy2.child_spec(scheme: :http, plug: MozartFetcher.Router, options: [port: 8080])
+      Plug.Adapters.Cowboy2.child_spec(
+        scheme: :http,
+        plug: MozartFetcher.Router,
+        options: [port: 8080]
+      )
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

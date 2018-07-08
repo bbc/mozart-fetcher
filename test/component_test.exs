@@ -9,7 +9,7 @@ defmodule MozartFetcher.ComponentTest do
 
   defmacro with_http_response(state, block) do
     quote do
-      with_mock HTTPClient, get: fn(_url) -> FakeClient.returning(unquote(state)) end do
+      with_mock HTTPClient, get: fn _url -> FakeClient.returning(unquote(state)) end do
         unquote(block)
       end
     end

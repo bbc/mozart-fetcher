@@ -43,7 +43,8 @@ defmodule MozartFetcher.RouterTest do
       conn = conn(:post, "/collect", json_body)
       conn = Router.call(conn, @opts)
 
-      expected_body = ~s({"components":[{"head":[],"bodyLast":[],"bodyInline":"<DIV id=\\\"site-container\\\" role=\\\"main\\\">"}]})
+      expected_body =
+        ~s({"components":[{"head":[],"bodyLast":[],"bodyInline":"<DIV id=\\\"site-container\\\" role=\\\"main\\\">"}]})
 
       assert conn.state == :sent
       assert conn.status == 200

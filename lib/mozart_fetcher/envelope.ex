@@ -1,8 +1,7 @@
 defmodule MozartFetcher.Envelope do
   alias MozartFetcher.{Envelope}
   @derive [Poison.Encoder]
-  defstruct [head: [], bodyInline: "", bodyLast: []]
-  #defstruct [:head, :bodyInline, :bodyLast]
+  defstruct head: [], bodyInline: "", bodyLast: []
 
   def build({:ok, body}) do
     case Poison.decode(body, as: %Envelope{}) do
@@ -11,8 +10,7 @@ defmodule MozartFetcher.Envelope do
     end
   end
 
-
-  def build({:error, _reason})do
+  def build({:error, _reason}) do
     %Envelope{}
   end
 end
