@@ -9,7 +9,12 @@ defmodule MozartFetcher.Fetcher do
     components
     |> Enum.map(&Task.async(fn -> Component.fetch(&1) end))
     |> Enum.map(&Task.await/1)
-    |> Enum.map(Envelope.build)
-    |> Enum.join(" ")
+    |> Enum.map(fn(x) -> Envelope.build(x) end)
+    |> prepare_response
+    |> Poison.encode!
+  end
+
+  defp prepare_response(envelopes) do
+    %{components: envelopes}
   end
 end

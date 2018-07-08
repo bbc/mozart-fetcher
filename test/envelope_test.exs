@@ -7,27 +7,19 @@ defmodule MozartFetcher.EnvelopeTest do
 
   describe "build an envelope" do
     test "it parse the json body to an Envelope" do
-      body = ~s({"head":[],"bodyInline":"<DIV id=\\"site-container\\">","bodyLast":[]})
+      component = {:ok, ~s({"head":[],"bodyInline":"<DIV id=\\"site-container\\">","bodyLast":[]})}
 
-      assert Envelope.build(body) == %Envelope{head: [],
-                                               bodyInline: ~s(<DIV id="site-container">),
-                                               bodyLast: []}
+      assert Envelope.build(component) == %Envelope{head: [],
+                                                    bodyInline: ~s(<DIV id="site-container">),
+                                                    bodyLast: []}
     end
 
 
     test "it returns an empty Envelope if not valid content" do
-      body = "redirecting to..."
-      assert Envelope.build(body) == %Envelope{head: [],
-                                               bodyInline: "",
-                                                        bodyLast: []}
+      component = {:error, :timeout}
+      assert Envelope.build(component) == %Envelope{head: [],
+                                                    bodyInline: "",
+                                                    bodyLast: []}
     end
-
-    test "it returns an empty Envelope if body is nil" do
-      body = nil
-      assert Envelope.build(body) == %Envelope{head: [],
-                                               bodyInline: "",
-                                               bodyLast: []}
-    end
-
   end
 end
