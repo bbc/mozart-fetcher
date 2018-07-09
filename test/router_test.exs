@@ -44,7 +44,20 @@ defmodule MozartFetcher.RouterTest do
       conn = Router.call(conn, @opts)
 
       expected_body =
-        ~s({"components":[{"head":[],"bodyLast":[],"bodyInline":"<DIV id=\\\"site-container\\\" role=\\\"main\\\">"}]})
+        Poison.encode!(%{
+          components: [
+            %{
+              status: 200,
+              index: 0,
+              id: "stream-icons",
+              envelope: %{
+                head: [],
+                bodyLast: [],
+                bodyInline: "<DIV id=\"site-container\" role=\"main\">"
+              }
+            }
+          ]
+        })
 
       assert conn.state == :sent
       assert conn.status == 200

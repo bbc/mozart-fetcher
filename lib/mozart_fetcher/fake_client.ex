@@ -14,8 +14,8 @@ defmodule MozartFetcher.FakeClient do
   defp successful_response() do
     %HTTPoison.Response{
       status_code: 200,
-      body:        "{\"some\":\"data\"}",
-      headers:     []
+      headers: [],
+      body: ~s({"head":[],"bodyInline":"<DIV id=\\"site-container\\">","bodyLast":[]})
     }
   end
 end

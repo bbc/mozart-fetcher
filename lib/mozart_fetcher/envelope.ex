@@ -1,5 +1,6 @@
 defmodule MozartFetcher.Envelope do
   alias MozartFetcher.{Envelope}
+
   @derive [Poison.Encoder]
   defstruct head: [], bodyInline: "", bodyLast: []
 

@@ -1,5 +1,5 @@
 defmodule MozartFetcher.Fetcher do
-  alias MozartFetcher.{Component, Envelope}
+  alias MozartFetcher.{Component}
 
   def process([]) do
     {:error}
@@ -9,7 +9,6 @@ defmodule MozartFetcher.Fetcher do
     components
     |> Enum.map(&Task.async(fn -> Component.fetch(&1) end))
     |> Enum.map(&Task.await/1)
-    |> Enum.map(fn x -> Envelope.build(x) end)
     |> decorate_response
     |> Poison.encode!()
   end

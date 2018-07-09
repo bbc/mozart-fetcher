@@ -19,7 +19,19 @@ defmodule MozartFetcher.ComponentTest do
     test "it returns the response body when succesfull" do
       with_http_response(:success) do
         config = %Config{endpoint: "http://localhost/foo"}
-        assert Component.fetch(config) == {:ok, "{\"some\":\"data\"}"}
+
+        expected = %MozartFetcher.Component{
+          envelope: %MozartFetcher.Envelope{
+            bodyInline: "<DIV id=\"site-container\">",
+            bodyLast: [],
+            head: []
+          },
+          id: nil,
+          index: 0,
+          status: 200
+        }
+
+        assert Component.fetch(config) == expected
       end
     end
 
