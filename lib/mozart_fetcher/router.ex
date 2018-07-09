@@ -1,5 +1,5 @@
 defmodule MozartFetcher.Router do
-  alias MozartFetcher.{Fetcher, Component}
+  alias MozartFetcher.{Fetcher, Component, Config}
 
   use Plug.Router
   use Plug.Debugger
@@ -31,6 +31,6 @@ defmodule MozartFetcher.Router do
   end
 
   def decode(body) do
-    Poison.decode!(body, as: %{"components" => [%Component{}]})
+    Poison.decode!(body, as: %{"components" => [%Config{}]})
   end
 end

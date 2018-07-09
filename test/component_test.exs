@@ -3,7 +3,7 @@ defmodule MozartFetcher.ComponentTest do
 
   import Mock
 
-  alias MozartFetcher.{Component, FakeClient}
+  alias MozartFetcher.{Component, Config, FakeClient}
 
   doctest Component
 
@@ -18,22 +18,22 @@ defmodule MozartFetcher.ComponentTest do
   describe "fetch components" do
     test "it returns the response body when succesfull" do
       with_http_response(:success) do
-        component = %Component{endpoint: "http://localhost/foo"}
-        assert Component.fetch(component) == {:ok, "{\"some\":\"data\"}"}
+        config = %Config{endpoint: "http://localhost/foo"}
+        assert Component.fetch(config) == {:ok, "{\"some\":\"data\"}"}
       end
     end
 
     test "it returns an error in case of timeout" do
       with_http_response(:timeout) do
-        component = %Component{endpoint: "http://localhost/foo"}
-        assert Component.fetch(component) == {:error, :timeout}
+        config = %Config{endpoint: "http://localhost/foo"}
+        assert Component.fetch(config) == {:error, :timeout}
       end
     end
 
     test "it returns an error in case service is down" do
       with_http_response(:down) do
-        component = %Component{endpoint: "http://localhost/foo"}
-        assert Component.fetch(component) == {:error, :econnrefused}
+        config = %Config{endpoint: "http://localhost/foo"}
+        assert Component.fetch(config) == {:error, :econnrefused}
       end
     end
   end
