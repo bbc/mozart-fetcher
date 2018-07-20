@@ -15,15 +15,6 @@ defmodule MozartFetcher.ComponentTest do
     end
   end
 
-  setup do
-    :fetcher_cache
-    |> ConCache.ets
-    |> :ets.tab2list
-    |> Enum.each(fn({key, _}) -> ConCache.delete(:fetcher_cache, key) end)
-
-    :ok
-  end
-
   describe "fetch components" do
     test "it returns the response body when succesfull" do
       with_http_response(:success) do

@@ -1,5 +1,5 @@
 defmodule MozartFetcher.Component do
-  alias MozartFetcher.{Component, Config, Envelope}
+  alias MozartFetcher.{Component, Config, Envelope, LocalCache}
 
   @derive [Poison.Encoder]
   defstruct [:index, :id, :status, :envelope]
@@ -17,8 +17,6 @@ defmodule MozartFetcher.Component do
   end
 
   defp get(config) do
-    ConCache.get_or_store(:fetcher_cache, config.endpoint, fn() ->
-      HTTPClient.get(config.endpoint)
-    end)
+    LocalCache.get_or_store(config.endpoint, fn() -> HTTPClient.get(config.endpoint) end)
   end
 end
