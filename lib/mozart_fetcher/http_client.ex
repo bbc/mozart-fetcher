@@ -5,6 +5,7 @@ defmodule HTTPClient do
     headers = []
     options = [recv_timeout: 3000, ssl: [certfile: @cert]]
 
+    IO.puts 'Fetching from HTTP'
     HTTPoison.get(endpoint, headers, options)
   end
 end

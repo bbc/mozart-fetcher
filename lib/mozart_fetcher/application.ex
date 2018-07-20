@@ -14,7 +14,8 @@ defmodule MozartFetcher.Application do
         scheme: :http,
         plug: MozartFetcher.Router,
         options: [port: 8080]
-      )
+      ),
+      {ConCache, [name: :fetcher_cache, ttl_check_interval: :timer.seconds(1), global_ttl: :timer.seconds(30)]}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
