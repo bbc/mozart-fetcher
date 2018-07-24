@@ -27,7 +27,10 @@ defmodule MozartFetcher.MixProject do
       {:poison, "~> 3.1"},
       {:httpoison, "~> 1.0"},
       {:con_cache, "~> 0.13.0"},
-      {:mock, "~> 0.3.0", only: :test}
+      {:distillery, "~> 1.5", runtime: false},
+      {:mock, "~> 0.3.0", only: :test},
+      {:parse_trans, "~> 3.2.0"}
+
     ]
   end
 end
