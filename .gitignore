@@ -21,4 +21,14 @@ erl_crash.dump
 
 # Ignore package tarball (built via "mix hex.build").
 fetcher-*.tar
+tars/fetcher.tar.gz
 
+bin
+
+dev.pem
+
+erts-9.3
+
+lib
+
+rel

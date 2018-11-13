@@ -1,9 +1,8 @@
 defmodule HTTPClient do
-  @cert System.get_env("DEV_CERT_PEM")
-
   def get(endpoint) do
+    cert = Application.get_env(:fetcher, :dev_cert_pem)
     headers = []
-    options = [recv_timeout: 3000, ssl: [certfile: @cert]]
+    options = [recv_timeout: 3000, ssl: [certfile: cert]]
 
     IO.puts 'Fetching from HTTP'
     HTTPoison.get(endpoint, headers, options)
