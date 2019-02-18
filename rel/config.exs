@@ -46,8 +46,8 @@ end
 # when running `mix release`, the first release in the file
 # will be used by default
 
-release :fetcher do
-  set version: current_version(:fetcher)
+release :mozart_fetcher do
+  set version: current_version(:mozart_fetcher)
   set applications: [
     :runtime_tools
   ]

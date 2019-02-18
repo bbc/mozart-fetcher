@@ -20,8 +20,8 @@ erl_crash.dump
 *.ez
 
 # Ignore package tarball (built via "mix hex.build").
-fetcher-*.tar
-tars/fetcher.tar.gz
+mozart_fetcher-*.tar
+tars/mozart_fetcher.tar.gz
 
 bin
 
