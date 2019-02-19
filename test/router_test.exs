@@ -35,7 +35,7 @@ defmodule MozartFetcher.RouterTest do
       json_body = ~s({
         "components": [{
                         "id": "stream-icons",
-                        "endpoint": "https://s3-eu-west-1.amazonaws.com/shared-application-buckets-public-1pmfwo80l61it/load-tests/static_envelopes/25082016/small-1.0.4.json",
+                        "endpoint": "localhost:8082/success",
                         "must_succeed": true
                         }]
           }
@@ -53,7 +53,7 @@ defmodule MozartFetcher.RouterTest do
               envelope: %{
                 head: [],
                 bodyLast: [],
-                bodyInline: "<DIV id=\"site-container\" role=\"main\">"
+                bodyInline: "<DIV id=\"site-container\">"
               }
             }
           ]

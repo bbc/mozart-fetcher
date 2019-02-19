@@ -5,9 +5,20 @@ defmodule MozartFetcher.Application do
 
   use Application
 
-  def start(_type, _args) do
-    # List all child processes to be supervised
-    children = [
+
+  defp children(env: :test) do
+    children(env: :prod) ++ [
+      Plug.Adapters.Cowboy2.child_spec(
+        scheme: :http,
+        plug: MozartFetcher.FakeOrigin,
+        options: [port: 8082]
+      )
+    ]
+  end
+
+
+  defp children(_) do
+    [
       # Starts a worker by calling: MozartFetcher.Worker.start_link(arg)
       # {Fetcher.Worker, arg},
       Plug.Adapters.Cowboy2.child_spec(
@@ -17,6 +28,11 @@ defmodule MozartFetcher.Application do
       ),
       {ConCache, [name: :fetcher_cache, ttl_check_interval: :timer.seconds(1), global_ttl: :timer.seconds(30)]}
     ]
+  end
+
+  def start(_type, args) do
+    # List all child processes to be supervised
+    children = children(args)
 
     Application.put_env(:mozart_fetcher, :dev_cert_pem, System.get_env("DEV_CERT_PEM"))
 
