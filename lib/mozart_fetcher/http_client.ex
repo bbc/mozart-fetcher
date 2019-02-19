@@ -1,6 +1,6 @@
 defmodule HTTPClient do
   def get(endpoint) do
-    cert = Application.get_env(:fetcher, :dev_cert_pem)
+    cert = Application.get_env(:mozart_fetcher, :dev_cert_pem)
     headers = []
     options = [recv_timeout: 3000, ssl: [certfile: cert]]
 

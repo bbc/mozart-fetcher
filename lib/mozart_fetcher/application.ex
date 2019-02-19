@@ -18,7 +18,7 @@ defmodule MozartFetcher.Application do
       {ConCache, [name: :fetcher_cache, ttl_check_interval: :timer.seconds(1), global_ttl: :timer.seconds(30)]}
     ]
 
-    Application.put_env(:fetcher, :dev_cert_pem, System.get_env("DEV_CERT_PEM"))
+    Application.put_env(:mozart_fetcher, :dev_cert_pem, System.get_env("DEV_CERT_PEM"))
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
