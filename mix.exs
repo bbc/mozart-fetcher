@@ -15,7 +15,7 @@ defmodule MozartFetcher.MixProject do
   def application do
     [
       extra_applications: [:logger, :cowboy, :plug, :poison, :httpoison, :con_cache],
-      mod: {MozartFetcher.Application, []}
+      mod: {MozartFetcher.Application, [env: Mix.env]}
     ]
   end
 
@@ -28,9 +28,7 @@ defmodule MozartFetcher.MixProject do
       {:httpoison, "~> 1.0"},
       {:con_cache, "~> 0.13.0"},
       {:distillery, "~> 2.0", runtime: false},
-      {:mock, "~> 0.3.0", only: :test},
       {:parse_trans, "~> 3.2.0"}
-
     ]
   end
 end
