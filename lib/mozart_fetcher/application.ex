@@ -8,7 +8,7 @@ defmodule MozartFetcher.Application do
 
   defp children(env: :test) do
     children(env: :prod) ++ [
-      Plug.Adapters.Cowboy2.child_spec(
+      Plug.Cowboy.child_spec(
         scheme: :http,
         plug: MozartFetcher.FakeOrigin,
         options: [port: 8082]
@@ -21,7 +21,7 @@ defmodule MozartFetcher.Application do
     [
       # Starts a worker by calling: MozartFetcher.Worker.start_link(arg)
       # {Fetcher.Worker, arg},
-      Plug.Adapters.Cowboy2.child_spec(
+      Plug.Cowboy.child_spec(
         scheme: :http,
         plug: MozartFetcher.Router,
         options: [port: 8080]

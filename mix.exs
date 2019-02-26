@@ -22,13 +22,13 @@ defmodule MozartFetcher.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:cowboy, "~> 2.4"},
-      {:plug, "~> 1.6.1"},
+      {:plug_cowboy, "~> 2.0.1"},
       {:poison, "~> 3.1"},
-      {:httpoison, "~> 1.0"},
+      {:httpoison, "~> 1.5"},
       {:con_cache, "~> 0.13.0"},
       {:distillery, "~> 2.0", runtime: false},
-      {:parse_trans, "~> 3.2.0"}
+      {:parse_trans, "~> 3.2.0"},
+      {:ex_metrics, git: "https://github.com/bbc/ExMetrics.git"}
     ]
   end
 end

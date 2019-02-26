@@ -1,5 +1,5 @@
 defmodule MozartFetcher.Router do
-  alias MozartFetcher.{Fetcher, Component, Config}
+  alias MozartFetcher.{Fetcher, Config}
 
   use Plug.Router
   use Plug.Debugger
