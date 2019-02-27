@@ -30,3 +30,4 @@ use Mix.Config
 config :mozart_fetcher, :environment, Mix.env()
 
 import_config "#{Mix.env}.exs"
+import_config "metrics.exs"

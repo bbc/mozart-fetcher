@@ -4,14 +4,15 @@ defmodule MozartFetcher.Envelope do
   @derive [Poison.Encoder]
   defstruct head: [], bodyInline: "", bodyLast: []
 
-  def build({:ok, body}) do
+  def build(body) do
     case Poison.decode(body, as: %Envelope{}) do
-      {:ok, envelope = %Envelope{}} -> envelope
-      {:error, _}                   -> %Envelope{}
-    end
-  end
+      {:ok, envelope = %Envelope{}} ->
+        ExMetrics.increment(:"success.envelope.decode")
+        envelope
 
-  def build({:error, _reason}) do
-    %Envelope{}
+      {:error, _, _} ->
+        ExMetrics.increment(:"error.envelope.decode")
+        %Envelope{}
+    end
   end
 end

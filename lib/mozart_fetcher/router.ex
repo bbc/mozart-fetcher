@@ -2,6 +2,9 @@ defmodule MozartFetcher.Router do
   alias MozartFetcher.{Fetcher, Config}
 
   use Plug.Router
+  use ExMetrics
+  plug ExMetrics.Plug.PageMetrics
+
   use Plug.Debugger
   require Logger
 
