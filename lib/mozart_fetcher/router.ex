@@ -3,7 +3,7 @@ defmodule MozartFetcher.Router do
 
   use Plug.Router
   use ExMetrics
-  plug ExMetrics.Plug.PageMetrics
+  plug(ExMetrics.Plug.PageMetrics)
 
   use Plug.Debugger
   require Logger

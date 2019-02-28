@@ -19,6 +19,6 @@ defmodule MozartFetcher.Component do
   end
 
   defp get(config) do
-    LocalCache.get_or_store(config.endpoint, fn() -> HTTPClient.get(config.endpoint) end)
+    LocalCache.get_or_store(config.endpoint, fn -> HTTPClient.get(config.endpoint) end)
   end
 end

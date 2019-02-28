@@ -17,7 +17,7 @@ defmodule MozartFetcher.EnvelopeTest do
     end
 
     test "it returns an empty Envelope if not valid content" do
-      component = ~s({)
+      component = "{"
       assert Envelope.build(component) == %Envelope{}
     end
   end
