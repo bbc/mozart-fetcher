@@ -3,6 +3,8 @@ defmodule MozartFetcher.Application do
   # for more information on OTP Applications
   @moduledoc false
 
+  require Logger
+
   use Application
 
   def start(_type, _args) do
@@ -23,6 +25,7 @@ defmodule MozartFetcher.Application do
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: MozartFetcher.Supervisor]
+    Logger.info("InvalidThing", [some: "extra stuff"])
     Supervisor.start_link(children, opts)
   end
 end
