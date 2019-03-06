@@ -9,12 +9,12 @@ defmodule MozartFetcher.Component do
   end
 
   defp process(config, {:ok, %HTTPoison.Response{status_code: 200, body: body}}) do
-    ExMetrics.increment(:"success.component.process")
+    ExMetrics.increment("success.component.process")
     %Component{index: 0, id: config.id, status: 200, envelope: Envelope.build(body)}
   end
 
   defp process(_config, {:error, %HTTPoison.Error{reason: reason}}) do
-    ExMetrics.increment(:"error.component.process")
+    ExMetrics.increment("error.component.process")
     {:error, reason}
   end
 

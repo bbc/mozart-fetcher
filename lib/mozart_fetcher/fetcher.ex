@@ -4,12 +4,12 @@ defmodule MozartFetcher.Fetcher do
   use ExMetrics
 
   def process([]) do
-    ExMetrics.increment(:"error.empty_component_list")
+    ExMetrics.increment("error.empty_component_list")
     {:error}
   end
 
   def process(components) do
-    ExMetrics.timeframe :"function.timing.fetcher.process" do
+    ExMetrics.timeframe "function.timing.fetcher.process" do
       components
       |> Enum.map(&Task.async(fn -> Component.fetch(&1) end))
       |> Enum.map(&Task.await/1)

@@ -7,11 +7,11 @@ defmodule MozartFetcher.Envelope do
   def build(body) do
     case Poison.decode(body, as: %Envelope{}) do
       {:ok, envelope = %Envelope{}} ->
-        ExMetrics.increment(:"success.envelope.decode")
+        ExMetrics.increment("success.envelope.decode")
         envelope
 
       {:error, _, _} ->
-        ExMetrics.increment(:"error.envelope.decode")
+        ExMetrics.increment("error.envelope.decode")
         %Envelope{}
     end
   end

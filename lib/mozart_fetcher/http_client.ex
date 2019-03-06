@@ -2,7 +2,7 @@ defmodule HTTPClient do
   use ExMetrics
 
   def get(endpoint) do
-    ExMetrics.timeframe :"function.timing.http_client.get" do
+    ExMetrics.timeframe "function.timing.http_client.get" do
       cert = Application.get_env(:mozart_fetcher, :dev_cert_pem)
       timeout = Application.get_env(:mozart_fetcher, :timeout)
 
