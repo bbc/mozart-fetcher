@@ -1,11 +1,17 @@
 defmodule MozartFetcher.Component do
   alias MozartFetcher.{Component, Config, Envelope, LocalCache}
 
+  @time Application.get_env(:mozart_fetcher, :time_api)
+
   @derive [Poison.Encoder]
   defstruct [:index, :id, :status, :envelope]
 
   def fetch(config = %Config{}) do
     process(config, get(config))
+  end
+
+  def time() do
+    @time.utc_now()
   end
 
   defp process(config, {:ok, %HTTPoison.Response{status_code: 200, body: body}}) do

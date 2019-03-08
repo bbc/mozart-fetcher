@@ -6,6 +6,10 @@ defmodule MozartFetcher.ComponentTest do
   doctest Component
 
   describe "fetch components" do
+    test "time" do
+      assert Component.time == MozartFetcher.Time.MockTime.utc_now()
+    end
+
     test "it returns the response body when succesfull" do
       config = %Config{endpoint: "http://localhost:8082/success"}
 
