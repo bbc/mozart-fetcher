@@ -89,3 +89,7 @@ curl -X POST --data @test/fixtures/payload_multiple_small.json localhost:8080/co
 ```sh
 mix test
 ```
+
+## Metrics
+To list the metrics available for this app, run:
+`mix list_metrics`

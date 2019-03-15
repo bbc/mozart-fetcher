@@ -5,28 +5,32 @@ defmodule MozartFetcher.Application do
 
   use Application
 
-
   defp children(env: :test) do
-    children(env: :prod) ++ [
-      Plug.Adapters.Cowboy2.child_spec(
-        scheme: :http,
-        plug: MozartFetcher.FakeOrigin,
-        options: [port: 8082]
-      )
-    ]
+    children(env: :prod) ++
+      [
+        Plug.Cowboy.child_spec(
+          scheme: :http,
+          plug: MozartFetcher.FakeOrigin,
+          options: [port: 8082]
+        )
+      ]
   end
-
 
   defp children(_) do
     [
       # Starts a worker by calling: MozartFetcher.Worker.start_link(arg)
       # {Fetcher.Worker, arg},
-      Plug.Adapters.Cowboy2.child_spec(
+      Plug.Cowboy.child_spec(
         scheme: :http,
         plug: MozartFetcher.Router,
         options: [port: 8080]
       ),
-      {ConCache, [name: :fetcher_cache, ttl_check_interval: :timer.seconds(1), global_ttl: :timer.seconds(30)]}
+      {ConCache,
+       [
+         name: :fetcher_cache,
+         ttl_check_interval: :timer.seconds(1),
+         global_ttl: :timer.seconds(30)
+       ]}
     ]
   end
 
