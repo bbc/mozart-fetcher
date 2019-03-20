@@ -1,5 +1,6 @@
 defmodule MozartFetcher.Envelope do
   alias MozartFetcher.{Envelope}
+  require Stump
 
   @derive [Poison.Encoder]
   defstruct head: [], bodyInline: "", bodyLast: []
@@ -12,6 +13,7 @@ defmodule MozartFetcher.Envelope do
 
       {:error, _, _} ->
         ExMetrics.increment("error.envelope.decode")
+        Stump.log(:error, %{message: "Failed to decode Envelope"})
         %Envelope{}
     end
   end

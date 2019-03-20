@@ -1,5 +1,6 @@
 defmodule MozartFetcher.Component do
-  alias MozartFetcher.{Component, Config, Envelope, LocalCache}
+  alias   MozartFetcher.{Component, Config, Envelope, LocalCache}
+  require Stump
 
   @derive [Poison.Encoder]
   defstruct [:index, :id, :status, :envelope]
@@ -15,6 +16,7 @@ defmodule MozartFetcher.Component do
 
   defp process(_config, {:error, %HTTPoison.Error{reason: reason}}) do
     ExMetrics.increment("error.component.process")
+    Stump.log(:error, %{message: "Failed to process HTTP request, reason: #{reason}"})
     {:error, reason}
   end
 

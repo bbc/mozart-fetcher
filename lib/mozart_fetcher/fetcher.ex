@@ -1,10 +1,12 @@
 defmodule MozartFetcher.Fetcher do
   alias MozartFetcher.{Component}
+  require Stump
 
   use ExMetrics
 
   def process([]) do
     ExMetrics.increment("error.empty_component_list")
+    Stump.log(:error, %{message: "Error cannot process empty component list"})
     {:error}
   end
 
