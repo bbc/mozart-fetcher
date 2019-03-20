@@ -21,6 +21,6 @@
   "ranch": {:hex, :ranch, "1.7.1", "6b1fab51b49196860b733a49c07604465a47bdb78aa10c1c16a3d199f7f8c881", [:rebar3], [], "hexpm"},
   "ssl_verify_fun": {:hex, :ssl_verify_fun, "1.1.1", "28a4d65b7f59893bc2c7de786dec1e1555bd742d336043fe644ae956c3497fbe", [:make, :rebar], [], "hexpm"},
   "statix": {:hex, :statix, "1.1.0", "af9a4586c5cd58f879e0595f06a4790878715de5b8f75f6346693aaa38da2424", [:mix], [], "hexpm"},
-  "stump": {:git, "https://github.com/JoeARO/stump.git", "f25b402adf9e5331ad4b04b13a697cfe6526f28b", []},
+  "stump": {:hex, :stump, "1.0.0", "b39fa9b9a04678efec6ac03309993152b5e8f51bd45e3ec7889753c8660bac40", [:mix], [{:poison, "~> 3.1", [hex: :poison, repo: "hexpm", optional: false]}], "hexpm"},
   "unicode_util_compat": {:hex, :unicode_util_compat, "0.3.1", "a1f612a7b512638634a603c8f401892afbf99b8ce93a45041f8aaca99cadb85e", [:rebar3], [], "hexpm"},
 }
