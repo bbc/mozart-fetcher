@@ -1,5 +1,5 @@
 defmodule MozartFetcher.Component do
-  alias   MozartFetcher.{Component, Config, Envelope, LocalCache}
+  alias MozartFetcher.{Component, Config, Envelope, LocalCache}
   require Stump
 
   @derive [Poison.Encoder]
