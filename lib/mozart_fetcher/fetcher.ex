@@ -5,6 +5,7 @@ defmodule MozartFetcher.Fetcher do
 
   def process([]) do
     ExMetrics.increment("error.empty_component_list")
+    Stump.log(:error, %{message: "Error cannot process empty component list"})
     {:error}
   end
 

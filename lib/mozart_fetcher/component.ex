@@ -15,6 +15,7 @@ defmodule MozartFetcher.Component do
 
   defp process(_config, {:error, %HTTPoison.Error{reason: reason}}) do
     ExMetrics.increment("error.component.process")
+    Stump.log(:error, %{message: "Failed to process HTTP request, reason: #{reason}"})
     {:error, reason}
   end
 

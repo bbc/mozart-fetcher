@@ -29,5 +29,7 @@ use Mix.Config
 #
 config :mozart_fetcher, :environment, Mix.env()
 
-import_config "#{Mix.env()}.exs"
+config :logger, :console, format: "$message\n"
+
 import_config "metrics.exs"
+import_config "#{Mix.env()}.exs"
