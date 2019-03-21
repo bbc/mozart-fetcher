@@ -1,6 +1,5 @@
 defmodule MozartFetcher.Fetcher do
   alias MozartFetcher.{Component}
-  require Stump
 
   use ExMetrics
 

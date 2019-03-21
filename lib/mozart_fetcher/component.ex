@@ -1,6 +1,5 @@
 defmodule MozartFetcher.Component do
   alias MozartFetcher.{Component, Config, Envelope, LocalCache}
-  require Stump
 
   @derive [Poison.Encoder]
   defstruct [:index, :id, :status, :envelope]
