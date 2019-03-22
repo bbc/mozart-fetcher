@@ -8,13 +8,15 @@ defmodule MozartFetcher.Component do
     process(config, get(config))
   end
 
-  defp process(config, {:ok, %HTTPoison.Response{status_code: 200, body: body}}) do
+  defp process(config, {:ok, %HTTPoison.Response{status_code: status_code, body: body}}) do
     ExMetrics.increment("success.component.process")
-    %Component{index: 0, id: config.id, status: 200, envelope: Envelope.build(body)}
+    ExMetrics.increment("success.component.process.#{config.id}.#{status_code}")
+    %Component{index: 0, id: config.id, status: status_code, envelope: Envelope.build(body)}
   end
 
-  defp process(_config, {:error, %HTTPoison.Error{reason: reason}}) do
+  defp process(config, {:error, %HTTPoison.Error{reason: reason}}) do
     ExMetrics.increment("error.component.process")
+    ExMetrics.increment("error.component.process.#{config.id}.#{reason}")
     Stump.log(:error, %{message: "Failed to process HTTP request, reason: #{reason}"})
     {:error, reason}
   end

@@ -18,6 +18,15 @@ defmodule MozartFetcher.FakeOrigin do
     )
   end
 
+  get "/non_200_status/:code" do
+    {status_code, _} = Integer.parse(conn.path_params["code"])
+    send_resp(
+      conn,
+      status_code,
+      ""
+    )
+  end
+
   get "/timeout" do
     :timer.sleep(3100)
   end
