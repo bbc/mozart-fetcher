@@ -5,11 +5,6 @@ defmodule MozartFetcher.Router do
   use ExMetrics
   plug(ExMetrics.Plug.PageMetrics)
 
-  use Plug.Debugger
-  require Logger
-
-  plug(Plug.Logger, log: :debug)
-
   plug(:match)
   plug(:dispatch)
 
