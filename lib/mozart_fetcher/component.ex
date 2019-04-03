@@ -25,10 +25,18 @@ defmodule MozartFetcher.Component do
     ExMetrics.increment("error.component.process")
     ExMetrics.increment("error.component.process.#{config.id}.#{reason}")
     Stump.log(:error, %{message: "Failed to process HTTP request, reason: #{reason}"})
-    {:error, reason}
+    failed_component(reason)
   end
 
   defp get(config) do
     LocalCache.get_or_store(config.endpoint, fn -> HTTPClient.get(config.endpoint) end)
+  end
+
+  defp failed_component(:timeout) do
+    %Component{index: 0, id: "", status: 408, envelope: %Envelope{}}
+  end
+
+  defp failed_component(_) do
+    %Component{index: 0, id: "", status: 500, envelope: %Envelope{}}
   end
 end
