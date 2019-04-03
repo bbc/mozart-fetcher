@@ -11,7 +11,7 @@ defmodule MozartFetcher.Fetcher do
     |> Enum.map(&Task.async(fn -> Component.fetch(&1) end))
     |> Enum.map(fn task -> Task.await(task, 10000) end)
     |> decorate_response
-    |> Poison.encode!()
+    |> Jason.encode!()
   end
 
   defp decorate_response(envelopes) do

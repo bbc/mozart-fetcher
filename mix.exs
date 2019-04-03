@@ -23,7 +23,6 @@ defmodule MozartFetcher.MixProject do
   defp deps do
     [
       {:plug_cowboy, "~> 2.0.1"},
-      {:poison, "~> 3.1"},
       {:httpoison, "~> 1.5"},
       {:con_cache, "~> 0.13.0"},
       {:distillery, "~> 2.0", runtime: false},
@@ -31,6 +30,7 @@ defmodule MozartFetcher.MixProject do
       {:ex_metrics, git: "https://github.com/bbc/ExMetrics.git"},
       {:stump, "~> 1.0.0"},
       {:logger_file_backend, "~> 0.0.10"},
+      {:jason, "~> 1.1"},
       {:benchee, "~> 1.0", only: :dev}
     ]
   end

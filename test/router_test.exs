@@ -44,7 +44,7 @@ defmodule MozartFetcher.RouterTest do
       conn = Router.call(conn, @opts)
 
       expected_body =
-        Poison.encode!(%{
+        Jason.encode!(%{
           components: [
             %{
               status: 200,
