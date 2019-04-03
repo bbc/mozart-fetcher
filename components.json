@@ -1,46 +1,6 @@
 {
   "components": [
       {
-          "id": "morph-news-front-page",
-          "endpoint": "http://news.test.files.bbci.co.uk/mozart/load_tests/25082016/bbc-morph-news-front-page.json",
-          "must_succeed": true
-      },
-      {
-          "id": "morph-lx-temp-icons",
-          "endpoint": "http://news.test.files.bbci.co.uk/mozart/load_tests/25082016/bbc-morph-lx-temp-icons.json",
-          "must_succeed": true
-      },
-      {
-          "id": "bbc-morph-bbcdotcom-init",
-          "endpoint": "http://news.test.files.bbci.co.uk/mozart/load_tests/25082016/bbc-morph-bbcdotcom-init.json",
-          "must_succeed": true
-      },
-      {
-          "id": "morph-dna-comments-count",
-          "endpoint": "http://news.test.files.bbci.co.uk/mozart/load_tests/25082016/bbc-morph-dna-comments-count.json",
-          "must_succeed": true
-      },
-      {
-          "id": "small-1.0.0",
-          "endpoint": "http://news.test.files.bbci.co.uk/mozart/load_tests/25082016/small-1.0.0.json",
-          "must_succeed": true
-      },
-      {
-          "id": "small-1.0.1",
-          "endpoint": "http://news.test.files.bbci.co.uk/mozart/load_tests/25082016/small-1.0.1.json",
-          "must_succeed": true
-      },
-      {
-          "id": "small-1.0.2",
-          "endpoint": "http://news.test.files.bbci.co.uk/mozart/load_tests/25082016/small-1.0.2.json",
-          "must_succeed": true
-      },
-      {
-          "id": "small-1.0.3",
-          "endpoint": "http://news.test.files.bbci.co.uk/mozart/load_tests/25082016/small-1.0.3.json",
-          "must_succeed": true
-      },
-      {
           "id": "small-1.0.4",
           "endpoint": "http://news.test.files.bbci.co.uk/mozart/load_tests/25082016/small-1.0.4.json",
           "must_succeed": true
