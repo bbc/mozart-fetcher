@@ -9,7 +9,14 @@ defmodule HTTPClient do
       headers = []
       options = [recv_timeout: timeout, ssl: [certfile: cert]]
 
-      HTTPoison.get(endpoint, headers, options)
+      valid_response?(HTTPoison.get(endpoint, headers, options))
     end
   end
+
+  defp valid_response?(response = {:error, %HTTPoison.Error{reason: reason}}) do
+    Stump.log(:error, %{message: "HTTPoison Error", reason: reason})
+    response
+  end
+
+  defp valid_response?(response), do: response
 end
