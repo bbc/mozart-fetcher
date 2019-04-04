@@ -1,7 +1,7 @@
 defmodule MozartFetcher.Component do
   alias MozartFetcher.{Component, Config, Envelope, LocalCache}
 
-  @derive [Poison.Encoder]
+  @derive [Jason.Encoder]
   defstruct [:index, :id, :status, :envelope]
 
   def fetch(config = %Config{}) do
