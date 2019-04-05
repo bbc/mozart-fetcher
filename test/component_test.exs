@@ -23,6 +23,32 @@ defmodule MozartFetcher.ComponentTest do
       assert Component.fetch(config) == expected
     end
 
+    test "it returns empty envelope when 202" do
+      config = %Config{endpoint: "http://localhost:8082/non_200_status/202"}
+
+      expected = %MozartFetcher.Component{
+        envelope: %MozartFetcher.Envelope{},
+        id: nil,
+        index: 0,
+        status: 202
+      }
+
+      assert Component.fetch(config) == expected
+    end
+
+    test "it returns empty envelope when 404" do
+      config = %Config{endpoint: "http://localhost:8082/non_200_status/404"}
+
+      expected = %MozartFetcher.Component{
+        envelope: %MozartFetcher.Envelope{},
+        id: nil,
+        index: 0,
+        status: 404
+      }
+
+      assert Component.fetch(config) == expected
+    end
+
     test "it returns an error in case of timeout" do
       config = %Config{endpoint: "http://localhost:8082/timeout"}
       assert Component.fetch(config) == {:error, :timeout}
