@@ -10,7 +10,7 @@ config :logger,
   backends: [{LoggerFileBackend, :file}]
 
 config :logger, :file,
-  path: "/var/log/mozart_fetcher/error.log",
+  path: "/var/log/component/app.log",
   format: "$message\n",
   level: :error
 
