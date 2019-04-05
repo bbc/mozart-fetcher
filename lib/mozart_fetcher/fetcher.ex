@@ -1,17 +1,22 @@
 defmodule MozartFetcher.Fetcher do
   alias MozartFetcher.{Component}
 
+  use ExMetrics
+
   def process([]) do
+    ExMetrics.increment("error.empty_component_list")
     Stump.log(:error, %{message: "Error cannot process empty component list"})
     {:error}
   end
 
   def process(components) do
-    components
-    |> Enum.map(&Task.async(fn -> Component.fetch(&1) end))
-    |> Enum.map(fn task -> Task.await(task, 10000) end)
-    |> decorate_response
-    |> Jason.encode!()
+    ExMetrics.timeframe "function.timing.fetcher.process" do
+      components
+      |> Enum.map(&Task.async(fn -> Component.fetch(&1) end))
+      |> Enum.map(fn task -> Task.await(task, 10000) end)
+      |> decorate_response
+      |> Jason.encode!()
+    end
   end
 
   defp decorate_response(envelopes) do
