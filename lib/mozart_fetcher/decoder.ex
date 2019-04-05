@@ -6,6 +6,7 @@ defmodule MozartFetcher.Decoder do
     end
   end
 
+  # This could be more generic if we add a list_name then Enum.map(data[list_name]) instead of specifically for components here
   def list_to_struct_list(data, struct) do
     case Jason.decode(data) do
       {:ok, data} ->
@@ -14,7 +15,7 @@ defmodule MozartFetcher.Decoder do
     end
   end
 
-  def to_struct(a_map, as: a_struct) do
+  defp to_struct(a_map, as: a_struct) do
     keys = Map.keys(a_struct) 
             |> Enum.filter(fn x -> x != :__struct__ end)
     processed_map =

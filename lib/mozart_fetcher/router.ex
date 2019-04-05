@@ -41,7 +41,8 @@ defmodule MozartFetcher.Router do
     send_resp(conn, 404, "not found")
   end
 
-  defp config(body) do
+  def config(body) do
+    IO.inspect(body)
     case Decoder.list_to_struct_list(body, %Config{}) do
       {:ok, components} ->
         ExMetrics.increment("success.components.decode")
