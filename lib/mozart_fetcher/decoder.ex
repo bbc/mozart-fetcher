@@ -1,29 +1,27 @@
 defmodule MozartFetcher.Decoder do
-  def data_to_struct(data, as: a_struct) do
-    case Jason.decode(data) do
-      {:ok, decoded} -> {:ok, to_struct(decoded, as: a_struct)}
+  def data_to_struct(data, struct) do
+    case Jason.decode(data, keys: :atoms) do
+      {:ok, decoded} -> {:ok, to_struct(decoded, struct)}
       {:error, _}    -> {:error}
     end
   end
 
   # This could be more generic if we add a list_name then Enum.map(data[list_name]) instead of specifically for components here
   def list_to_struct_list(data, struct) do
-    case Jason.decode(data) do
+    case Jason.decode(data, keys: :atoms) do
       {:ok, data} ->
-        {:ok, Enum.map(data["components"], fn x -> to_struct(x, as: struct) end)}
+        {:ok, Enum.map(data[:components], fn map -> to_struct(map, struct) end)}
       {:error, _} -> {:error}
     end
   end
 
-  defp to_struct(a_map, as: a_struct) do
-    keys = Map.keys(a_struct) 
-            |> Enum.filter(fn x -> x != :__struct__ end)
-    processed_map =
-    for key <- keys, into: %{} do
-        value = Map.get(a_map, key) || Map.get(a_map, to_string(key))
-        {key, value}
-      end
-    a_struct = Map.merge(a_struct, processed_map)
-    a_struct
+  defp to_struct(map, struct) do
+    case struct!(struct, map) do
+      {:error} ->
+        ExMetrics.increment("error.components.decode")
+        Stump.log(:error, %{message: "Invalid keys passed to to_struct", struct: struct, map: map})
+        {:error}
+      struct -> struct
+    end
   end
 end

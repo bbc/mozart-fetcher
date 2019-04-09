@@ -15,7 +15,7 @@ defmodule MozartFetcher.DecoderTest do
         bodyLast: []
       }}
 
-      assert Decoder.data_to_struct(json, as: %Envelope{}) == expected
+      assert Decoder.data_to_struct(json, %Envelope{}) == expected
     end
   end
 
@@ -33,6 +33,13 @@ defmodule MozartFetcher.DecoderTest do
        }
 
       assert Decoder.list_to_struct_list(json, %Config{}) == expected
+    end
+  end
+
+  describe "when the map keys do not match the struct" do
+    test "it returns an error" do
+      json = ~s( "components": [{:"Foo": "Bar" }])
+      assert Decoder.data_to_struct(json, %Config{}) == {:error}
     end
   end
 end
