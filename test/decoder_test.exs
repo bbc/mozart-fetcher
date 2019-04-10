@@ -22,13 +22,13 @@ defmodule MozartFetcher.DecoderTest do
   describe "#list_to_struct_list" do
     test "when the list of JSON is successfuly decoded it is transformed into a list of structs" do
       json =  ~s({ "components\": [{"id": "stream-icons", "endpoint": "localhost:8082/success", "must_succeed": true },
-                                  {"id": "stream-icons", "endpoint": "localhost:8082/success", "must_succeed": true }
+                                  {"id": "weather-forecast", "endpoint": "localhost:8082/success", "must_succeed": false }
                ]})
 
       expected = {
         :ok, [
           %MozartFetcher.Config{endpoint: "localhost:8082/success", id: "stream-icons", must_succeed: true},
-          %MozartFetcher.Config{endpoint: "localhost:8082/success", id: "stream-icons", must_succeed: true}
+          %MozartFetcher.Config{endpoint: "localhost:8082/success", id: "weather-forecast", must_succeed: false}
         ]
        }
 
