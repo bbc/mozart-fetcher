@@ -1,4 +1,4 @@
 defmodule MozartFetcher.Config do
-  @derive [Poison.Encoder]
-  defstruct [:endpoint, :id, :must_succed]
+  @derive Jason.Encoder
+  defstruct [:endpoint, :id, :must_succeed]
 end

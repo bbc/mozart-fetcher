@@ -38,13 +38,13 @@ defmodule MozartFetcher.RouterTest do
                         "endpoint": "localhost:8082/success",
                         "must_succeed": true
                         }]
-          }
-)
+                      }
+                    )
       conn = conn(:post, "/collect", json_body)
       conn = Router.call(conn, @opts)
 
       expected_body =
-        Poison.encode!(%{
+        Jason.encode!(%{
           components: [
             %{
               status: 200,
