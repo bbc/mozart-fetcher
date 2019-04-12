@@ -18,6 +18,14 @@ defmodule MozartFetcher.FakeOrigin do
     )
   end
 
+  get "/big_component" do
+    send_resp(
+      conn,
+      200,
+      ~s({"head":[], "bodyInline":"<DIV id=\\"big-component\\" class=\\"big\\"><h1>This is a really big component</h1></DIV>", "bodyLast": []})
+    )
+  end
+
   get "/non_200_status/:code" do
     {status_code, _} = Integer.parse(conn.path_params["code"])
     send_resp(
