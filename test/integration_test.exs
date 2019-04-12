@@ -76,6 +76,71 @@ defmodule MozartFetcher.IntegrationTest do
     end
   end
 
+  describe "fetching multiple components" do
+    test "when all of the components are successful they all have a status of 200" do
+      json_body = ~s({
+        "components": [{ "id": "news-front-page",
+                        "endpoint": "localhost:8082/success",
+                        "must_succeed": true
+                        },
+                        {
+                          "id": "weather-front-page",
+                          "endpoint": "localhost:8082/success",
+                          "must_succeed": true
+                        },
+                        {
+                          "id": "weather-component",
+                          "endpoint": "localhost:8082/big_component",
+                          "must_succeed": true
+                        }]
+                      }
+                    )
+      conn = conn(:post, "/collect", json_body)
+      conn = Router.call(conn, @opts)
+
+      expected_body =
+        Jason.encode!(%{
+          components: [
+            %{
+              status: 200,
+              index: 0,
+              id: "news-front-page",
+              envelope: %{
+                head: [],
+                bodyLast: [],
+                bodyInline: "<DIV id=\"site-container\">"
+              }
+            },
+            %{
+              status: 200,
+              index: 0,
+              id: "weather-front-page",
+              envelope: %{
+                head: [],
+                bodyLast: [],
+                bodyInline: "<DIV id=\"site-container\">"
+              }
+            },
+            %{
+              status: 200,
+              index: 0,
+              id: "weather-component",
+              envelope: %{
+                head: [],
+                bodyLast: [],
+                bodyInline: "<DIV id=\"big-component\" class=\"big\"><h1>This is a really big component</h1></DIV>"
+              }
+            }
+          ]
+        })
+
+      assert conn.state == :sent
+      assert conn.status == 200
+      assert get_resp_header(conn, "content-type") == ["application/json; charset=utf-8"]
+      assert conn.resp_body == expected_body
+    end
+  end
+
   describe "when fetching a component returns a 404" do
     test "it returns a 200, with the failing component status set as 404 and its original id still set" do
       json_body = ~s({
@@ -130,6 +195,42 @@ defmodule MozartFetcher.IntegrationTest do
           components: [
             %{
               status: 408,
+              index: 0,
+              id: "weather-front-page",
+              envelope: %{
+                head: [],
+                bodyLast: [],
+                bodyInline: ""
+              }
+            }
+          ]
+        })
+
+      assert conn.state == :sent
+      assert conn.status == 200
+      assert get_resp_header(conn, "content-type") == ["application/json; charset=utf-8"]
+      assert conn.resp_body == expected_body
+    end
+  end
+
+  describe "when fetching the component receives a server error" do
+    test "it returns a 200, with the failing component status set as 500 and its original id still set" do
+      json_body = ~s({
+        "components": [{
+                        "id": "weather-front-page",
+                        "endpoint": "localhost:8082/non_200_status/500",
+                        "must_succeed": true
+                        }]
+                      }
+                    )
+      conn = conn(:post, "/collect", json_body)
+      conn = Router.call(conn, @opts)
+
+      expected_body =
+        Jason.encode!(%{
+          components: [
+            %{
+              status: 500,
               index: 0,
               id: "weather-front-page",
               envelope: %{
