@@ -43,6 +43,10 @@ defmodule MozartFetcher.Application do
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: MozartFetcher.Supervisor]
-    Supervisor.start_link(children, opts)
+    Supervisor.start_link(children ++ hackney_setup(), opts)
+  end
+
+  defp hackney_setup do
+    [:hackney_pool.child_spec(:origin_pool, timeout: 1000, max_connections: 20000)]
   end
 end

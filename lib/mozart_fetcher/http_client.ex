@@ -7,7 +7,7 @@ defmodule HTTPClient do
       timeout = Application.get_env(:mozart_fetcher, :timeout)
 
       headers = []
-      options = [recv_timeout: timeout, ssl: [certfile: cert]]
+      options = [recv_timeout: timeout, ssl: [certfile: cert], hackney: [pool: :origin_pool]]
 
       valid_response?(HTTPoison.get(endpoint, headers, options))
     end
