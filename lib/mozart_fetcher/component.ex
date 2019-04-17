@@ -4,39 +4,39 @@ defmodule MozartFetcher.Component do
   @derive [Jason.Encoder]
   defstruct [:index, :id, :status, :envelope]
 
-  def fetch(config = %Config{}) do
-    process(config, get(config))
+  def fetch({config = %Config{}, index}) do
+    process(index, config, get(config))
   end
 
-  defp process(config, {:ok, %HTTPoison.Response{status_code: 200, body: body}}) do
+  defp process(index, config, {:ok, %HTTPoison.Response{status_code: 200, body: body}}) do
     ExMetrics.increment("success.component.process")
     ExMetrics.increment("success.component.process.#{config.id}.200")
-    %Component{index: 0, id: config.id, status: 200, envelope: Envelope.build(body)}
+    %Component{index: index, id: config.id, status: 200, envelope: Envelope.build(body)}
   end
 
-  defp process(config, {:ok, %HTTPoison.Response{status_code: status_code, body: body}}) do
+  defp process(index, config, {:ok, %HTTPoison.Response{status_code: status_code, body: body}}) do
     ExMetrics.increment("error.component.process")
     ExMetrics.increment("error.component.process.#{config.id}.#{status_code}")
     Stump.log(:error, %{message: "Non-200 response. Got status:#{status_code} for component #{config.id}"})
-    %Component{index: 0, id: config.id, status: status_code, envelope: %Envelope{}}
+    %Component{index: index, id: config.id, status: status_code, envelope: %Envelope{}}
   end
 
-  defp process(config, {:error, %HTTPoison.Error{reason: reason}}) do
+  defp process(index, config, {:error, %HTTPoison.Error{reason: reason}}) do
     ExMetrics.increment("error.component.process")
     ExMetrics.increment("error.component.process.#{config.id}.#{reason}")
     Stump.log(:error, %{message: "Failed to process HTTP request, reason: #{reason}"})
-    failed_component(reason, config.id)
+    failed_component(index, reason, config.id)
   end
 
   defp get(config) do
     LocalCache.get_or_store(config.endpoint, fn -> HTTPClient.get(config.endpoint) end)
   end
 
-  defp failed_component(:timeout, id) do
-    %Component{index: 0, id: id, status: 408, envelope: %Envelope{}}
+  defp failed_component(index, :timeout, id) do
+    %Component{index: index, id: id, status: 408, envelope: %Envelope{}}
   end
 
-  defp failed_component(_, id) do
-    %Component{index: 0, id: id, status: 500, envelope: %Envelope{}}
+  defp failed_component(index, _, id) do
+    %Component{index: index, id: id, status: 500, envelope: %Envelope{}}
   end
 end
