@@ -20,7 +20,7 @@ defmodule MozartFetcher.ComponentTest do
         status: 200
       }
 
-      assert Component.fetch(config) == expected
+      assert Component.fetch({config, 0}) == expected
     end
 
     test "it returns empty envelope when 202" do
@@ -33,7 +33,7 @@ defmodule MozartFetcher.ComponentTest do
         status: 202
       }
 
-      assert Component.fetch(config) == expected
+      assert Component.fetch({config, 0}) == expected
     end
 
     test "it returns empty envelope when 404" do
@@ -46,7 +46,7 @@ defmodule MozartFetcher.ComponentTest do
         status: 404
       }
 
-      assert Component.fetch(config) == expected
+      assert Component.fetch({config, 0}) == expected
     end
 
     test "it returns an error in case of timeout" do
@@ -62,7 +62,7 @@ defmodule MozartFetcher.ComponentTest do
       }
 
       config = %Config{endpoint: "http://localhost:8082/timeout", id: "news_navigation"}
-      assert Component.fetch(config) == expected
+      assert Component.fetch({config, 0}) == expected
     end
 
     test "it returns an error in case service is down" do
@@ -78,7 +78,7 @@ defmodule MozartFetcher.ComponentTest do
       }
 
       config = %Config{endpoint: "http://localhost:9090/fails", id: "news-top-stories"}
-      assert Component.fetch(config) == expected
+      assert Component.fetch({config, 0}) == expected
     end
   end
 end

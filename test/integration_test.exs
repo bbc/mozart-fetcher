@@ -113,7 +113,7 @@ defmodule MozartFetcher.IntegrationTest do
             },
             %{
               status: 200,
-              index: 0,
+              index: 1,
               id: "weather-front-page",
               envelope: %{
                 head: [],
@@ -123,7 +123,7 @@ defmodule MozartFetcher.IntegrationTest do
             },
             %{
               status: 200,
-              index: 0,
+              index: 2,
               id: "weather-component",
               envelope: %{
                 head: [],
