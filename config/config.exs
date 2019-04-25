@@ -27,7 +27,11 @@ use Mix.Config
 # Configuration from the imported file will override the ones defined
 # here (which is why it is important to import them last).
 #
-config :mozart_fetcher, :environment, Mix.env()
+config :mozart_fetcher,
+  environment: Mix.env(),
+  content_timeout: 3000,
+  connection_timeout: 500,
+  max_connections: 5000
 
 config :logger, :console, format: "$message\n"
 

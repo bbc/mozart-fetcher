@@ -5,6 +5,9 @@ defmodule MozartFetcher.Application do
 
   use Application
 
+  @connection_timeout Application.get_env(:mozart_fetcher, :connection_timeout)
+  @max_connections Application.get_env(:mozart_fetcher, :max_connections)
+
   defp children(env: :test) do
     children(env: :prod) ++
       [
@@ -47,6 +50,11 @@ defmodule MozartFetcher.Application do
   end
 
   defp hackney_setup do
-    [:hackney_pool.child_spec(:origin_pool, timeout: 1000, max_connections: 20000)]
+    [
+      :hackney_pool.child_spec(:origin_pool,
+        timeout: @connection_timeout,
+        max_connections: @max_connections
+      )
+    ]
   end
 end
