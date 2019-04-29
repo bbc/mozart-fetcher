@@ -1,11 +1,11 @@
 defmodule HTTPClient do
   use ExMetrics
 
-  @content_timeout Application.get_env(:mozart_fetcher, :content_timeout)
+  @content_timeout MozartFetcher.content_timeout()
 
   def get(endpoint) do
     ExMetrics.timeframe "function.timing.http_client.get" do
-      cert = Application.get_env(:mozart_fetcher, :dev_cert_pem)
+      cert = MozartFetcher.cert()
 
       headers = []
 
