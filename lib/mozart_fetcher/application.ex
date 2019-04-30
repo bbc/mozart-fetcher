@@ -5,6 +5,9 @@ defmodule MozartFetcher.Application do
 
   use Application
 
+  @connection_timeout MozartFetcher.connection_timeout()
+  @max_connections MozartFetcher.max_connections()
+
   defp children(env: :test) do
     children(env: :prod) ++
       [
@@ -38,11 +41,18 @@ defmodule MozartFetcher.Application do
     # List all child processes to be supervised
     children = children(args)
 
-    Application.put_env(:mozart_fetcher, :dev_cert_pem, System.get_env("DEV_CERT_PEM"))
-
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: MozartFetcher.Supervisor]
-    Supervisor.start_link(children, opts)
+    Supervisor.start_link(children ++ hackney_setup(), opts)
+  end
+
+  defp hackney_setup do
+    [
+      :hackney_pool.child_spec(:origin_pool,
+        timeout: @connection_timeout,
+        max_connections: @max_connections
+      )
+    ]
   end
 end

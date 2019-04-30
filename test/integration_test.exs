@@ -1,7 +1,7 @@
 defmodule MozartFetcher.IntegrationTest do
   use ExUnit.Case
   use Plug.Test
-  alias MozartFetcher.{Component, Config, Router}
+  alias MozartFetcher.Router
   @opts Router.init([])
 
   describe "when fetching a small component" do
