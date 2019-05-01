@@ -21,8 +21,23 @@ defmodule MozartFetcher do
     Application.get_env(:mozart_fetcher, :max_connections)
   end
 
-  def cert do
-    System.get_env("DEV_CERT_PEM")
+  def request_ssl do
+    case environment() do
+      :prod -> [certfile: cert_path(), cacertfile: ca_cert_path(), keyfile: key_file_path()]
+      _ -> [certfile: System.get_env("DEV_CERT_PEM")]
+    end
+  end
+
+  defp cert_path do
+    System.get_env("cert_file_path")
+  end
+
+  defp ca_cert_path do
+    System.get_env("ca_file_path")
+  end
+
+  defp key_file_path do
+    System.get_env("key_file_path")
   end
 
   def environment do
