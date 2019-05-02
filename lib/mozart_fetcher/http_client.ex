@@ -5,13 +5,11 @@ defmodule HTTPClient do
 
   def get(endpoint) do
     ExMetrics.timeframe "function.timing.http_client.get" do
-      cert = MozartFetcher.cert()
-
       headers = []
 
       options = [
         recv_timeout: @content_timeout,
-        ssl: [certfile: cert],
+        ssl: MozartFetcher.request_ssl(),
         hackney: [pool: :origin_pool]
       ]
 
