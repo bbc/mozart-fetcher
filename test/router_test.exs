@@ -36,7 +36,8 @@ defmodule MozartFetcher.RouterTest do
         "components": [{
                         "id": "stream-icons",
                         "endpoint": "localhost:8082/success",
-                        "must_succeed": true
+                        "must_succeed": true,
+                        "format": "envelope"
                         }]
                       }
                     )

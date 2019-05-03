@@ -2,6 +2,7 @@
     "components": [{
         "id": "stream-icons",
         "endpoint": "https://s3-eu-west-1.amazonaws.com/shared-application-buckets-public-1pmfwo80l61it/load-tests/static_envelopes/25082016/small-1.0.4.json",
-        "must_succeed": true
+        "must_succeed": true,
+        "format": "envelope"
     }]
 }

@@ -10,7 +10,8 @@ defmodule MozartFetcher.IntegrationTest do
         "components": [{
                         "id": "stream-icons",
                         "endpoint": "localhost:8082/success",
-                        "must_succeed": true
+                        "must_succeed": true,
+                        "format": "envelope"
                         }]
                       }
                     )
@@ -46,7 +47,8 @@ defmodule MozartFetcher.IntegrationTest do
         "components": [{
                         "id": "big-component",
                         "endpoint": "localhost:8082/big_component",
-                        "must_succeed": true
+                        "must_succeed": true,
+                        "format": "envelope"
                         }]
                       }
                     )
@@ -81,17 +83,20 @@ defmodule MozartFetcher.IntegrationTest do
       json_body = ~s({
         "components": [{ "id": "news-front-page",
                         "endpoint": "localhost:8082/success",
-                        "must_succeed": true
+                        "must_succeed": true,
+                        "format": "envelope"
                         },
                         {
                           "id": "weather-front-page",
                           "endpoint": "localhost:8082/success",
-                          "must_succeed": true
+                          "must_succeed": true,
+                          "format": "envelope"
                         },
                         {
                           "id": "weather-component",
                           "endpoint": "localhost:8082/big_component",
-                          "must_succeed": true
+                          "must_succeed": true,
+                          "format": "envelope"
                         }]
                       }
                     )
@@ -147,7 +152,8 @@ defmodule MozartFetcher.IntegrationTest do
         "components": [{
                         "id": "news-front-page",
                         "endpoint": "localhost:8082/non_200_status/404",
-                        "must_succeed": true
+                        "must_succeed": true,
+                        "format": "envelope"
                         }]
                       }
                     )
@@ -183,7 +189,8 @@ defmodule MozartFetcher.IntegrationTest do
         "components": [{
                         "id": "weather-front-page",
                         "endpoint": "localhost:8082/non_200_status/408",
-                        "must_succeed": true
+                        "must_succeed": true,
+                        "format": "envelope"
                         }]
                       }
                     )
@@ -219,7 +226,8 @@ defmodule MozartFetcher.IntegrationTest do
         "components": [{
                         "id": "weather-front-page",
                         "endpoint": "localhost:8082/non_200_status/500",
-                        "must_succeed": true
+                        "must_succeed": true,
+                        "format": "envelope"
                         }]
                       }
                     )
