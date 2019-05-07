@@ -31,7 +31,7 @@ defmodule MozartFetcher.RouterTest do
 
   # for now it performs a real HTTP request..
   describe "/collect" do
-    test "it will return a JSON response" do
+    test "it will return a JSON response containing from the origin" do
       json_body = ~s({
         "components": [{
                         "id": "stream-icons",
@@ -65,5 +65,40 @@ defmodule MozartFetcher.RouterTest do
       assert get_resp_header(conn, "content-type") == ["application/json; charset=utf-8"]
       assert conn.resp_body == expected_body
     end
+
+#    test "When requesting an ares data component (non-envelope) it returns the raw data in the response" do
+#      json_body = ~s({
+#        "components": [{
+#                        "id": "article_data",
+#                        "endpoint": "localhost:8082/json_data",
+#                        "must_succeed": true,
+#                        "format": "ares"
+#                        }]
+#                      }
+#                    )
+#      conn = conn(:post, "/collect", json_body)
+#      conn = Router.call(conn, @opts)
+#
+#      expected_body =
+#        Jason.encode!(%{
+#          components: [
+#            %{
+#              status: 200,
+#              index: 0,
+#              id: "article_data",
+#              data: %{
+#                content: %{
+#                  some: "json data"
+#                }
+#              }
+#            }
+#          ]
+#        })
+#
+#      assert conn.state == :sent
+#      assert conn.status == 200
+#      assert get_resp_header(conn, "content-type") == ["application/json; charset=utf-8"]
+#      assert conn.resp_body == expected_body
+#    end
   end
 end

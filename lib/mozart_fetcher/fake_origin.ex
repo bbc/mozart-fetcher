@@ -18,6 +18,14 @@ defmodule MozartFetcher.FakeOrigin do
     )
   end
 
+  get "/json_data" do
+    send_resp(
+      conn,
+      200,
+      ~s({"content":{"some": "json data"}})
+    )
+  end
+
   get "/big_component" do
     send_resp(
       conn,
