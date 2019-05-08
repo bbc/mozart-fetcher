@@ -56,7 +56,6 @@ defmodule MozartFetcher.Application do
     ]
   end
 
-  defp to_ttl(nil), do: 10
   defp to_ttl(ttl) when is_integer(ttl), do: ttl
 
   defp to_ttl(ttl) do
