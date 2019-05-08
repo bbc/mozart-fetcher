@@ -18,6 +18,22 @@ defmodule MozartFetcher.FakeOrigin do
     )
   end
 
+  get "/json_data" do
+    send_resp(
+      conn,
+      200,
+      ~s({"content":{"some": "json data"}})
+    )
+  end
+
+  get "/invalid_json_data" do
+    send_resp(
+      conn,
+      200,
+      ~s({som invalid json data: this <is unparsable!?!<}})
+    )
+  end
+
   get "/big_component" do
     send_resp(
       conn,
@@ -37,5 +53,6 @@ defmodule MozartFetcher.FakeOrigin do
 
   get "/timeout" do
     :timer.sleep(3100)
+    send_resp(conn, 408, "timeout") # hide the "unused conn" warning message
   end
 end
