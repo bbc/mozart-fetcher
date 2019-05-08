@@ -25,7 +25,7 @@ defmodule MozartFetcher.Component do
     %Components.Ares{index: component_index, id: config.id, status: status_code, data: %{}}
   end
 
-  defp process(component_index, config, {:ok, %HTTPoison.Response{status_code: status_code, body: _body}}) do
+  defp process(component_index, config, {:ok, %HTTPoison.Response{status_code: status_code}}) do
     ExMetrics.increment("error.component.process")
     ExMetrics.increment("error.component.process.#{config.id}.#{status_code}")
     Stump.log(:error, %{message: "Non-200 response. Got status:#{status_code} for component #{config.id}"})
