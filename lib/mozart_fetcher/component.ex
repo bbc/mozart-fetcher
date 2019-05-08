@@ -1,5 +1,5 @@
 defmodule MozartFetcher.Component do
-  alias MozartFetcher.{Components, Components.Ares, Config, Envelope, LocalCache}
+  alias MozartFetcher.{Components, Config, Envelope, LocalCache}
 
   def fetch({config = %Config{}, component_index}) do
     process(component_index, config, get(config))
