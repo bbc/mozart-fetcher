@@ -68,12 +68,16 @@ defmodule MozartFetcher.Component do
 
   defp metric(id, status) when is_integer(status) do
     ExMetrics.increment("error.component.process")
+    ExMetrics.increment("error.component.process.#{id}")
     ExMetrics.increment("error.component.process.#{id}.#{status}")
+    ExMetrics.increment("error.component.process.#{status}")
     Stump.log(:error, %{message: "Non-200 response. Got status:#{status} for component #{id}"})
   end
 
   defp metric(id, reason) do
     ExMetrics.increment("error.component.process")
+    ExMetrics.increment("error.component.process.#{id}")
+    ExMetrics.increment("error.component.process.#{reason}")
     ExMetrics.increment("error.component.process.#{id}.#{reason}")
     Stump.log(:error, %{message: "Failed to process HTTP request, reason: #{reason}"})
   end
