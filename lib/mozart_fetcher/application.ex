@@ -58,9 +58,16 @@ defmodule MozartFetcher.Application do
 
   defp to_ttl(nil), do: 10
   defp to_ttl(ttl) when is_integer(ttl), do: ttl
+
   defp to_ttl(ttl) do
     String.to_integer(ttl)
   rescue
-    ArgumentError -> 10
+    ArgumentError ->
+      Stump.log(:error, %{
+        message: "Invalid TTL Value, you must provide an integer value for the tll",
+        ttl: ttl
+      })
+
+      10
   end
 end
