@@ -7,7 +7,7 @@ defmodule MozartFetcher.RouterTest do
   @opts Router.init([])
 
   describe "/status" do
-    test "it will return 'OK'" do
+    test "GET will return 'OK'" do
       conn = conn(:get, "/status")
       conn = Router.call(conn, @opts)
 
@@ -15,6 +15,15 @@ defmodule MozartFetcher.RouterTest do
       assert conn.status == 200
       assert get_resp_header(conn, "content-type") == ["text/plain; charset=utf-8"]
       assert conn.resp_body == "OK"
+    end
+
+    test "HEAD will return 200" do
+      conn = conn(:head, "/status")
+      conn = Router.call(conn, @opts)
+
+      assert conn.state == :sent
+      assert conn.status == 200
+      assert get_resp_header(conn, "content-type") == ["text/plain; charset=utf-8"]
     end
   end
 
