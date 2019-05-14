@@ -3,6 +3,7 @@ defmodule MozartFetcher.Router do
 
   use Plug.Router
   use ExMetrics
+  plug(Plug.Head)
   plug(ExMetrics.Plug.PageMetrics)
 
   plug(:match)
