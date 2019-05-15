@@ -13,7 +13,7 @@ defmodule HTTPClient do
         hackney: [pool: :origin_pool]
       ]
 
-      valid_response?(HTTPoison.get(URI.encode(endpoint), headers, options))
+      valid_response?(HTTPoison.get(sanitise(endpoint), headers, options))
     end
   end
 
@@ -23,4 +23,8 @@ defmodule HTTPClient do
   end
 
   defp valid_response?(response), do: response
+
+  defp sanitise(endpoint) do
+    String.replace(endpoint, " ", "%20")
+  end
 end

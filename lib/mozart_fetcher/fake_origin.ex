@@ -55,4 +55,12 @@ defmodule MozartFetcher.FakeOrigin do
     :timer.sleep(3100)
     send_resp(conn, 408, "timeout") # hide the "unused conn" warning message
   end
+
+  get "/*catchall" do
+    send_resp(
+      conn,
+      200,
+      "some content"
+    )
+  end
 end
