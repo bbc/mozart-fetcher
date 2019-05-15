@@ -71,7 +71,10 @@ defmodule MozartFetcher.Component do
     ExMetrics.increment("error.component.process.#{id}")
     ExMetrics.increment("error.component.process.#{id}.#{status}")
     ExMetrics.increment("error.component.process.#{status}")
-    Stump.log(:error, %{message: "Non-200 response. Got status:#{status} for component #{id}, endpoint: #{endpoint}"})
+    Stump.log(:error, %{message: "Non-200 response",
+                        status: status,
+                        component: id,
+                        endpoint: endpoint})
   end
 
   defp metric(id, endpoint, reason) do
