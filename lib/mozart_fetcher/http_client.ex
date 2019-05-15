@@ -13,7 +13,7 @@ defmodule HTTPClient do
         hackney: [pool: :origin_pool]
       ]
 
-      valid_response?(HTTPoison.get(endpoint, headers, options))
+      valid_response?(HTTPoison.get(URI.encode(endpoint), headers, options))
     end
   end
 
