@@ -1,6 +1,4 @@
 defmodule MozartFetcher.Application do
-  # See https://hexdocs.pm/elixir/Application.html
-  # for more information on OTP Applications
   @moduledoc false
 
   use Application
@@ -9,20 +7,18 @@ defmodule MozartFetcher.Application do
   @max_connections MozartFetcher.max_connections()
 
   defp children(env: :test) do
-    children(env: :prod) ++
-      [
-        Plug.Cowboy.child_spec(
-          scheme: :http,
-          plug: MozartFetcher.FakeOrigin,
-          options: [port: 8082]
-        )
-      ]
+    [
+      Plug.Cowboy.child_spec(
+        scheme: :http,
+        plug: MozartFetcher.FakeOrigin,
+        options: [port: 8082]
+      ),
+      {ConCache, [name: :fetcher_test_cache, ttl_check_interval: false]}
+    ]
   end
 
   defp children(_) do
     [
-      # Starts a worker by calling: MozartFetcher.Worker.start_link(arg)
-      # {Fetcher.Worker, arg},
       Plug.Cowboy.child_spec(
         scheme: :http,
         plug: MozartFetcher.Router,
@@ -38,11 +34,8 @@ defmodule MozartFetcher.Application do
   end
 
   def start(_type, args) do
-    # List all child processes to be supervised
     children = children(args)
 
-    # See https://hexdocs.pm/elixir/Supervisor.html
-    # for other strategies and supported options
     opts = [strategy: :one_for_one, name: MozartFetcher.Supervisor]
     Supervisor.start_link(children ++ hackney_setup(), opts)
   end
