@@ -13,18 +13,26 @@ defmodule HTTPClient do
         hackney: [pool: :origin_pool]
       ]
 
-      valid_response?(HTTPoison.get(sanitise(endpoint), headers, options))
+      case make_request(sanitise(endpoint), headers, options) do
+        {:error, %HTTPoison.Error{reason: "closed"}} ->
+          handle_response(make_request(sanitise(endpoint), headers, options))
+        {k, response} -> handle_response({k, response})
+      end
     end
   end
 
-  defp valid_response?(response = {:error, %HTTPoison.Error{reason: reason}}) do
+  defp handle_response(response = {:error, %HTTPoison.Error{reason: reason}}) do
     Stump.log(:error, %{message: "HTTPoison Error", reason: reason})
     response
   end
 
-  defp valid_response?(response), do: response
+  defp handle_response(response), do: response
 
   defp sanitise(endpoint) do
     String.replace(endpoint, " ", "%20")
+  end
+
+  defp make_request(endpoint, headers, options) do
+    HTTPoison.get(endpoint, headers, options)
   end
 end
