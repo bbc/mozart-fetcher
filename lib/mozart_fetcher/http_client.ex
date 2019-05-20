@@ -13,11 +13,8 @@ defmodule HTTPClient do
         hackney: [pool: :origin_pool]
       ]
 
-      case log_errors_and_return(make_request(sanitise(endpoint), headers, options, client)) do
+      case make_request(sanitise(endpoint), headers, options, client) do
         {:error, %HTTPoison.Error{reason: :closed}} ->
-          make_request(sanitise(endpoint), headers, options, client)
-
-        {:error, %HTTPoison.Error{reason: :timeout}} ->
           make_request(sanitise(endpoint), headers, options, client)
 
         {k, resp} ->
