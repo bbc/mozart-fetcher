@@ -15,6 +15,7 @@ defmodule HTTPClient do
 
       case make_request(sanitise(endpoint), headers, options, client) do
         {:error, %HTTPoison.Error{reason: :closed}} ->
+          ExMetrics.increment("http.component.retry")
           make_request(sanitise(endpoint), headers, options, client)
 
         {k, resp} ->

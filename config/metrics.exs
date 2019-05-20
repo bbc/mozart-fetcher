@@ -8,5 +8,6 @@ config :ex_metrics,
     "error.envelope.decode",
     "success.component.process",
     "error.empty_component_list",
-    "error.component.process"
+    "error.component.process",
+    "http.component.retry"
   ]

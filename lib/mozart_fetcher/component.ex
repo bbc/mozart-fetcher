@@ -67,7 +67,6 @@ defmodule MozartFetcher.Component do
   end
 
   defp metric(id, endpoint, status) when is_integer(status) do
-    ExMetrics.increment("error.component.process")
     ExMetrics.increment("error.component.process.#{id}")
     ExMetrics.increment("error.component.process.#{id}.#{status}")
     ExMetrics.increment("error.component.process.#{status}")
