@@ -13,7 +13,7 @@ defmodule MozartFetcher.Application do
         plug: MozartFetcher.FakeOrigin,
         options: [port: 8082]
       ),
-      {ConCache, [name: :fetcher_test_cache, ttl_check_interval: false]}
+      {ConCache, [name: :fetcher_cache, ttl_check_interval: false]}
     ]
   end
 
