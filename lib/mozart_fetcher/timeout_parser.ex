@@ -20,6 +20,6 @@ defmodule MozartFetcher.TimeoutParser do
   end
 
   defp fetch(qs_timeout) do
-    String.to_integer(qs_timeout)
+    String.to_integer(qs_timeout) * 1_000
   end
 end

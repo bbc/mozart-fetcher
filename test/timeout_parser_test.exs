@@ -5,13 +5,13 @@ defmodule MozartFetcher.TimeoutParserTest do
 
   describe "a valid timeout present  in the query string" do
     test "it returns the qs value as an integer" do
-      assert TimeoutParser.parse("http://origin.bbc.com/comp/a?b=1&timeout=4") == 4
+      assert TimeoutParser.parse("http://origin.bbc.com/comp/a?b=1&timeout=4") == 4_000
     end
   end
 
   describe "a valid timeout as query string" do
     test "it returns the qs value as an integer" do
-      assert TimeoutParser.parse("http://origin.bbc.com/comp/a?timeout=5") == 5
+      assert TimeoutParser.parse("http://origin.bbc.com/comp/a?timeout=5") == 5_000
     end
   end
 
