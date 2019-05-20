@@ -27,6 +27,46 @@ defmodule HTTPClientTest do
       assert resp.request_url == "http://localhost:8082/foo%20bar?baz=%20true"
     end
 
+    test "using a URL containing a timeout query string greater than 0" do
+      timeout = HTTPClient.timeout("http://localhost:8082/foo?timeout=3")
+      assert timeout == 3000
+    end
+
+    test "using a URL containing a timeout query string of 0" do
+      timeout = HTTPClient.timeout("http://localhost:8082/foo?timeout=0")
+      assert timeout == 100
+    end
+
+    test "using a URL containing a timeout query string of 5" do
+      timeout = HTTPClient.timeout("http://localhost:8082/foo?timeout=5")
+      assert timeout == 5000
+    end
+
+    test "using a URL containing a timeout query string with empty value" do
+      timeout = HTTPClient.timeout("http://localhost:8082/foo?timeout=")
+      assert timeout == 100
+    end
+
+    test "using a URL containing only a timeout key" do
+      timeout = HTTPClient.timeout("http://localhost:8082/foo?timeout")
+      assert timeout == 100
+    end
+
+    test "using a URL containing a timeout query string of a string" do
+      timeout = HTTPClient.timeout("http://localhost:8082/foo?timeout=abc")
+      assert timeout == 100
+    end
+
+    test "using a URL containing no timeout query string" do
+      timeout = HTTPClient.timeout("http://localhost:8082/foo")
+      assert timeout == 100
+    end
+
+    test "using a URL containing a timeout query string between other keys" do
+      timeout = HTTPClient.timeout("http://localhost:8082/foo?a=b&timeout=3&c=d")
+      assert timeout == 3000
+    end
+
     test "makes only one request on success" do
       defmodule MockClientSuccessfulResponse do
         def get(endpoint, _, _) do

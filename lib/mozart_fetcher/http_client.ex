@@ -8,7 +8,7 @@ defmodule HTTPClient do
       headers = []
 
       options = [
-        recv_timeout: @content_timeout,
+        recv_timeout: timeout(endpoint),
         ssl: MozartFetcher.request_ssl(),
         hackney: [pool: :origin_pool]
       ]
@@ -24,6 +24,21 @@ defmodule HTTPClient do
       |> log_errors_and_return()
     end
   end
+
+  def timeout(endpoint) do
+    URI.parse(endpoint)
+    |> Map.get(:query, "")
+    |> to_string
+    |> URI.decode_query()
+    |> Map.get("timeout", "")
+    |> to_string
+    |> Integer.parse()
+    |> parse_timeout
+  end
+
+  defp parse_timeout({timeout, _}) when is_integer(timeout) and timeout > 0, do: timeout * 1000
+
+  defp parse_timeout(_), do: @content_timeout
 
   defp sanitise(endpoint) do
     String.replace(endpoint, " ", "%20")
