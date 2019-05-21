@@ -2,9 +2,16 @@ defmodule HTTPClientTest do
   use ExUnit.Case
 
   describe "get" do
-    test "using a valid URL" do
+    test "using a valid URL with no query string" do
       {:ok, resp} = HTTPClient.get("http://localhost:8082/foo/bar")
+      assert resp.request.options[:recv_timeout] == MozartFetcher.content_timeout()
       assert resp.request_url == "http://localhost:8082/foo/bar"
+    end
+
+    test "using a valid URL with timeout" do
+      {:ok, resp} = HTTPClient.get("http://localhost:8082/foo/bar?timeout=2")
+      assert resp.request.options[:recv_timeout] == 2_000
+      assert resp.request_url == "http://localhost:8082/foo/bar?timeout=2"
     end
 
     test "using a URL containing white spaces" do

@@ -1,14 +1,14 @@
 defmodule HTTPClient do
   use ExMetrics
 
-  @content_timeout MozartFetcher.content_timeout()
+  alias MozartFetcher.TimeoutParser
 
   def get(endpoint, client \\ client()) do
     ExMetrics.timeframe "function.timing.http_client.get" do
       headers = []
 
       options = [
-        recv_timeout: @content_timeout,
+        recv_timeout: TimeoutParser.parse(endpoint),
         ssl: MozartFetcher.request_ssl(),
         hackney: [pool: :origin_pool]
       ]
