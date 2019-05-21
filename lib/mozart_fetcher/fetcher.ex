@@ -1,5 +1,5 @@
 defmodule MozartFetcher.Fetcher do
-  alias MozartFetcher.{Component}
+  alias MozartFetcher.{Component, TimeoutParser}
 
   use ExMetrics
 
@@ -12,9 +12,9 @@ defmodule MozartFetcher.Fetcher do
   def process(components) do
     ExMetrics.timeframe "function.timing.fetcher.process" do
       components
-      |> Enum.with_index
+      |> Enum.with_index()
       |> Enum.map(&Task.async(fn -> Component.fetch(&1) end))
-      |> Enum.map(&Task.await/1)
+      |> Enum.map(&Task.await(&1, TimeoutParser.max_timeout(components)))
       |> decorate_response
       |> Jason.encode!()
     end
