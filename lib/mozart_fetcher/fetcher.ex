@@ -14,17 +14,10 @@ defmodule MozartFetcher.Fetcher do
       components
       |> Enum.with_index()
       |> Enum.map(&Task.async(fn -> Component.fetch(&1) end))
-      |> Enum.map(&Task.await(&1, max_timeout(components)))
+      |> Enum.map(&Task.await(&1, TimeoutParser.max_timeout(components)))
       |> decorate_response
       |> Jason.encode!()
     end
-  end
-
-  defp max_timeout(components) do
-    components
-    |> Enum.map(&Map.get(&1, :endpoint))
-    |> Enum.map(&TimeoutParser.parse/1)
-    |> Enum.max()
   end
 
   defp decorate_response(envelopes) do
