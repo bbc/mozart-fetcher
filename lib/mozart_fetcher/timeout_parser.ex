@@ -10,9 +10,9 @@ defmodule MozartFetcher.TimeoutParser do
     @default_timeout
   end
 
-  defp query(qs) do
-    q = URI.decode_query(qs)
-    fetch(q["timeout"])
+  defp query(q) do
+    qs = URI.decode_query(q)
+    fetch(qs["timeout"])
   end
 
   defp fetch(nil) do

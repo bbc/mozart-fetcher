@@ -17,7 +17,8 @@ defmodule MozartFetcher.TimeoutParserTest do
 
   describe "no valid timeout in the query string" do
     test "it returns the default timeout" do
-      assert TimeoutParser.parse("http://origin.bbc.com/comp/a?a=1") == MozartFetcher.content_timeout()
+      assert TimeoutParser.parse("http://origin.bbc.com/comp/a?a=1") ==
+               MozartFetcher.content_timeout()
     end
   end
 end
