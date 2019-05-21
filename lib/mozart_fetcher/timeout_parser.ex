@@ -19,7 +19,19 @@ defmodule MozartFetcher.TimeoutParser do
     @default_timeout
   end
 
+  defp fetch("0") do
+    @default_timeout
+  end
+
   defp fetch(qs_timeout) do
-    String.to_integer(qs_timeout) * 1_000
+    parse_timeout(Integer.parse(qs_timeout))
+  end
+
+  defp parse_timeout({timeout, _}) when is_integer(timeout) do
+    timeout * 1_000
+  end
+
+  defp parse_timeout(_) do
+    @default_timeout
   end
 end
