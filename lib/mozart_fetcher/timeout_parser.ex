@@ -6,7 +6,7 @@ defmodule MozartFetcher.TimeoutParser do
     query(uri.query)
   end
 
-  def max_timeout(components) do
+  def max(components) do
     components
     |> Enum.map(&Map.get(&1, :endpoint))
     |> Enum.map(fn endpoint -> parse(endpoint) end)
