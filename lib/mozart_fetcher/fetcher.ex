@@ -11,7 +11,9 @@ defmodule MozartFetcher.Fetcher do
 
   def process(components) do
     ExMetrics.timeframe "function.timing.fetcher.process" do
-      max_timeout = TimeoutParser.max_timeout(components)
+      max_timeout =
+        TimeoutParser.max(components) +
+          Application.get_env(:mozart_fetcher, :additional_task_await_timeout)
 
       components
       |> Enum.with_index()

@@ -52,7 +52,7 @@ defmodule MozartFetcher.TimeoutParserTest do
 
   describe "all components have timeouts" do
     test "it returns the maximum timeout" do
-      assert TimeoutParser.max_timeout([
+      assert TimeoutParser.max([
                %{endpoint: "http://origin.bbc.com/comp/a?timeout=3"},
                %{endpoint: "http://origin.bbc.com/comp/b?timeout=1"}
              ]) ==
@@ -62,7 +62,7 @@ defmodule MozartFetcher.TimeoutParserTest do
 
   describe "no components have timeouts" do
     test "it returns the maximum timeout" do
-      assert TimeoutParser.max_timeout([
+      assert TimeoutParser.max([
                %{endpoint: "http://origin.bbc.com/comp/a"},
                %{endpoint: "http://origin.bbc.com/comp/b"}
              ]) ==
@@ -72,7 +72,7 @@ defmodule MozartFetcher.TimeoutParserTest do
 
   describe "some components have timeouts" do
     test "it returns the maximum timeout" do
-      assert TimeoutParser.max_timeout([
+      assert TimeoutParser.max([
                %{endpoint: "http://origin.bbc.com/comp/a?timeout=5"},
                %{endpoint: "http://origin.bbc.com/comp/b"}
              ]) ==

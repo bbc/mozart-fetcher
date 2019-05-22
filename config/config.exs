@@ -30,6 +30,7 @@ use Mix.Config
 config :mozart_fetcher,
   environment: Mix.env(),
   default_content_timeout: 3000,
+  additional_task_await_timeout: 50,
   default_connection_timeout: 500,
   max_connections: 5000
 
