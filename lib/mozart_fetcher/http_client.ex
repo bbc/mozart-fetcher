@@ -4,24 +4,30 @@ defmodule HTTPClient do
   alias MozartFetcher.TimeoutParser
 
   def get(endpoint, client \\ client()) do
-    ExMetrics.timeframe "function.timing.http_client.get" do
-      headers = []
+    try do
+      ExMetrics.timeframe "function.timing.http_client.get" do
+        headers = []
 
-      options = [
-        recv_timeout: TimeoutParser.parse(endpoint),
-        ssl: MozartFetcher.request_ssl(),
-        hackney: [pool: :origin_pool]
-      ]
+        options = [
+          recv_timeout: TimeoutParser.parse(endpoint),
+          ssl: MozartFetcher.request_ssl(),
+          hackney: [pool: :origin_pool]
+        ]
 
-      case make_request(sanitise(endpoint), headers, options, client) do
-        {:error, %HTTPoison.Error{reason: :closed}} ->
-          ExMetrics.increment("http.component.retry")
-          make_request(sanitise(endpoint), headers, options, client)
+        case make_request(sanitise(endpoint), headers, options, client) do
+          {:error, %HTTPoison.Error{reason: :closed}} ->
+            ExMetrics.increment("http.component.retry")
+            make_request(sanitise(endpoint), headers, options, client)
 
-        {k, resp} ->
-          {k, resp}
+          {k, resp} ->
+            {k, resp}
+        end
+        |> log_errors_and_return()
       end
-      |> log_errors_and_return()
+    rescue
+      ex ->
+        Stump.log(:error, %{message: ex})
+        {:error, %HTTPoison.Error{reason: :unexpected}}
     end
   end
 
