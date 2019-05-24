@@ -100,5 +100,21 @@ defmodule HTTPClientTest do
 
       assert returned_response == {:error, %HTTPoison.Error{id: nil, reason: :closed}}
     end
+
+    test "catches exception" do
+      defmodule MockClientRaisesException do
+        def get(_, _, _) do
+          raise "Something went wrong!"
+        end
+      end
+
+      returned_response =
+        HTTPClient.get(
+          "http://localhost:8082/foo",
+          MockClientRaisesException
+        )
+
+      assert returned_response == {:error, %HTTPoison.Error{id: nil, reason: :unexpected}}
+    end
   end
 end

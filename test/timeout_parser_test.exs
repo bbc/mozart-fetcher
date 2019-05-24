@@ -50,6 +50,12 @@ defmodule MozartFetcher.TimeoutParserTest do
     end
   end
 
+  describe "when an exception is raised in parse" do
+    test "it returns the default timeout" do
+      assert TimeoutParser.parse(nil) == MozartFetcher.content_timeout()
+    end
+  end
+
   describe "all components have timeouts" do
     test "it returns the maximum timeout" do
       assert TimeoutParser.max([
@@ -77,6 +83,12 @@ defmodule MozartFetcher.TimeoutParserTest do
                %{endpoint: "http://origin.bbc.com/comp/b"}
              ]) ==
                5000
+    end
+  end
+
+  describe "when an exception is raised in max" do
+    test "it returns the default timeout" do
+      assert TimeoutParser.max(nil) == MozartFetcher.content_timeout()
     end
   end
 end

@@ -2,13 +2,25 @@ defmodule MozartFetcher.TimeoutParser do
   @default_timeout MozartFetcher.content_timeout()
 
   def parse(endpoint) do
-    uri = URI.parse(endpoint)
-    query(uri.query)
+    try do
+      uri = URI.parse(endpoint)
+      query(uri.query)
+    rescue
+      ex ->
+        Stump.log(:error, %{message: ex})
+        @default_timeout
+    end
   end
 
   def max(components) do
-    components
-    |> Enum.reduce(@default_timeout, &component_timeout_or_current_timeout/2)
+    try do
+      components
+      |> Enum.reduce(@default_timeout, &component_timeout_or_current_timeout/2)
+    rescue
+      ex ->
+        Stump.log(:error, %{message: ex})
+        @default_timeout
+    end
   end
 
   defp component_timeout_or_current_timeout(component, current_timeout) do
