@@ -14,7 +14,7 @@ defmodule MozartFetcher.FetcherTest do
              "{\"components\":[{\"envelope\":{\"bodyInline\":\"\",\"bodyLast\":[],\"head\":[]},\"id\":\"foo\",\"index\":0,\"status\":200}]}"
   end
 
-  test "it returns componet with don't exceed max async fetch timeout" do
+  test "it returns the components which don't exceed max async fetch timeout" do
     config = [
       %Config{endpoint: "http://localhost:8082/foo", id: "foo"},
       %Config{endpoint: "http://localhost:8082/timeout", id: "timeout"}

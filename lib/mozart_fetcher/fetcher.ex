@@ -18,8 +18,8 @@ defmodule MozartFetcher.Fetcher do
       |> Enum.with_index()
       |> Task.async_stream(&Component.fetch/1, stream_opts)
       |> Enum.to_list()
-      |> extract_successful
-      |> decorate_response
+      |> extract_successful()
+      |> decorate_response()
       |> Jason.encode!()
     end
   end
@@ -32,8 +32,8 @@ defmodule MozartFetcher.Fetcher do
   # the tasks which have not completed.
   # At the moment it's in form  of `[exit: :timeout]` so hard to
   # easily log which component has failed.
-  defp extract_successful(components) do
-    {oks, errors} = Enum.split_with(components, fn {k, _v} -> k == :ok end)
+  defp extract_successful(responses) do
+    {oks, errors} = Enum.split_with(responses, fn {k, _v} -> k == :ok end)
 
     errors |> Enum.each(&log(&1))
     oks |> Enum.map(fn {:ok, result} -> result end)
