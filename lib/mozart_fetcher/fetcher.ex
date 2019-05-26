@@ -16,7 +16,8 @@ defmodule MozartFetcher.Fetcher do
       components
       |> Enum.with_index()
       |> Task.async_stream(&Component.fetch/1, timeout: max_timeout,  on_timeout: :kill_task, max_concurrency: 40)
-      |> Enum.map(fn({:ok, result}) -> result end)
+      |> Enum.to_list
+      |> extract_successful
       |> decorate_response
       |> Jason.encode!()
     end
@@ -24,5 +25,16 @@ defmodule MozartFetcher.Fetcher do
 
   defp decorate_response(envelopes) do
     %{components: envelopes}
+  end
+
+  defp extract_successful(components) do
+    {oks, errors} = Enum.split_with(components, fn {k, _v} -> k == :ok end)
+
+    errors |> Enum.each(&log(&1))
+    oks |> Enum.map(fn({:ok, result}) -> result end)
+  end
+
+  defp log({type, error}) do
+    Stump.log(:error, %{message: "Component Process Error", type: type, error: error })
   end
 end
