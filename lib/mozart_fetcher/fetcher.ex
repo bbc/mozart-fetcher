@@ -11,14 +11,12 @@ defmodule MozartFetcher.Fetcher do
 
   def process(components) do
     ExMetrics.timeframe "function.timing.fetcher.process" do
-      max_timeout =
-        TimeoutParser.max(components) +
-          Application.get_env(:mozart_fetcher, :additional_task_await_timeout)
+      max_timeout = TimeoutParser.max(components)
 
       components
       |> Enum.with_index()
-      |> Enum.map(&Task.async(fn -> Component.fetch(&1) end))
-      |> Enum.map(&Task.await(&1, max_timeout))
+      |> Task.async_stream(&Component.fetch/1, timeout: max_timeout,  on_timeout: :kill_task, max_concurrency: 40)
+      |> Enum.map(fn({:ok, result}) -> result end)
       |> decorate_response
       |> Jason.encode!()
     end
