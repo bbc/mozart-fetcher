@@ -23,7 +23,6 @@ defmodule MozartFetcher.Fetcher do
       components
       |> Enum.with_index()
       |> Task.async_stream(&Component.fetch/1, stream_opts)
-      |> validate()
       |> zip(components)
       |> decorate_response()
       |> Jason.encode!()
@@ -34,13 +33,9 @@ defmodule MozartFetcher.Fetcher do
     %{components: envelopes}
   end
 
-  defp validate(responses) do
-    Enum.map(responses, &handle/1)
-  end
-
-  def zip(responses, configs) do
+  defp zip(responses, configs) do
     for {response, config} <- Enum.zip(responses, configs) do
-      Map.merge(response, %{id: config.id})
+      handle(response) |> Map.merge(%{id: config.id})
     end
   end
 
