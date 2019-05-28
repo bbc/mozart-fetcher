@@ -1,5 +1,5 @@
 defmodule MozartFetcher.Fetcher do
-  alias MozartFetcher.{Component, TimeoutParser}
+  alias MozartFetcher.{Component, TimeoutParser, Envelope}
 
   use ExMetrics
 
@@ -17,8 +17,7 @@ defmodule MozartFetcher.Fetcher do
       components
       |> Enum.with_index()
       |> Task.async_stream(&Component.fetch/1, stream_opts)
-      |> Enum.to_list()
-      |> extract_successful()
+      |> validate()
       |> decorate_response()
       |> Jason.encode!()
     end
@@ -28,18 +27,14 @@ defmodule MozartFetcher.Fetcher do
     %{components: envelopes}
   end
 
-  # returns the successful one (including 500 etc) and logs
-  # the tasks which have not completed.
-  # At the moment it's in form  of `[exit: :timeout]` so hard to
-  # easily log which component has failed.
-  defp extract_successful(responses) do
-    {oks, errors} = Enum.split_with(responses, fn {k, _v} -> k == :ok end)
-
-    errors |> Enum.each(&log(&1))
-    oks |> Enum.map(fn {:ok, result} -> result end)
+  defp validate(responses) do
+    Enum.map(responses, &handle/1)
   end
 
-  defp log({type, error}) do
-    Stump.log(:error, %{message: "Component Process Error", type: type, error: error})
+  defp handle({:ok, result}), do: result
+
+  defp handle({state, reason}) do
+    Stump.log(:error, %{message: "Component Process Error", state: state, reason: reason})
+    %Envelope{}
   end
 end
