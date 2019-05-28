@@ -35,14 +35,18 @@ defmodule MozartFetcher.Fetcher do
 
   defp zip(responses, configs) do
     for {response, config} <- Enum.zip(responses, configs) do
-      handle(response) |> Map.merge(%{id: config.id})
+      handle(response, config.id)
     end
   end
 
-  defp handle({:ok, result}), do: result
+  defp handle({:ok, result}, _id), do: result
 
-  defp handle({state, reason}) do
-    Stump.log(:error, %{message: "Component Process Error", state: state, reason: reason})
-    %{envelope: %Envelope{}, id: nil, index: nil, status: nil}
+  defp handle({state, reason}, id) do
+    Stump.log(:error, %{message: "Component Process Error",
+                        state: state,
+                        reason: reason,
+                        id: id})
+
+    %{envelope: %Envelope{}, id: id, index: nil, status: nil}
   end
 end
