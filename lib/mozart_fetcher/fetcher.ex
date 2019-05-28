@@ -3,16 +3,22 @@ defmodule MozartFetcher.Fetcher do
 
   use ExMetrics
 
+  @timeout_buffer 50
+  @max_concurrency 50
+
   def process([]) do
     ExMetrics.increment("error.empty_component_list")
     Stump.log(:error, %{message: "Error cannot process empty component list"})
     {:error}
   end
 
-  def process(components) do
+  def process(components, buffer \\ @timeout_buffer) do
     ExMetrics.timeframe "function.timing.fetcher.process" do
-      max_timeout = TimeoutParser.max(components)
-      stream_opts = [timeout: max_timeout, on_timeout: :kill_task, max_concurrency: 40]
+      max_timeout = TimeoutParser.max(components) + buffer
+
+      stream_opts = [timeout: max_timeout,
+                     on_timeout: :kill_task,
+                     max_concurrency: @max_concurrency]
 
       components
       |> Enum.with_index()

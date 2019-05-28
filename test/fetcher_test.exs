@@ -14,7 +14,19 @@ defmodule MozartFetcher.FetcherTest do
              "{\"components\":[{\"envelope\":{\"bodyInline\":\"\",\"bodyLast\":[],\"head\":[]},\"id\":\"foo\",\"index\":0,\"status\":200}]}"
   end
 
-  test "it returns the empty envelopes for components which exceed max async fetch timeout" do
+  test "it returns envelopes for components timeout" do
+    config = [
+      %Config{endpoint: "http://localhost:8082/foo", id: "foo"},
+      %Config{endpoint: "http://localhost:8082/timeout", id: "timeout"}
+    ]
+
+    expected =
+      "{\"components\":[{\"envelope\":{\"bodyInline\":\"\",\"bodyLast\":[],\"head\":[]},\"id\":\"foo\",\"index\":0,\"status\":200},{\"envelope\":{\"bodyInline\":\"\",\"bodyLast\":[],\"head\":[]},\"id\":\"timeout\",\"index\":1,\"status\":408}]}"
+
+    assert Fetcher.process(config) == expected
+  end
+
+  test "it returns empty envelopes for components erroring out with no generated response" do
     config = [
       %Config{endpoint: "http://localhost:8082/foo", id: "foo"},
       %Config{endpoint: "http://localhost:8082/timeout", id: "timeout"}
@@ -23,6 +35,6 @@ defmodule MozartFetcher.FetcherTest do
     expected =
       "{\"components\":[{\"envelope\":{\"bodyInline\":\"\",\"bodyLast\":[],\"head\":[]},\"id\":\"foo\",\"index\":0,\"status\":200},{\"bodyInline\":\"\",\"bodyLast\":[],\"head\":[]}]}"
 
-    assert Fetcher.process(config) == expected
+    assert Fetcher.process(config, 0) == expected
   end
 end
