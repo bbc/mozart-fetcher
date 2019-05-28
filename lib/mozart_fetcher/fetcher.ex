@@ -12,18 +12,18 @@ defmodule MozartFetcher.Fetcher do
     {:error}
   end
 
-  def process(components, buffer \\ @timeout_buffer) do
+  def process(configs, buffer \\ @timeout_buffer) do
     ExMetrics.timeframe "function.timing.fetcher.process" do
-      max_timeout = TimeoutParser.max(components) + buffer
+      max_timeout = TimeoutParser.max(configs) + buffer
 
       stream_opts = [timeout: max_timeout,
                      on_timeout: :kill_task,
                      max_concurrency: @max_concurrency]
 
-      components
+      configs
       |> Enum.with_index()
       |> Task.async_stream(&Component.fetch/1, stream_opts)
-      |> zip(components)
+      |> zip(configs)
       |> decorate_response()
       |> Jason.encode!()
     end
