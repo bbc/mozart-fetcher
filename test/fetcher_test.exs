@@ -33,7 +33,7 @@ defmodule MozartFetcher.FetcherTest do
     ]
 
     expected =
-      "{\"components\":[{\"envelope\":{\"bodyInline\":\"\",\"bodyLast\":[],\"head\":[]},\"id\":\"foo\",\"index\":0,\"status\":200},{\"bodyInline\":\"\",\"bodyLast\":[],\"head\":[]}]}"
+      "{\"components\":[{\"envelope\":{\"bodyInline\":\"\",\"bodyLast\":[],\"head\":[]},\"id\":\"foo\",\"index\":0,\"status\":200},{\"envelope\":{\"bodyInline\":\"\",\"bodyLast\":[],\"head\":[]},\"id\":null,\"index\":null,\"status\":null}]}"
 
     assert Fetcher.process(config, 0) == expected
   end

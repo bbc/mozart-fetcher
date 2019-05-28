@@ -41,6 +41,6 @@ defmodule MozartFetcher.Fetcher do
 
   defp handle({state, reason}) do
     Stump.log(:error, %{message: "Component Process Error", state: state, reason: reason})
-    %Envelope{}
+    %{envelope: %Envelope{}, id: nil, index: nil, status: nil}
   end
 end
