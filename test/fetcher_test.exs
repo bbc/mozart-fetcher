@@ -26,14 +26,14 @@ defmodule MozartFetcher.FetcherTest do
     assert Fetcher.process(config) == expected
   end
 
-  test "it returns empty envelopes for components erroring out with no generated response" do
+  test "it returns empty envelopes with status and id for components erroring out with no generated response" do
     config = [
       %Config{endpoint: "http://localhost:8082/foo", id: "foo"},
       %Config{endpoint: "http://localhost:8082/timeout", id: "timeout"}
     ]
 
     expected =
-      ~s({"components":[{"envelope":{"bodyInline":"","bodyLast":[],"head":[]},"id":"foo","index":0,"status":200},{"envelope":{"bodyInline":"","bodyLast":[],"head":[]},"id":"timeout","index":null,"status":null}]})
+      ~s({"components":[{"envelope":{"bodyInline":"","bodyLast":[],"head":[]},"id":"foo","index":0,"status":200},{"envelope":{"bodyInline":"","bodyLast":[],"head":[]},"id":"timeout","index":null,"status":408}]})
 
     assert Fetcher.process(config, 0) == expected
   end

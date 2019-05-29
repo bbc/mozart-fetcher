@@ -47,6 +47,7 @@ defmodule MozartFetcher.Fetcher do
                         reason: reason,
                         id: id})
 
-    %{envelope: %Envelope{}, id: id, index: nil, status: nil}
+    status = if reason == :timeout, do: 408, else: 500
+    %{envelope: %Envelope{}, id: id, index: nil, status: status}
   end
 end
