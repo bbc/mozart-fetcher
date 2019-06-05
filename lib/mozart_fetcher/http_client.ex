@@ -6,7 +6,7 @@ defmodule HTTPClient do
   def get(endpoint, client \\ client()) do
     try do
       ExMetrics.timeframe "function.timing.http_client.get" do
-        headers = []
+        headers = [{"accept-encoding", "gzip"}]
 
         options = [
           recv_timeout: TimeoutParser.parse(endpoint),
@@ -20,7 +20,7 @@ defmodule HTTPClient do
             make_request(sanitise(endpoint), headers, options, client)
 
           {k, resp} ->
-            {k, resp}
+            handle_response({k, resp})
         end
         |> log_errors_and_return()
       end
@@ -37,6 +37,39 @@ defmodule HTTPClient do
 
   defp make_request(endpoint, headers, options, client) do
     client.get(endpoint, headers, options)
+  end
+
+  defp handle_response({:ok, response}) do
+    {:ok,
+     Map.put(
+       response,
+       :body,
+       decode_response_body(response.body, content_encoding(process_headers(response.headers)))
+     )}
+  end
+
+  defp handle_response(response), do: response
+
+  defp process_headers(headers) do
+    Enum.map(headers, fn {k, v} -> {String.downcase(k), v} end)
+  end
+
+  defp decode_response_body(body, "gzip"), do: :zlib.gunzip(body)
+  defp decode_response_body(body, "x-gzip"), do: :zlib.gunzip(body)
+  defp decode_response_body(body, _encoding), do: body
+
+  defp content_encoding(headers) do
+    case get_content_encoding(headers) do
+      {_, content_encoding} ->
+        content_encoding
+
+      nil ->
+        ""
+    end
+  end
+
+  defp get_content_encoding(headers) do
+    List.keyfind(headers, "content-encoding", 0)
   end
 
   defp log_errors_and_return(response = {:error, %HTTPoison.Error{reason: reason}}) do
