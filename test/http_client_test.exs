@@ -116,5 +116,30 @@ defmodule HTTPClientTest do
 
       assert returned_response == {:error, %HTTPoison.Error{id: nil, reason: :unexpected}}
     end
+
+    test "uncompresses a gzipped response" do
+      defmodule MockCompressedSuccessfulResponse do
+        def get(_, _, _) do
+          {:ok,
+           %HTTPoison.Response{
+             headers: [{"content-encoding", "gzip"}],
+             body: :zlib.gzip("Hello world!"),
+             status_code: 200
+           }}
+        end
+      end
+
+      returned_response =
+        HTTPClient.get("http://localhost:8082/foo", MockCompressedSuccessfulResponse)
+
+      assert returned_response ==
+               {:ok,
+                %HTTPoison.Response{
+                  body: "Hello world!",
+                  headers: [{"content-encoding", "gzip"}],
+                  request: nil,
+                  status_code: 200
+                }}
+    end
   end
 end

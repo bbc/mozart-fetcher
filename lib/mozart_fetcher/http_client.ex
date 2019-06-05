@@ -41,12 +41,11 @@ defmodule HTTPClient do
 
   defp handle_response({:ok, response}) do
     {:ok,
-     %HTTPoison.Response{
-       headers: response.headers,
-       body:
-         decode_response_body(response.body, content_encoding(process_headers(response.headers))),
-       status_code: response.status_code
-     }}
+     Map.put(
+       response,
+       :body,
+       decode_response_body(response.body, content_encoding(process_headers(response.headers)))
+     )}
   end
 
   defp handle_response(response), do: response
