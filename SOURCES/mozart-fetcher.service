@@ -1,0 +1,13 @@
+[Unit]
+Description=Start the mozart-fetcher service
+After=network.target network-online.target
+[Service]
+Environment=HOME=/home/component
+Environment=PORT=8080
+User=component
+Group=component
+WorkingDirectory=/home/component/mozart-fetcher
+ExecStart=/home/component/mozart-fetcher/bin/mozart_fetcher foreground
+Restart=on-failure
+[Install]
+WantedBy=multi-user.target
