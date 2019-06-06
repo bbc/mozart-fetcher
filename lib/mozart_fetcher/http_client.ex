@@ -25,8 +25,9 @@ defmodule HTTPClient do
         |> log_errors_and_return()
       end
     rescue
-      ex ->
-        Stump.log(:error, %{message: ex})
+      _ ->
+        ExMetrics.increment("http.component.error")
+        Stump.log(:error, %{message: "HTTP Client error caught"})
         {:error, %HTTPoison.Error{reason: :unexpected}}
     end
   end
