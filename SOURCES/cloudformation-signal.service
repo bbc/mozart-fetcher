@@ -1,0 +1,7 @@
+[Unit]
+Description=Start the cloudformation signal generator script
+After=network.target network-online.target
+[Service]
+ExecStart=/home/component/component-status-cfn-signal.sh
+[Install]
+WantedBy=multi-user.target
