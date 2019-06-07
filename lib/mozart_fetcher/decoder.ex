@@ -19,7 +19,7 @@ defmodule MozartFetcher.Decoder do
     case struct!(struct, map) do
       {:error} ->
         ExMetrics.increment("error.components.decode")
-        Stump.log(:error, %{message: "Invalid keys passed to to_struct", struct: struct, map: map})
+        Stump.log(:error, %{message: "Invalid keys passed to to_struct", map: map})
         {:error}
       struct -> struct
     end
