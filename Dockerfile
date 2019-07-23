@@ -15,4 +15,4 @@ RUN mix deps.get
 
 EXPOSE 8080
 
-CMD ["/bin/sh"]
+CMD ["mix", "run", "--no-halt"]
