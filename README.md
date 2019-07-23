@@ -23,7 +23,7 @@ The component endpoint will return:
 ```
 
 
-Requester returns a JSON collection of components in this format:
+Fetcher returns a JSON collection of components in this format:
 
 ```json
 {
