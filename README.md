@@ -23,7 +23,7 @@ The component endpoint will return:
 ```
 
 
-Requester returns a JSON collection of components in this format:
+Fetcher returns a JSON collection of components in this format:
 
 ```json
 {
@@ -59,6 +59,9 @@ be found at [https://hexdocs.pm/mozart_fetcher](https://hexdocs.pm/mozart_fetche
 
 
 ## Run locally
+
+You'll need to set the environment variable `DEV_CERT_PEM` to the path to your BBC developer
+certificate.
 
 ```sh
 # get dependencies

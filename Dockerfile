@@ -5,7 +5,6 @@ MAINTAINER Sam French <Sam.French@bbc.co.uk>
 
 LABEL uk.co.bbci.api.mozart="true"
 
-ENV MIX_ENV=prod
 ENV PORT=8080
 
 WORKDIR /opt/app
@@ -16,4 +15,4 @@ RUN mix deps.get
 
 EXPOSE 8080
 
-CMD ["/bin/sh"]
+CMD ["mix", "run", "--no-halt"]
