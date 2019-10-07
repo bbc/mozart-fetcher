@@ -6,7 +6,9 @@ def cosmosServices = [
     'mozart-fetcher-eu-west-1',
     'mozart-fetcher-eu-west-2',
     'mozart-fetcher-weather-eu-west-1',
-    'mozart-fetcher-weather-eu-west-2'
+    'mozart-fetcher-weather-eu-west-2',
+    'mozart-fetcher-sport-eu-west-2',
+    'mozart-fetcher-sport-eu-west-2'
 ]
 
 String buildVariables() {
