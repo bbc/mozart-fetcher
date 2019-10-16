@@ -32,14 +32,13 @@ node {
       ])
   ])
 
-  if(params.ENVIRONMENT == 'test') {
-    stage('Checkout mozart-fetcher-build') {
-      sh 'mkdir -p mozart-fetcher-build'
-      dir('mozart-fetcher-build') {
-        git url: 'https://github.com/bbc/mozart-fetcher-build', credentialsId: 'github', branch: 'master'
-      }
+  stage('Checkout mozart-fetcher-build') {
+    sh 'mkdir -p mozart-fetcher-build'
+    dir('mozart-fetcher-build') {
+      git url: 'https://github.com/bbc/mozart-fetcher-build', credentialsId: 'github', branch: 'master'
     }
-
+  }
+  if(params.ENVIRONMENT == 'test') {
     stage('Build executable') {
       String vars = buildVariables()
       docker.image('qixxit/elixir-centos').inside("-u root -e MIX_ENV=prod ${vars}") {
@@ -60,4 +59,5 @@ node {
     }
     BBCNews.uploadCosmosConfig(service, params.ENVIRONMENT, "mozart-fetcher-build/cosmos_config/${params.ENVIRONMENT}-${service}.json", params.FORCE_RELEASE)
   }
+  cleanWs()
 }
