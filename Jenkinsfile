@@ -59,4 +59,5 @@ node {
     }
     BBCNews.uploadCosmosConfig(service, params.ENVIRONMENT, "mozart-fetcher-build/cosmos_config/${params.ENVIRONMENT}-${service}.json", params.FORCE_RELEASE)
   }
+  cleanWs()
 }
