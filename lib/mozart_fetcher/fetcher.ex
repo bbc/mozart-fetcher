@@ -16,9 +16,11 @@ defmodule MozartFetcher.Fetcher do
     ExMetrics.timeframe "function.timing.fetcher.process" do
       max_timeout = TimeoutParser.max(configs) + buffer
 
-      stream_opts = [timeout: max_timeout,
-                     on_timeout: :kill_task,
-                     max_concurrency: @max_concurrency]
+      stream_opts = [
+        timeout: max_timeout,
+        on_timeout: :kill_task,
+        max_concurrency: @max_concurrency
+      ]
 
       configs
       |> Enum.with_index()
@@ -42,10 +44,7 @@ defmodule MozartFetcher.Fetcher do
   defp handle({:ok, result}, _id), do: result
 
   defp handle({state, reason}, id) do
-    Stump.log(:error, %{message: "Component Process Error",
-                        state: state,
-                        reason: reason,
-                        id: id})
+    Stump.log(:error, %{message: "Component Process Error", state: state, reason: reason, id: id})
 
     status = if reason == :timeout, do: 408, else: 500
     %{envelope: %Envelope{}, id: id, index: nil, status: status}

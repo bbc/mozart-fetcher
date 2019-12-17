@@ -44,6 +44,7 @@ defmodule MozartFetcher.FakeOrigin do
 
   get "/non_200_status/:code" do
     {status_code, _} = Integer.parse(conn.path_params["code"])
+
     send_resp(
       conn,
       status_code,
@@ -53,7 +54,8 @@ defmodule MozartFetcher.FakeOrigin do
 
   get "/timeout" do
     :timer.sleep(10_000)
-    send_resp(conn, 408, "timeout") # hide the "unused conn" warning message
+    # hide the "unused conn" warning message
+    send_resp(conn, 408, "timeout")
   end
 
   get "/*catchall" do

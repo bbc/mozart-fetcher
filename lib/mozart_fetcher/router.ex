@@ -22,6 +22,7 @@ defmodule MozartFetcher.Router do
 
   def send_response({:ok, components}, conn) do
     response = Fetcher.process(components)
+
     conn
     |> put_resp_content_type("application/json")
     |> send_resp(200, response)
@@ -42,7 +43,8 @@ defmodule MozartFetcher.Router do
       {:ok, components} ->
         ExMetrics.increment("success.components.decode")
         {:ok, components}
-      {:error}        ->
+
+      {:error} ->
         ExMetrics.increment("error.components.decode")
         Stump.log(:error, %{message: "Failed to decode components into list"})
         {:error}

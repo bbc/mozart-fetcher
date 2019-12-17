@@ -26,7 +26,11 @@ defmodule MozartFetcherTest do
     end
 
     test "request_ssl/0" do
-      assert [certfile: @fake_cert_file_path, cacertfile: @fake_ca_file_path, keyfile: @fake_key_file_path] ==
+      assert [
+               certfile: @fake_cert_file_path,
+               cacertfile: @fake_ca_file_path,
+               keyfile: @fake_key_file_path
+             ] ==
                MozartFetcher.request_ssl()
     end
   end

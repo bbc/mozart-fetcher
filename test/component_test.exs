@@ -24,7 +24,11 @@ defmodule MozartFetcher.ComponentTest do
     end
 
     test "it returns the raw json response body when requesting a successful ares component" do
-      config = %Config{endpoint: "http://localhost:8082/json_data", id: "article-data", format: "ares"}
+      config = %Config{
+        endpoint: "http://localhost:8082/json_data",
+        id: "article-data",
+        format: "ares"
+      }
 
       expected = %{
         data: %{
@@ -41,7 +45,10 @@ defmodule MozartFetcher.ComponentTest do
     end
 
     test "it returns empty envelope when 202" do
-      config = %Config{endpoint: "http://localhost:8082/non_200_status/202", id: "news_navigation"}
+      config = %Config{
+        endpoint: "http://localhost:8082/non_200_status/202",
+        id: "news_navigation"
+      }
 
       expected = %{
         envelope: %Envelope{},
@@ -54,7 +61,10 @@ defmodule MozartFetcher.ComponentTest do
     end
 
     test "it returns empty envelope when 404" do
-      config = %Config{endpoint: "http://localhost:8082/non_200_status/404", id: "weather-forecast"}
+      config = %Config{
+        endpoint: "http://localhost:8082/non_200_status/404",
+        id: "weather-forecast"
+      }
 
       expected = %{
         envelope: %Envelope{},
@@ -99,7 +109,11 @@ defmodule MozartFetcher.ComponentTest do
     end
 
     test "it returns an error when requesting an ares component but the data is not valid json" do
-      config = %Config{endpoint: "http://localhost:8082/invalid_json_data", id: "article-data", format: "ares"}
+      config = %Config{
+        endpoint: "http://localhost:8082/invalid_json_data",
+        id: "article-data",
+        format: "ares"
+      }
 
       expected = %{
         data: %{},
@@ -112,7 +126,11 @@ defmodule MozartFetcher.ComponentTest do
     end
 
     test "it returns an error when requesting an ares component but the data is not found" do
-      config = %Config{endpoint: "http://localhost:8082/non_200_status/404", id: "article-data", format: "ares"}
+      config = %Config{
+        endpoint: "http://localhost:8082/non_200_status/404",
+        id: "article-data",
+        format: "ares"
+      }
 
       expected = %{
         data: %{},
@@ -125,7 +143,11 @@ defmodule MozartFetcher.ComponentTest do
     end
 
     test "it returns an error when requesting an ares component but it times out timeout" do
-      config = %Config{endpoint: "http://localhost:8082/timeout", id: "article-data", format: "ares"}
+      config = %Config{
+        endpoint: "http://localhost:8082/timeout",
+        id: "article-data",
+        format: "ares"
+      }
 
       expected = %{
         data: %{},
@@ -138,7 +160,11 @@ defmodule MozartFetcher.ComponentTest do
     end
 
     test "it returns an error when requesting an ares componnet but the service is down" do
-      config = %Config{endpoint: "http://localhost:9090/fails", id: "article-data", format: "ares"}
+      config = %Config{
+        endpoint: "http://localhost:9090/fails",
+        id: "article-data",
+        format: "ares"
+      }
 
       expected = %{
         data: %{},

@@ -11,7 +11,7 @@ defmodule MozartFetcher.FetcherTest do
 
   test "it gets success when passing component config" do
     assert Fetcher.process([%Config{endpoint: "http://localhost:8082/foo", id: "foo"}]) ==
-      ~s({"components":[{"envelope":{"bodyInline":"","bodyLast":[],"head":[]},"id":"foo","index":0,"status":200}]})
+             ~s({"components":[{"envelope":{"bodyInline":"","bodyLast":[],"head":[]},"id":"foo","index":0,"status":200}]})
   end
 
   test "it returns envelopes for components timeout" do

@@ -65,7 +65,8 @@ defmodule MozartFetcher.IntegrationTest do
               envelope: %{
                 head: [],
                 bodyLast: [],
-                bodyInline: "<DIV id=\"big-component\" class=\"big\"><h1>This is a really big component</h1></DIV>"
+                bodyInline:
+                  "<DIV id=\"big-component\" class=\"big\"><h1>This is a really big component</h1></DIV>"
               }
             }
           ]
@@ -133,7 +134,8 @@ defmodule MozartFetcher.IntegrationTest do
               envelope: %{
                 head: [],
                 bodyLast: [],
-                bodyInline: "<DIV id=\"big-component\" class=\"big\"><h1>This is a really big component</h1></DIV>"
+                bodyInline:
+                  "<DIV id=\"big-component\" class=\"big\"><h1>This is a really big component</h1></DIV>"
               }
             }
           ]
