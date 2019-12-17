@@ -64,6 +64,38 @@ defmodule MozartFetcher.DecoderTest do
 
       assert Decoder.list_to_struct_list(json, %Config{}) == expected
     end
+
+    test "when a map in the list of JSON has an invalid key, the other components are still returned" do
+      json = ~s({ "components\": [
+                   {
+                     "od": "stream-icons",
+                     "endpoint": "localhost:8082/success",
+                     "must_succeed": true,
+                     "format": "envelope"
+                   },
+                   {
+                     "id": "weather-forecast",
+                     "endpoint": "localhost:8082/success",
+                     "must_succeed": false,
+                     "format": "envelope"
+                   }
+               ]})
+
+      expected = {
+        :ok,
+        [
+          {:error},
+          %MozartFetcher.Config{
+            endpoint: "localhost:8082/success",
+            id: "weather-forecast",
+            must_succeed: false,
+            format: "envelope"
+          }
+        ]
+      }
+
+      assert Decoder.list_to_struct_list(json, %Config{}) == expected
+    end
   end
 
   describe "when the map keys do not match the struct" do
