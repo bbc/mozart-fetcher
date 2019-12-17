@@ -16,6 +16,12 @@ defmodule MozartFetcher.EnvelopeTest do
              }
     end
 
+    test "it returns an error if the json contains an invalid key" do
+      component = ~s({"head":[],"bodyInLine":"<DIV id=\\"site-container\\">","bodyLast":[]})
+
+      assert Envelope.build(component) == %Envelope{}
+    end
+
     test "it returns an empty Envelope if not valid content" do
       component = "{"
       assert Envelope.build(component) == %Envelope{}
