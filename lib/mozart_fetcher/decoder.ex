@@ -1,14 +1,10 @@
 defmodule MozartFetcher.Decoder do
   def data_to_struct(data, struct) do
-    case Jason.decode(data, keys: :atoms) do
-      {:ok, decoded} ->
-        case to_struct(decoded, struct) do
-          {:error, _} -> {:error}
-          struct -> {:ok, struct}
-        end
-
-      {:error, _} ->
-        {:error}
+    with {:ok, decoded} <- Jason.decode(data, keys: :atoms),
+         {:ok, struct} <- to_struct(decoded, struct) do
+      {:ok, struct}
+    else
+      _ -> {:error}
     end
   end
 
@@ -20,7 +16,7 @@ defmodule MozartFetcher.Decoder do
          Enum.map(data[:components], fn map ->
            case to_struct(map, struct) do
              {:error, _} -> {:error}
-             struct -> struct
+             {:ok, struct} -> struct
            end
          end)}
 
@@ -33,7 +29,7 @@ defmodule MozartFetcher.Decoder do
     case Map.keys(Map.from_struct(struct)) |> Enum.all?(&Map.has_key?(map, &1)) do
       true ->
         case struct(struct, map) do
-          struct -> struct
+          struct -> {:ok, struct}
         end
 
       false ->
