@@ -25,6 +25,7 @@ node {
   checkout scm
 
   properties([
+      buildDiscarder(logRotator(daysToKeepStr: '7', artifactDaysToKeepStr: '7')),
       disableConcurrentBuilds(),
       parameters([
           choice(choices: ['test', 'live'], description: 'the branch of bbc/mozart-fetcher to pull in and build', name: 'ENVIRONMENT'),
