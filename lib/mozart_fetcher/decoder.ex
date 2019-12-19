@@ -28,9 +28,7 @@ defmodule MozartFetcher.Decoder do
   def to_struct(map, struct) do
     case Map.keys(Map.from_struct(struct)) |> Enum.all?(&Map.has_key?(map, &1)) do
       true ->
-        case struct(struct, map) do
-          struct -> {:ok, struct}
-        end
+        {:ok, struct(struct, map)}
 
       false ->
         ExMetrics.increment("error.components.decode")
