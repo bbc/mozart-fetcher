@@ -39,7 +39,7 @@ defmodule MozartFetcher.Router do
   end
 
   def config(body) do
-    case Decoder.list_to_struct_list(body, %Config{}) do
+    case Decoder.decode_config(body, %Config{}) do
       {:ok, components} ->
         ExMetrics.increment("success.components.decode")
         {:ok, components}

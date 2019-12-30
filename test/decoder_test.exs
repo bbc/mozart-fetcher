@@ -17,13 +17,13 @@ defmodule MozartFetcher.DecoderTest do
            bodyLast: []
          }}
 
-      assert Decoder.data_to_struct(json, %Envelope{}) == expected
+      assert Decoder.decode_envelope(json, %Envelope{}) == expected
     end
 
     test "when the JSON contains invalid keys we rescue and return an error" do
       json = ~s({"head":[],"bodyInLine":"<DIV id=\\"site-container\\">","bodyLast":[]})
 
-      assert Decoder.data_to_struct(json, %Envelope{}) == {:error}
+      assert Decoder.decode_envelope(json, %Envelope{}) == {:error}
     end
   end
 
@@ -62,7 +62,7 @@ defmodule MozartFetcher.DecoderTest do
         ]
       }
 
-      assert Decoder.list_to_struct_list(json, %Config{}) == expected
+      assert Decoder.decode_config(json, %Config{}) == expected
     end
 
     test "when a map in the list of JSON has an invalid key, the other components are still returned" do
@@ -94,14 +94,14 @@ defmodule MozartFetcher.DecoderTest do
         ]
       }
 
-      assert Decoder.list_to_struct_list(json, %Config{}) == expected
+      assert Decoder.decode_config(json, %Config{}) == expected
     end
   end
 
   describe "when the map keys do not match the struct" do
     test "it returns an error" do
       json = ~s( "components": [{:"Foo": "Bar" }])
-      assert Decoder.data_to_struct(json, %Config{}) == {:error}
+      assert Decoder.decode_config(json, %Config{}) == {:error}
     end
   end
 end
