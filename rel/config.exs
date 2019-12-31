@@ -47,6 +47,14 @@ end
 # will be used by default
 
 release :mozart_fetcher do
+  set overlays: [
+    {:copy, "rel/runtime_config.exs", "etc/runtime_config.exs"}
+  ]
+
+  set config_providers: [
+    {Mix.Releases.Config.Providers.Elixir, ["${RELEASE_ROOT_DIR}/etc/runtime_config.exs"]}
+  ]
+
   set version: current_version(:mozart_fetcher)
   set applications: [
     :runtime_tools
