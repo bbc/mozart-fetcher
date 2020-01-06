@@ -6,8 +6,8 @@ defmodule MozartFetcherTest do
   @fake_key_file_path "<<key_file_path>>"
 
   test "request_ssl/0 on non-prod environment" do
-    assert [certfile: certfile] = MozartFetcher.request_ssl()
-    assert String.contains?(certfile, ".pem")
+    certfile = System.get_env("DEV_CERT_PEM")
+    assert [certfile: certfile] == MozartFetcher.request_ssl()
   end
 
   describe "on prod environment" do
