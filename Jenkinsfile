@@ -39,6 +39,14 @@ node {
       git url: 'https://github.com/bbc/mozart-fetcher-build', credentialsId: 'github', branch: 'master'
     }
   }
+
+  stage('Run tests') {
+    docker.image('qixxit/elixir-centos').inside("-u root -e MIX_ENV=test") {
+      sh 'mix deps.get'
+      sh 'mix test'
+    }
+  }
+
   if(params.ENVIRONMENT == 'test') {
     stage('Build executable') {
       String vars = buildVariables()
