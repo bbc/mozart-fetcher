@@ -11,4 +11,4 @@ if File.exists?(cert) == false do
 end
 
 config :mozart_fetcher,
-        Keyword.new([{String.to_atom(String.downcase("DEV_CERT_PEM")), System.get_env("DEV_CERT_PEM")}])
+        Keyword.new([{:dev_cert_pem, cert}])
