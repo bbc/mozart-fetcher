@@ -9,19 +9,27 @@ defmodule MozartFetcher.DecoderTest do
     test "when the JSON is successfully decoded it is transformed into a struct" do
       json = ~s({"head":[],"bodyInline":"<DIV id=\\"site-container\\">","bodyLast":[]})
 
-      expected = {:ok, %Envelope{
-        head: [],
-        bodyInline: ~s(<DIV id="site-container">),
-        bodyLast: []
-      }}
+      expected =
+        {:ok,
+         %Envelope{
+           head: [],
+           bodyInline: ~s(<DIV id="site-container">),
+           bodyLast: []
+         }}
 
-      assert Decoder.data_to_struct(json, %Envelope{}) == expected
+      assert Decoder.decode_envelope(json, %Envelope{}) == expected
+    end
+
+    test "when the JSON contains invalid keys we rescue and return an error" do
+      json = ~s({"head":[],"bodyInLine":"<DIV id=\\"site-container\\">","bodyLast":[]})
+
+      assert Decoder.decode_envelope(json, %Envelope{}) == {:error}
     end
   end
 
   describe "#list_to_struct_list" do
     test "when the list of JSON is successfuly decoded it is transformed into a list of structs" do
-      json =  ~s({ "components\": [
+      json = ~s({ "components\": [
                    {
                      "id": "stream-icons",
                      "endpoint": "localhost:8082/success",
@@ -37,20 +45,63 @@ defmodule MozartFetcher.DecoderTest do
                ]})
 
       expected = {
-        :ok, [
-          %MozartFetcher.Config{endpoint: "localhost:8082/success", id: "stream-icons", must_succeed: true, format: "envelope"},
-          %MozartFetcher.Config{endpoint: "localhost:8082/success", id: "weather-forecast", must_succeed: false, format: "envelope"}
+        :ok,
+        [
+          %MozartFetcher.Config{
+            endpoint: "localhost:8082/success",
+            id: "stream-icons",
+            must_succeed: true,
+            format: "envelope"
+          },
+          %MozartFetcher.Config{
+            endpoint: "localhost:8082/success",
+            id: "weather-forecast",
+            must_succeed: false,
+            format: "envelope"
+          }
         ]
-       }
+      }
 
-      assert Decoder.list_to_struct_list(json, %Config{}) == expected
+      assert Decoder.decode_config(json, %Config{}) == expected
+    end
+
+    test "when a map in the list of JSON has an invalid key, the other components are still returned" do
+      json = ~s({ "components\": [
+                   {
+                     "od": "stream-icons",
+                     "endpoint": "localhost:8082/success",
+                     "must_succeed": true,
+                     "format": "envelope"
+                   },
+                   {
+                     "id": "weather-forecast",
+                     "endpoint": "localhost:8082/success",
+                     "must_succeed": false,
+                     "format": "envelope"
+                   }
+               ]})
+
+      expected = {
+        :ok,
+        [
+          {:error},
+          %MozartFetcher.Config{
+            endpoint: "localhost:8082/success",
+            id: "weather-forecast",
+            must_succeed: false,
+            format: "envelope"
+          }
+        ]
+      }
+
+      assert Decoder.decode_config(json, %Config{}) == expected
     end
   end
 
   describe "when the map keys do not match the struct" do
     test "it returns an error" do
       json = ~s( "components": [{:"Foo": "Bar" }])
-      assert Decoder.data_to_struct(json, %Config{}) == {:error}
+      assert Decoder.decode_config(json, %Config{}) == {:error}
     end
   end
 end
