@@ -6,58 +6,81 @@ defmodule MozartFetcher.Decoder do
          {:ok, struct} <- to_struct(decoded, struct) do
       {:ok, struct}
     else
-      _ -> {:error}
+      {:error, error = %Jason.DecodeError{}} ->
+        Stump.log(:error, "Envelope decode error: #{error.data}")
+        {:error}
+
+      _ ->
+        {:error}
     end
   end
 
   # This could be more generic if we add a list_name then Enum.map(data[list_name]) instead of specifically for components here
   def decode_config(data, struct) do
-    case Jason.decode(data, keys: :atoms) do
-      {:ok, data} ->
-        {:ok,
-         Enum.map(data[:components], fn map ->
-           case to_struct(map, struct) do
-             {:error, _} -> {:error}
-             {:ok, struct} -> struct
-           end
-         end)}
+    with {:ok, decoded} <- Jason.decode(data, keys: :atoms),
+         {:ok, decoded} <- components_to_struct(decoded[:components], struct) do
+      {:ok, decoded}
+    else
+      {:error, error = %Jason.DecodeError{}} ->
+        Stump.log(:error, "Config decode error: #{error.data}")
+        {:error}
 
-      {:error, _} ->
+      {:error, "Invalid Config list"} ->
+        {:error}
+
+      _ ->
         {:error}
     end
   end
 
-  def to_struct(map, struct = %Config{}) do
-    case [:endpoint, :format, :id, :must_succeed] |> Enum.all?(&Map.has_key?(map, &1)) do
-      true ->
-        {:ok, struct(struct, map)}
+  defp components_to_struct(components, struct) do
+    component_list =
+      Enum.map(components, fn map ->
+        case to_struct(map, struct) do
+          {:error, _} -> {:error}
+          {:ok, struct} -> struct
+        end
+      end)
 
-      false ->
-        ExMetrics.increment("error.components.decode")
-
-        Stump.log(:error, %{
-          message: "Map contains Invalid keys cannot convert to Config",
-          map: map
-        })
-
-        {:error, "Failed to validate keys in struct"}
+    case Enum.any?(component_list, fn component ->
+           component != {:error}
+         end) do
+      true -> {:ok, component_list}
+      false -> {:error, "Invalid Config list"}
     end
   end
 
-  def to_struct(map, struct = %Envelope{}) do
-    case [:head, :bodyInline, :bodyLast] |> Enum.all?(&Map.has_key?(map, &1)) do
-      true ->
-        {:ok, struct(struct, map)}
-
-      false ->
+  defp to_struct(map, struct = %Config{}) do
+    case struct(struct, map) do
+      {:error} ->
         ExMetrics.increment("error.components.decode")
 
         Stump.log(:error, %{
-          message: "Map contains Invalid keys cannot convert to Envelope",
+          message: "Map contains invalid keys cannot convert to Config",
           map: map
         })
 
         {:error, "Failed to validate keys in struct"}
+
+      struct ->
+        {:ok, struct}
+    end
+  end
+
+  defp to_struct(map, struct = %Envelope{}) do
+    case struct(struct, map) do
+      {:error} ->
+        ExMetrics.increment("error.components.decode")
+
+        Stump.log(:error, %{
+          message: "Map contains invalid keys cannot convert to Envelope",
+          map: map
+        })
+
+        {:error, "Failed to validate keys in struct"}
+
+      struct ->
+        {:ok, struct}
     end
   end
 end
