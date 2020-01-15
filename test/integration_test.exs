@@ -146,6 +146,27 @@ defmodule MozartFetcher.IntegrationTest do
       assert get_resp_header(conn, "content-type") == ["application/json; charset=utf-8"]
       assert conn.resp_body == expected_body
     end
+
+    test "when one of the components is invalid" do
+      json_body = ~s({
+        "components": [{ "foo": "bar",
+                        },
+                        {
+                          "id": "weather-component",
+                          "endpoint": "localhost:8082/big_component",
+                          "must_succeed": true,
+                          "format": "envelope"
+                        }]
+                      }
+                    )
+      conn = conn(:post, "/collect", json_body)
+      conn = Router.call(conn, @opts)
+
+      assert conn.state == :sent
+      assert conn.status == 500
+      assert get_resp_header(conn, "content-type") == ["application/json; charset=utf-8"]
+      assert conn.resp_body == "Internal Server Error"
+    end
   end
 
   describe "when fetching a component returns a 404" do

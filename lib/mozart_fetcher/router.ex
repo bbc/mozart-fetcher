@@ -47,7 +47,7 @@ defmodule MozartFetcher.Router do
       {:error} ->
         ExMetrics.increment("error.components.decode")
         Stump.log(:error, %{message: "Failed to decode components into list"})
-        {:error}
+        :error
     end
   end
 end
