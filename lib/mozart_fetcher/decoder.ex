@@ -10,7 +10,7 @@ defmodule MozartFetcher.Decoder do
         Stump.log(:error, "Envelope decode error: #{error.data}")
         {:error}
 
-      _ ->
+      {:error, "Failed to convert map to struct"} ->
         {:error}
     end
   end
@@ -27,19 +27,13 @@ defmodule MozartFetcher.Decoder do
 
       {:error, "Invalid Config list"} ->
         {:error}
-
-      _ ->
-        {:error}
     end
   end
 
   defp components_to_struct(components, struct) do
     component_list =
       Enum.map(components, fn map ->
-        case to_struct(map, struct) do
-          {:error, _} -> {:error}
-          {:ok, struct} -> struct
-        end
+        struct(struct, map)
       end)
 
     case Enum.any?(component_list, fn component ->
@@ -47,23 +41,6 @@ defmodule MozartFetcher.Decoder do
          end) do
       true -> {:ok, component_list}
       false -> {:error, "Invalid Config list"}
-    end
-  end
-
-  defp to_struct(map, struct = %Config{}) do
-    case struct(struct, map) do
-      {:error} ->
-        ExMetrics.increment("error.components.decode")
-
-        Stump.log(:error, %{
-          message: "Map contains invalid keys cannot convert to Config",
-          map: map
-        })
-
-        {:error, "Failed to validate keys in struct"}
-
-      struct ->
-        {:ok, struct}
     end
   end
 
@@ -77,7 +54,7 @@ defmodule MozartFetcher.Decoder do
           map: map
         })
 
-        {:error, "Failed to validate keys in struct"}
+        {:error, "Failed to convert map to struct"}
 
       struct ->
         {:ok, struct}
