@@ -20,8 +20,8 @@ defmodule MozartFetcher.DecoderTest do
       assert Decoder.decode_envelope(json, %Envelope{}) == expected
     end
 
-    test "when the %Envelope{} isn't valid JSON we return an empty %Envelope" do
-      json = ~s({"head":[],"bodyInLine":"<DIV id=\\"site-container\\">","bodyLast":[]})
+    test "when the %Envelope{} has invalid keys we still return an empty %Envelope" do
+      json = ~s({"head":[],"foobar":"<DIV id=\\"site-container\\">","bodyLast":[]})
 
       assert Decoder.decode_envelope(json, %Envelope{}) ==
                {:ok, %MozartFetcher.Envelope{bodyInline: "", bodyLast: [], head: []}}
@@ -29,7 +29,7 @@ defmodule MozartFetcher.DecoderTest do
   end
 
   describe "#decode_config" do
-    test "when the %Config{} is correct it returns a list of Config structs" do
+    test "when the %Config{} is valid JSON it returns a list of Config structs" do
       json = ~s({ "components\": [
                    {
                      "id": "stream-icons",
