@@ -4,7 +4,7 @@ defmodule MozartFetcher.Decoder do
   def decode_envelope(data, struct) do
     case Jason.decode(data, keys: :atoms) do
       {:ok, decoded} ->
-        to_struct(decoded, struct)
+        to_envelope(decoded, struct)
 
       {:error, error = %Jason.DecodeError{}} ->
         Stump.log(:error, "Envelope decode error: #{error.data}")
@@ -29,7 +29,7 @@ defmodule MozartFetcher.Decoder do
     end)
   end
 
-  defp to_struct(map, struct = %Envelope{}) do
+  defp to_envelope(map, struct = %Envelope{}) do
     try do
       {:ok, struct!(struct, map)}
     rescue
