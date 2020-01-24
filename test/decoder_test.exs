@@ -6,7 +6,7 @@ defmodule MozartFetcher.DecoderTest do
   doctest Decoder
 
   describe "#decode_envelope" do
-    test "when the JSON is successfully decoded it is transformed into a struct" do
+    test "when the JSON is successfully decoded it is transformed into an Envelope" do
       json = ~s({"head":[],"bodyInline":"<DIV id=\\"site-container\\">","bodyLast":[]})
 
       expected =
@@ -20,16 +20,15 @@ defmodule MozartFetcher.DecoderTest do
       assert Decoder.decode_envelope(json, %Envelope{}) == expected
     end
 
-    test "when the %Envelope{} has invalid keys we still return an empty %Envelope" do
+    test "when the JSON contains invalid keys for an %Envelope{} we return an error" do
       json = ~s({"head":[],"foobar":"<DIV id=\\"site-container\\">","bodyLast":[]})
 
-      assert Decoder.decode_envelope(json, %Envelope{}) ==
-               {:ok, %MozartFetcher.Envelope{bodyInline: "", bodyLast: [], head: []}}
+      assert Decoder.decode_envelope(json, %Envelope{}) == {:error}
     end
   end
 
   describe "#decode_config" do
-    test "when the %Config{} is valid JSON it returns a list of Config structs" do
+    test "when the JSON is valid it is is transformed into a list of Config structs" do
       json = ~s({ "components\": [
                    {
                      "id": "stream-icons",
@@ -65,10 +64,8 @@ defmodule MozartFetcher.DecoderTest do
 
       assert Decoder.decode_config(json, %Config{}) == expected
     end
-  end
 
-  describe "when the map keys do not match the struct" do
-    test "it returns an error" do
+    test "when the JSON is invalid we return an error" do
       json = ~s( "components": [{:"Foo": "Bar" }])
       assert Decoder.decode_config(json, %Config{}) == {:error}
     end
