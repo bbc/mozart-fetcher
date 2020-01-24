@@ -28,10 +28,10 @@ defmodule MozartFetcher.Router do
     |> send_resp(200, response)
   end
 
-  def send_response(:error, conn) do
+  def send_response({:error, exception}, conn) do
     conn
     |> put_resp_content_type("application/json")
-    |> send_resp(500, "Internal Server Error")
+    |> send_resp(exception.status, exception.message)
   end
 
   match _ do
@@ -47,7 +47,7 @@ defmodule MozartFetcher.Router do
       {:error} ->
         ExMetrics.increment("error.components.decode")
         Stump.log(:error, %{message: "Failed to decode components into list"})
-        :error
+        {:error, %{message: "Internal Server Error", status: 500}}
     end
   end
 end
