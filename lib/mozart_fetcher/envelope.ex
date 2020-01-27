@@ -12,7 +12,6 @@ defmodule MozartFetcher.Envelope do
 
       {:error} ->
         ExMetrics.increment("error.envelope.decode")
-        Stump.log(:error, %{message: "Failed to decode Envelope"})
         %Envelope{}
     end
   end
