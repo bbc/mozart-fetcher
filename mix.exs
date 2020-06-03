@@ -28,7 +28,7 @@ defmodule MozartFetcher.MixProject do
       {:distillery, "~> 2.0", runtime: false},
       {:parse_trans, "~> 3.2.0"},
       {:ex_metrics, git: "https://github.com/bbc/ExMetrics.git"},
-      {:stump, "~> 1.0.0"},
+      {:stump, "~> 1.6.2"},
       {:logger_file_backend, "~> 0.0.10"},
       {:jason, "~> 1.1"}
     ]
