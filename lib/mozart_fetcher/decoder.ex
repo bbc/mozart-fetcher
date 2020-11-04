@@ -1,17 +1,5 @@
 defmodule MozartFetcher.Decoder do
-  alias MozartFetcher.{Envelope, Config}
-
-  def decode_envelope(data, struct) do
-    case Jason.decode(data, keys: :atoms) do
-      {:ok, decoded} ->
-        to_envelope(decoded, struct)
-
-      {:error, error = %Jason.DecodeError{}} ->
-        Stump.log(:error, "Envelope Jason decode error: #{error.data}")
-        {:error}
-    end
-  end
-
+  alias MozartFetcher.Config
   def decode_config(data, struct) do
     case Jason.decode(data, keys: :atoms) do
       {:ok, decoded} ->
@@ -27,19 +15,5 @@ defmodule MozartFetcher.Decoder do
     Enum.map(components, fn map ->
       struct(struct, map)
     end)
-  end
-
-  defp to_envelope(map, struct = %Envelope{}) do
-    try do
-      {:ok, struct!(struct, map)}
-    rescue
-      KeyError ->
-        Stump.log(:error, %{
-          message: "Map contains invalid keys cannot convert to Envelope",
-          map: map
-        })
-
-        {:error}
-    end
   end
 end

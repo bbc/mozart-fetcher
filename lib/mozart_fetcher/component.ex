@@ -1,5 +1,5 @@
 defmodule MozartFetcher.Component do
-  alias MozartFetcher.{Config, Envelope, LocalCache}
+  alias MozartFetcher.{Config, LocalCache}
 
   def fetch({config = %Config{}, component_index}) do
     process(component_index, config, get(config))
@@ -26,8 +26,15 @@ defmodule MozartFetcher.Component do
          config = %Config{endpoint: endpoint},
          {:ok, %HTTPoison.Response{status_code: 200, body: body}}
        ) do
-    metric(config.id, endpoint, 200)
-    %{index: component_index, id: config.id, status: 200, envelope: Envelope.build(body)}
+    case Jason.decode(body, keys: :atoms) do
+      {:ok, data} ->
+        metric(config.id, endpoint, 200)
+        %{index: component_index, id: config.id, status: 200, envelope: data}
+
+      {:error, _err} ->
+        metric(config.id, endpoint, :json_decode_error)
+        %{index: component_index, id: config.id, status: 200, envelope: %{}}
+    end
   end
 
   defp process(
@@ -45,7 +52,7 @@ defmodule MozartFetcher.Component do
          {:ok, %HTTPoison.Response{status_code: status_code}}
        ) do
     metric(config.id, endpoint, status_code)
-    %{index: component_index, id: config.id, status: status_code, envelope: %Envelope{}}
+    %{index: component_index, id: config.id, status: status_code, envelope: %{}}
   end
 
   defp process(
@@ -71,11 +78,11 @@ defmodule MozartFetcher.Component do
   end
 
   defp failed_component(component_index, :timeout, id, :envelope) do
-    %{index: component_index, id: id, status: 408, envelope: %Envelope{}}
+    %{index: component_index, id: id, status: 408, envelope: %{}}
   end
 
   defp failed_component(component_index, _, id, :envelope) do
-    %{index: component_index, id: id, status: 500, envelope: %Envelope{}}
+    %{index: component_index, id: id, status: 500, envelope: %{}}
   end
 
   defp failed_component(component_index, :timeout, id, :ares) do

@@ -1,5 +1,5 @@
 defmodule MozartFetcher.Fetcher do
-  alias MozartFetcher.{Component, TimeoutParser, Envelope}
+  alias MozartFetcher.{Component, TimeoutParser}
 
   use ExMetrics
 
@@ -47,6 +47,6 @@ defmodule MozartFetcher.Fetcher do
     Stump.log(:error, %{message: "Component Process Error", state: state, reason: reason, id: id})
 
     status = if reason == :timeout, do: 408, else: 500
-    %{envelope: %Envelope{}, id: id, index: nil, status: status}
+    %{envelope: %{}, id: id, index: nil, status: status}
   end
 end

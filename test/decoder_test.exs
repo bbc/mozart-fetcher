@@ -1,31 +1,9 @@
 defmodule MozartFetcher.DecoderTest do
   use ExUnit.Case
 
-  alias MozartFetcher.{Decoder, Config, Envelope}
+  alias MozartFetcher.{Decoder, Config}
 
   doctest Decoder
-
-  describe "#decode_envelope" do
-    test "when the JSON is successfully decoded it is transformed into an Envelope" do
-      json = ~s({"head":[],"bodyInline":"<DIV id=\\"site-container\\">","bodyLast":[]})
-
-      expected =
-        {:ok,
-         %Envelope{
-           head: [],
-           bodyInline: ~s(<DIV id="site-container">),
-           bodyLast: []
-         }}
-
-      assert Decoder.decode_envelope(json, %Envelope{}) == expected
-    end
-
-    test "when the JSON contains invalid keys for an %Envelope{} we return an error" do
-      json = ~s({"head":[],"foobar":"<DIV id=\\"site-container\\">","bodyLast":[]})
-
-      assert Decoder.decode_envelope(json, %Envelope{}) == {:error}
-    end
-  end
 
   describe "#decode_config" do
     test "when the JSON is valid it is is transformed into a list of Config structs" do

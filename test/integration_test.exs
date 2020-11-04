@@ -190,11 +190,7 @@ defmodule MozartFetcher.IntegrationTest do
               status: 404,
               index: 0,
               id: "news-front-page",
-              envelope: %{
-                head: [],
-                bodyLast: [],
-                bodyInline: ""
-              }
+              envelope: %{}
             }
           ]
         })
@@ -227,11 +223,7 @@ defmodule MozartFetcher.IntegrationTest do
               status: 408,
               index: 0,
               id: "weather-front-page",
-              envelope: %{
-                head: [],
-                bodyLast: [],
-                bodyInline: ""
-              }
+              envelope: %{}
             }
           ]
         })
@@ -264,11 +256,7 @@ defmodule MozartFetcher.IntegrationTest do
               status: 500,
               index: 0,
               id: "weather-front-page",
-              envelope: %{
-                head: [],
-                bodyLast: [],
-                bodyInline: ""
-              }
+              envelope: %{}
             }
           ]
         })

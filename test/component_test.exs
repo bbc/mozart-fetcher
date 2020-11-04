@@ -1,7 +1,7 @@
 defmodule MozartFetcher.ComponentTest do
   use ExUnit.Case
 
-  alias MozartFetcher.{Component, Config, Envelope}
+  alias MozartFetcher.{Component, Config}
 
   doctest Component
 
@@ -10,7 +10,7 @@ defmodule MozartFetcher.ComponentTest do
       config = %Config{endpoint: "http://localhost:8082/success", id: "news-top-stories"}
 
       expected = %{
-        envelope: %Envelope{
+        envelope: %{
           bodyInline: "<DIV id=\"site-container\">",
           bodyLast: [],
           head: []
@@ -44,6 +44,26 @@ defmodule MozartFetcher.ComponentTest do
       assert Component.fetch({config, 0}) == expected
     end
 
+    test "even when the ares format is not specified it returns the raw json response body under envelope" do
+      config = %Config{
+        endpoint: "http://localhost:8082/json_data",
+        id: "article-data"
+      }
+
+      expected = %{
+        envelope: %{
+          content: %{
+            some: "json data"
+          }
+        },
+        id: "article-data",
+        index: 0,
+        status: 200
+      }
+
+      assert Component.fetch({config, 0}) == expected
+    end
+
     test "it returns empty envelope when 202" do
       config = %Config{
         endpoint: "http://localhost:8082/non_200_status/202",
@@ -51,7 +71,7 @@ defmodule MozartFetcher.ComponentTest do
       }
 
       expected = %{
-        envelope: %Envelope{},
+        envelope: %{},
         id: "news_navigation",
         index: 0,
         status: 202
@@ -67,7 +87,7 @@ defmodule MozartFetcher.ComponentTest do
       }
 
       expected = %{
-        envelope: %Envelope{},
+        envelope: %{},
         id: "weather-forecast",
         index: 0,
         status: 404
@@ -78,11 +98,7 @@ defmodule MozartFetcher.ComponentTest do
 
     test "it returns an error in case of timeout" do
       expected = %{
-        envelope: %Envelope{
-          bodyInline: "",
-          bodyLast: [],
-          head: []
-        },
+        envelope: %{},
         id: "news_navigation",
         index: 0,
         status: 408
@@ -94,11 +110,7 @@ defmodule MozartFetcher.ComponentTest do
 
     test "it returns an error in case service is down" do
       expected = %{
-        envelope: %Envelope{
-          bodyInline: "",
-          bodyLast: [],
-          head: []
-        },
+        envelope: %{},
         id: "news-top-stories",
         index: 0,
         status: 500
