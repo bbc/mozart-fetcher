@@ -36,7 +36,7 @@ node {
   stage('Checkout mozart-fetcher-build') {
     sh 'mkdir -p mozart-fetcher-build'
     dir('mozart-fetcher-build') {
-      git url: 'https://github.com/bbc/mozart-fetcher-build', credentialsId: 'github', branch: 'master'
+      git url: 'https://github.com/bbc/mozart-fetcher-build', credentialsId: 'de1d9453-493a-4f18-a2ab-507822b96188', branch: 'master'
     }
   }
 
