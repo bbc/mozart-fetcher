@@ -33,14 +33,12 @@ defmodule MozartFetcher.DecoderTest do
                    {
                      "id": "stream-icons",
                      "endpoint": "localhost:8082/success",
-                     "must_succeed": true,
-                     "format": "envelope"
+                     "must_succeed": true
                    },
                    {
                      "id": "weather-forecast",
                      "endpoint": "localhost:8082/success",
-                     "must_succeed": false,
-                     "format": "envelope"
+                     "must_succeed": false
                    }
                ]})
 
@@ -50,14 +48,12 @@ defmodule MozartFetcher.DecoderTest do
           %MozartFetcher.Config{
             endpoint: "localhost:8082/success",
             id: "stream-icons",
-            must_succeed: true,
-            format: "envelope"
+            must_succeed: true
           },
           %MozartFetcher.Config{
             endpoint: "localhost:8082/success",
             id: "weather-forecast",
-            must_succeed: false,
-            format: "envelope"
+            must_succeed: false
           }
         ]
       }
