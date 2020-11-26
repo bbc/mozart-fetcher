@@ -1,5 +1,5 @@
 defmodule MozartFetcher.Decoder do
-  alias MozartFetcher.{Envelope, Config}
+  alias MozartFetcher.Envelope
 
   def decode_envelope(data, struct) do
     case Jason.decode(data, keys: :atoms) do

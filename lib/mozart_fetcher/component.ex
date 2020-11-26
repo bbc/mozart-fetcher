@@ -7,36 +7,11 @@ defmodule MozartFetcher.Component do
 
   defp process(
          component_index,
-         config = %Config{format: "ares", endpoint: endpoint},
-         {:ok, %HTTPoison.Response{status_code: 200, body: body}}
-       ) do
-    case Jason.decode(body, keys: :atoms) do
-      {:ok, data} ->
-        metric(config.id, endpoint, 200)
-        %{index: component_index, id: config.id, status: 200, data: data}
-
-      {:error, _err} ->
-        metric(config.id, endpoint, :json_decode_error)
-        failed_component(component_index, :json_decode_error, config.id, :ares)
-    end
-  end
-
-  defp process(
-         component_index,
          config = %Config{endpoint: endpoint},
          {:ok, %HTTPoison.Response{status_code: 200, body: body}}
        ) do
     metric(config.id, endpoint, 200)
     %{index: component_index, id: config.id, status: 200, envelope: Envelope.build(body)}
-  end
-
-  defp process(
-         component_index,
-         config = %Config{format: "ares", endpoint: endpoint},
-         {:ok, %HTTPoison.Response{status_code: status_code}}
-       ) do
-    metric(config.id, endpoint, status_code)
-    %{index: component_index, id: config.id, status: status_code, data: %{}}
   end
 
   defp process(
@@ -50,40 +25,23 @@ defmodule MozartFetcher.Component do
 
   defp process(
          component_index,
-         config = %Config{format: "ares", endpoint: endpoint},
-         {:error, %HTTPoison.Error{reason: reason}}
-       ) do
-    metric(config.id, endpoint, reason)
-    failed_component(component_index, reason, config.id, :ares)
-  end
-
-  defp process(
-         component_index,
          config = %Config{endpoint: endpoint},
          {:error, %HTTPoison.Error{reason: reason}}
        ) do
     metric(config.id, endpoint, reason)
-    failed_component(component_index, reason, config.id, :envelope)
+    failed_component(component_index, reason, config.id)
   end
 
   defp get(config) do
     LocalCache.get_or_store(config.endpoint, fn -> HTTPClient.get(config.endpoint) end)
   end
 
-  defp failed_component(component_index, :timeout, id, :envelope) do
+  defp failed_component(component_index, :timeout, id) do
     %{index: component_index, id: id, status: 408, envelope: %Envelope{}}
   end
 
-  defp failed_component(component_index, _, id, :envelope) do
+  defp failed_component(component_index, _, id) do
     %{index: component_index, id: id, status: 500, envelope: %Envelope{}}
-  end
-
-  defp failed_component(component_index, :timeout, id, :ares) do
-    %{index: component_index, id: id, status: 408, data: %{}}
-  end
-
-  defp failed_component(component_index, _, id, :ares) do
-    %{index: component_index, id: id, status: 500, data: %{}}
   end
 
   defp metric(id, _endpoint, 200) do
