@@ -37,7 +37,11 @@ defmodule HTTPClient do
   end
 
   defp make_request(endpoint, headers, options, client) do
-    client.get(endpoint, headers, options)
+    client.get(endpoint, request_headers(headers), options)
+  end
+
+  defp request_headers(headers) do
+    headers ++ [{ 'User-Agent', 'Mozart-Fetcher' }]
   end
 
   defp handle_response({:ok, response}) do
