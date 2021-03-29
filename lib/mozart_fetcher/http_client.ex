@@ -41,7 +41,7 @@ defmodule HTTPClient do
   end
 
   defp request_headers(headers) do
-    headers ++ [{ 'User-Agent', 'Mozart-Fetcher' }]
+    headers ++ [{ 'User-Agent', 'MozartFetcher' }]
   end
 
   defp handle_response({:ok, response}) do
