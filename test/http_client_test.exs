@@ -36,7 +36,7 @@ defmodule HTTPClientTest do
 
     test "the request headers contain a User-Agent header with the value MozartFetcher" do
       {:ok, resp} = HTTPClient.get("http://localhost:8082/foo/bar")
-      assert Enum.member?(resp.request.headers, {'User-Agent', 'MozartFetcher'}) == true
+      assert {'User-Agent', 'MozartFetcher'} in resp.request.headers
     end
 
     test "makes only one request on success" do
