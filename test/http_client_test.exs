@@ -34,6 +34,11 @@ defmodule HTTPClientTest do
       assert resp.request_url == "http://localhost:8082/foo%20bar?baz=%20true"
     end
 
+    test "the request headers contain a User-Agent header with the value MozartFetcher" do
+      {:ok, resp} = HTTPClient.get("http://localhost:8082/foo/bar")
+      assert {'User-Agent', 'MozartFetcher'} in resp.request.headers
+    end
+
     test "makes only one request on success" do
       defmodule MockClientSuccessfulResponse do
         def get(endpoint, _, _) do
