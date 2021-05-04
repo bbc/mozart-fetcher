@@ -65,8 +65,6 @@ defmodule MozartFetcher.Component do
   defp metric(id, endpoint, reason) do
     ExMetrics.increment("error.component.process")
     ExMetrics.increment("error.component.process.#{id}")
-    ExMetrics.increment("error.component.process.#{reason}")
-    ExMetrics.increment("error.component.process.#{id}.#{reason}")
 
     Stump.log(:error, %{
       message: "Failed to process HTTP request",
