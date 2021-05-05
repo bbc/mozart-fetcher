@@ -23,10 +23,11 @@ defmodule MozartFetcher.MixProject do
   defp deps do
     [
       {:plug_cowboy, "~> 2.0.1"},
-      {:httpoison, "~> 1.5"},
+      {:httpoison, "~> 1.8"},
       {:con_cache, "~> 0.13.0"},
       {:distillery, "~> 2.0", runtime: false},
-      {:parse_trans, "~> 3.2.0"},
+      {:parse_trans, "~> 3.2.0", override: true},
+      {:hackney, "~> 1.17.4"},
       {:ex_metrics, git: "https://github.com/bbc/ExMetrics.git"},
       {:stump, "~> 1.6.2"},
       {:logger_file_backend, "~> 0.0.10"},
