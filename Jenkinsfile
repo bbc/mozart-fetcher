@@ -1,5 +1,10 @@
 #!/usr/bin/env groovy
 
+library 'devops-tools-jenkins'
+
+def dockerRegistry = libraryResource('dockerregistry').trim()
+def dockerImage = "${dockerRegistry}/bbc-news/elixir-centos7:1.11.3"
+
 library 'BBCNews'
 
 def cosmosServices = [
@@ -41,7 +46,7 @@ node {
   }
 
   stage('Run tests') {
-    docker.image('qixxit/elixir-centos').inside("-u root -e MIX_ENV=test") {
+    docker.image(dockerImage).inside("-u root -e MIX_ENV=test") {
       sh 'mix deps.get'
       sh 'mix test'
     }
@@ -50,9 +55,9 @@ node {
   if(params.ENVIRONMENT == 'test') {
     stage('Build executable') {
       String vars = buildVariables()
-      docker.image('qixxit/elixir-centos').inside("-u root -e MIX_ENV=prod ${vars}") {
+      docker.image(dockerImage).inside("-u root -e MIX_ENV=prod ${vars}") {
         sh 'mix deps.get'
-        sh 'mix release'
+        sh 'mix distillery.release'
       }
       sh 'cp _build/prod/rel/mozart_fetcher/releases/*/mozart_fetcher.tar.gz SOURCES/'
     }
