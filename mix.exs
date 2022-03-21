@@ -27,11 +27,11 @@ defmodule MozartFetcher.MixProject do
       {:con_cache, "~> 1.0"},
       {:distillery, "~> 2.0", runtime: false},
       {:parse_trans, "~> 3.4", override: true},
-      {:hackney, "~> 1.17.4"},
+      {:hackney, "~> 1.18"},
       {:ex_metrics, git: "https://github.com/bbc/ExMetrics.git"},
       {:stump, "~> 1.7"},
       {:logger_file_backend, "~> 0.0.10"},
-      {:jason, "~> 1.1"}
+      {:jason, "~> 1.3"}
     ]
   end
 end
