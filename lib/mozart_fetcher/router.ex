@@ -1,4 +1,5 @@
 defmodule MozartFetcher.Router do
+  require Logger
   alias MozartFetcher.{Fetcher, Config, Decoder}
 
   use Plug.Router
@@ -46,7 +47,7 @@ defmodule MozartFetcher.Router do
 
       {:error} ->
         ExMetrics.increment("error.components.decode")
-        Stump.log(:error, %{message: "Failed to decode components into list"})
+        Logger.error("Failed to decode components into list")
         {:error, %{message: "Internal Server Error", status: 500}}
     end
   end

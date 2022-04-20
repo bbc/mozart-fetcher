@@ -1,4 +1,5 @@
 defmodule MozartFetcher.Fetcher do
+  require Logger
   alias MozartFetcher.{Component, TimeoutParser, Envelope}
 
   use ExMetrics
@@ -8,7 +9,7 @@ defmodule MozartFetcher.Fetcher do
 
   def process([]) do
     ExMetrics.increment("error.empty_component_list")
-    Stump.log(:error, %{message: "Error cannot process empty component list"})
+    Logger.error("Error cannot process empty component list")
     {:error}
   end
 
@@ -44,7 +45,7 @@ defmodule MozartFetcher.Fetcher do
   defp handle({:ok, result}, _id), do: result
 
   defp handle({state, reason}, id) do
-    Stump.log(:error, %{message: "Component Process Error", state: state, reason: reason, id: id})
+    Logger.error("Component Process Error", state: state, reason: reason, id: id)
 
     status = if reason == :timeout, do: 408, else: 500
     %{envelope: %Envelope{}, id: id, index: nil, status: status}

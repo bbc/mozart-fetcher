@@ -1,6 +1,4 @@
-# This file is responsible for configuring your application
-# and its dependencies with the aid of the Mix.Config module.
-use Mix.Config
+import Config
 
 # This configuration is loaded before any dependency and is restricted
 # to this project. If another project depends on this project, this
@@ -33,7 +31,9 @@ config :mozart_fetcher,
   default_connection_timeout: 500,
   max_connections: 5000
 
-config :logger, :console, format: "$message\n"
+config :logger, :console,
+  format: {MozartFetcher.Logger.Formatter, :format},
+  metadata: :all
 
 import_config "metrics.exs"
 import_config "#{Mix.env()}.exs"

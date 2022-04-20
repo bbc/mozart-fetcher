@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 config :ex_metrics,
   send_metrics: false,

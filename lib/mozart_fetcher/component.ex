@@ -1,4 +1,5 @@
 defmodule MozartFetcher.Component do
+  require Logger
   alias MozartFetcher.{Config, Envelope, LocalCache}
 
   def fetch({config = %Config{}, component_index}) do
@@ -54,8 +55,7 @@ defmodule MozartFetcher.Component do
     ExMetrics.increment("error.component.process.#{id}.#{status}")
     ExMetrics.increment("error.component.process.#{status}")
 
-    Stump.log(:error, %{
-      message: "Non-200 response",
+    Logger.error("Non-200 response", %{
       status: status,
       component: id,
       endpoint: endpoint
@@ -66,8 +66,7 @@ defmodule MozartFetcher.Component do
     ExMetrics.increment("error.component.process")
     ExMetrics.increment("error.component.process.#{id}")
 
-    Stump.log(:error, %{
-      message: "Failed to process HTTP request",
+    Logger.error("Failed to process HTTP request", %{
       reason: reason,
       id: id,
       endpoint: endpoint

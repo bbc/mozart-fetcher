@@ -1,4 +1,5 @@
 defmodule HTTPClient do
+  require Logger
   use ExMetrics
 
   alias MozartFetcher.TimeoutParser
@@ -27,7 +28,7 @@ defmodule HTTPClient do
     rescue
       _ ->
         ExMetrics.increment("http.component.error")
-        Stump.log(:error, %{message: "HTTP Client error caught"})
+        Logger.error("HTTP Client error caught")
         {:error, %HTTPoison.Error{reason: :unexpected}}
     end
   end
@@ -41,7 +42,7 @@ defmodule HTTPClient do
   end
 
   defp request_headers(headers) do
-    headers ++ [{ 'User-Agent', 'MozartFetcher' }]
+    headers ++ [{'User-Agent', 'MozartFetcher'}]
   end
 
   defp handle_response({:ok, response}) do
@@ -78,7 +79,7 @@ defmodule HTTPClient do
   end
 
   defp log_errors_and_return(response = {:error, %HTTPoison.Error{reason: reason}}) do
-    Stump.log(:error, %{message: "HTTPoison Error", reason: reason})
+    Logger.error("HTTPoison Error", reason: reason)
     response
   end
 

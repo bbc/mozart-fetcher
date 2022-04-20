@@ -1,4 +1,5 @@
 defmodule MozartFetcher.TimeoutParser do
+  require Logger
   @default_timeout MozartFetcher.content_timeout()
 
   def parse(endpoint) do
@@ -7,7 +8,7 @@ defmodule MozartFetcher.TimeoutParser do
       query(uri.query)
     rescue
       ex ->
-        Stump.log(:error, %{message: ex})
+        Logger.error(ex)
         @default_timeout
     end
   end
@@ -18,7 +19,7 @@ defmodule MozartFetcher.TimeoutParser do
       |> Enum.reduce(@default_timeout, &component_timeout_or_current_timeout/2)
     rescue
       ex ->
-        Stump.log(:error, %{message: ex})
+        Logger.error(ex)
         @default_timeout
     end
   end

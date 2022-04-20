@@ -1,4 +1,5 @@
 defmodule MozartFetcher.Decoder do
+  require Logger
   alias MozartFetcher.Envelope
 
   def decode_envelope(data, struct) do
@@ -7,7 +8,7 @@ defmodule MozartFetcher.Decoder do
         to_envelope(decoded, struct)
 
       {:error, error = %Jason.DecodeError{}} ->
-        Stump.log(:error, "Envelope Jason decode error: #{error.data}")
+        Logger.error("Envelope Jason decode error: #{error.data}")
         {:error}
     end
   end
@@ -18,7 +19,7 @@ defmodule MozartFetcher.Decoder do
         {:ok, components_to_struct(decoded[:components], struct)}
 
       {:error, error = %Jason.DecodeError{}} ->
-        Stump.log(:error, "Config decode error: #{error.data}")
+        Logger.error("Config decode error: #{error.data}")
         {:error}
     end
   end
@@ -34,8 +35,7 @@ defmodule MozartFetcher.Decoder do
       {:ok, struct!(struct, map)}
     rescue
       KeyError ->
-        Stump.log(:error, %{
-          message: "Map contains invalid keys cannot convert to Envelope",
+        Logger.error("Map contains invalid keys cannot convert to Envelope", %{
           map: map
         })
 
