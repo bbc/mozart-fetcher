@@ -1,5 +1,6 @@
 defmodule MozartFetcher.Application do
   @moduledoc false
+  require Logger
 
   use Application
 
@@ -55,8 +56,7 @@ defmodule MozartFetcher.Application do
     String.to_integer(ttl)
   rescue
     ArgumentError ->
-      Stump.log(:error, %{
-        message: "Invalid TTL Value, you must provide an integer value for the tll",
+      Logger.error("Invalid TTL Value, you must provide an integer value for the tll", %{
         ttl: ttl
       })
 

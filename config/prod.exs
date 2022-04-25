@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 config :ex_metrics,
   send_metrics: true,
@@ -9,5 +9,6 @@ config :logger,
 
 config :logger, :file,
   path: "/var/log/component/app.log",
-  format: "$message\n",
+  format: {MozartFetcher.Logger.Formatter, :format},
+  metadata: :all,
   level: :error
