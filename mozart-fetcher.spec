@@ -20,7 +20,6 @@ Requires: cosmos-ca-chains cosmos-ca-tools
 Requires: bbc-statsd-cloudwatch
 Requires: amazon-cloudwatch-agent
 Requires: component-logger
-Requires: cfn-signal
 
 %description
 mozart-fetcher is a service for fetching multiple components
