@@ -7,7 +7,7 @@ use Mix.Config
   if System.get_env(config_key) == nil do
     raise "Config not set in environment: #{config_key}"
   end
-  config :belfrage_ccp,
+  config :mozart_fetcher,
          Keyword.new([{String.to_atom(String.downcase(config_key)), System.get_env(config_key)}])
 end)
 
