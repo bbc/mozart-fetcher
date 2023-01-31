@@ -12,6 +12,12 @@ cat > /etc/cloudwatch-agent-config.json <<EOF
   "metrics": {
     "namespace": "BBCApp/$COMPONENT_NAME",
     "metrics_collected": {
+      "statsd": {
+        "service_address": ":8125",
+        "metric_separator": ".",
+        "metrics_collection_interval": 10,
+        "metrics_aggregation_interval": 60
+      },
       "cpu": {
         "measurement": [
           "cpu_usage_idle",
