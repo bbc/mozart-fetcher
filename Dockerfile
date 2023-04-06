@@ -1,4 +1,4 @@
-FROM qixxit/elixir-centos
+FROM ettomatic/elixir-centos
 
 MAINTAINER Ettore Berardi <ettore.berardi@bbc.co.uk>
 MAINTAINER Sam French <Sam.French@bbc.co.uk>
