@@ -1,0 +1,25 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - certee-fetch
+  build:
+    commands:
+       - mix deps.get
+       - mix distillery.release
+       - mkdir -p /root/rpmbuild/SOURCES
+       - cp _build/prod/rel/mozart_fetcher/releases/*/mozart_fetcher.tar.gz /root/rpmbuild/SOURCES/
+       - cp mozart-fetcher.spec /root/rpmbuild/SOURCES/
+       - cp SOURCES/mozart_fetcher.service /root/rpmbuild/SOURCES/
+       - cp SOURCES/performance.conf /root/rpmbuild/SOURCES/
+       - cd /root/rpmbuild/SOURCES
+       - echo "Generating version file"
+       - export COSMOS_VERSION=`cosmos-release generate-version mozart-fetcher`
+       - rpmbuild -ba --define "cosmos_version ${COSMOS_VERSION}" mozart-fetcher.spec
+  # post_build:
+  #   commands:
+	#     - cosmos-release service "mozart-fetcher-eu-west-1" --release-version=v /root/rpmbuild/RPMS/x86_64/*.x86_64.rpm
+	#     - cosmos-release service "mozart-fetcher-weather-eu-west-1" --release-version=v /root/rpmbuild/RPMS/x86_64/*.x86_64.rpm
+	#     - cosmos-release service "mozart-fetcher-sport-eu-west-1" --release-version=v /root/rpmbuild/RPMS/x86_64/*.x86_64.rpm
+
