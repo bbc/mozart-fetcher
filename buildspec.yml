@@ -1,9 +1,9 @@
 version: 0.2
 
 phases:
-  # install:
-  #   commands:
-  #     - certee-fetch
+  install:
+    commands:
+      - certee-fetch
   build:
     commands:
        - mix deps.get
