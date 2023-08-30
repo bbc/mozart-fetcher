@@ -24,6 +24,10 @@ Requires: component-logger
 mozart-fetcher is a service for fetching multiple components
 in parallel and aggregating the responses.
 
+# ERROR: ambiguous python shebang in ffi-1.15.5 lib
+# We disable shebang because of the error (more info: https://docs.fedoraproject.org/en-US/packaging-guidelines/#_shebang_lines)
+%undefine __brp_mangle_shebangs
+
 %pre
 /usr/bin/getent group component >/dev/null || groupadd -r component
 /usr/bin/getent passwd component >/dev/null || useradd -r -g component -G component -s /sbin/nologin -c 'component service' component
