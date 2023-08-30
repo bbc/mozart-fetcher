@@ -6,6 +6,7 @@ phases:
       - certee-fetch
   build:
     commands:
+      - env
       - mix deps.get
       - mix distillery.release
       - mkdir -p /root/rpmbuild/SOURCES
