@@ -6,14 +6,22 @@ phases:
       - certee-fetch
   build:
     commands:
+      - export REGION=eu-west-1
+      - export COMPONENTNAME=mozart-fetcher
+      - export BUILDPATH=/root/rpmbuiild
       - mix deps.get
       - mix distillery.release
-      - mkdir -p /root/rpmbuild/SOURCES
-      - cp _build/prod/rel/mozart_fetcher/releases/*/mozart_fetcher.tar.gz /root/rpmbuild/SOURCES/
-      - cp mozart-fetcher.spec /root/rpmbuild/SOURCES/
-      - cp SOURCES/* /root/rpmbuild/SOURCES/
-      - cd /root/rpmbuild/SOURCES
+      - mkdir -p ${BUILDPATH}/SOURCES
+      - cp _build/prod/rel/mozart_fetcher/releases/*/mozart_fetcher.tar.gz ${BUILDPATH}/SOURCES/
+      - cp mozart-fetcher.spec ${BUILDPATH}/SOURCES/
+      - cp SOURCES/* ${BUILDPATH}/SOURCES/
+      - cd ${BUILDPATH}/SOURCES
       - echo "Generating version file"
-      - export COSMOS_VERSION=`cosmos-release generate-version mozart-fetcher`
+      - export COSMOS_VERSION=`cosmos-release generate-version ${COMPONENTNAME}-${REGION}`
       - env
-      - rpmbuild --define "_topdir /root/rpmbuild" --define "version ${COSMOS_VERSION}" -ba mozart-fetcher.spec
+      - rpmbuild --define "_topdir ${BUILDPATH}" --define "version ${COSMOS_VERSION}" -ba mozart-fetcher.spec
+  post_build:
+    commands:
+    	- cosmos-release service "${COMPONENTNAME}-${REGION}" --release-version=v ${BUILDPATH}/RPMS/x86_64/*.x86_64.rpm
+	    # - cosmos-release service "${COMPONENTNAME}-weather-${REGION}" --release-version=v ${BUILDPATH}/RPMS/x86_64/*.x86_64.rpm
+	    # - cosmos-release service "${COMPONENTNAME}-sport-${REGION}" --release-version=v ${BUILDPATH}/RPMS/x86_64/*.x86_64.rpm
