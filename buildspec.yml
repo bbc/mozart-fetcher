@@ -9,19 +9,17 @@ phases:
       - export REGION=eu-west-1
       - export COMPONENTNAME=mozart-fetcher
       - export BUILDPATH=/root/rpmbuiild
+      - mix deps.get
+      - mix distillery.release
+      - mkdir -p ${BUILDPATH}/SOURCES
+      - cp _build/prod/rel/mozart_fetcher/releases/*/mozart_fetcher.tar.gz ${BUILDPATH}/SOURCES/
+      - cp mozart-fetcher.spec ${BUILDPATH}/SOURCES/
+      - cp SOURCES/* ${BUILDPATH}/SOURCES/
+      - cd ${BUILDPATH}/SOURCES
+      - echo "Generating version file"
       - export COSMOS_VERSION=`cosmos-release generate-version ${COMPONENTNAME}-${REGION}`
       - env
-  #     - mix deps.get
-  #     - mix distillery.release
-  #     - mkdir -p ${BUILDPATH}/SOURCES
-  #     - cp _build/prod/rel/mozart_fetcher/releases/*/mozart_fetcher.tar.gz ${BUILDPATH}/SOURCES/
-  #     - cp mozart-fetcher.spec ${BUILDPATH}/SOURCES/
-  #     - cp SOURCES/* ${BUILDPATH}/SOURCES/
-  #     - cd ${BUILDPATH}/SOURCES
-  #     - echo "Generating version file"
-  #     - export COSMOS_VERSION=`cosmos-release generate-version ${COMPONENTNAME}-${REGION}`
-  #     - env
-  #     - rpmbuild --define "_topdir ${BUILDPATH}" --define "version ${COSMOS_VERSION}" -ba mozart-fetcher.spec
-  # post_build:
-  #   commands:
-  #     - cosmos-release service "${COMPONENTNAME}-${REGION}" --release-version=v ${BUILDPATH}/RPMS/x86_64/*.x86_64.rpm
+      - rpmbuild --define "_topdir ${BUILDPATH}" --define "version ${COSMOS_VERSION}" -ba mozart-fetcher.spec
+  post_build:
+    commands:
+      - cosmos-release service "${COMPONENTNAME}-${REGION}" --release-version=v ${BUILDPATH}/RPMS/x86_64/*.x86_64.rpm
