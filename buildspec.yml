@@ -9,7 +9,7 @@ phases:
       - export REGION=eu-west-1
       - export COMPONENTNAME=mozart-fetcher
       - export BUILDPATH=/root/rpmbuiild
-      - cosmos-release generate-version "${COMPONENTNAME}-${REGION}"
+      - cosmos-release generate-version ${COMPONENTNAME}-${REGION}
       - env
   #     - mix deps.get
   #     - mix distillery.release
