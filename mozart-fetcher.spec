@@ -13,7 +13,7 @@ Source2: bake-scripts.tar.gz
 Source3: component-status-cfn-signal.sh
 Source4: cloudformation-signal.service
 
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
+BuildRoot: /root/rpmbuild
 BuildArch: x86_64
 
 Requires: cosmos-ca-chains cosmos-ca-tools

@@ -16,7 +16,6 @@ phases:
       - tar -zcf ${BUILDPATH}/SOURCES/bake-scripts.tar.gz bake-scripts/
       - cp mozart-fetcher.spec ${BUILDPATH}/SOURCES/
       - cp SOURCES/* ${BUILDPATH}/SOURCES/
-      - cd ${BUILDPATH}/SOURCES
       - echo "Generating version file"
       - export COSMOS_VERSION=`cosmos-release generate-version ${COMPONENTNAME}-${REGION}`
       - env
