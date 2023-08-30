@@ -12,7 +12,8 @@ phases:
       - mix deps.get
       - mix distillery.release
       - mkdir -p ${BUILDPATH}/SOURCES
-      - cp _build/prod/rel/mozart_fetcher/releases/*/mozart_fetcher.tar.gz ${BUILDPATH}/SOURCES/
+      - cp _build/prod/rel/mozart_fetcher/releases/*/${COMPONENTNAME}.tar.gz ${BUILDPATH}/SOURCES/
+      - tar -zcf ${BUILDPATH}/SOURCES/bake-scripts.tar.gz bake-scripts/
       - cp mozart-fetcher.spec ${BUILDPATH}/SOURCES/
       - cp SOURCES/* ${BUILDPATH}/SOURCES/
       - cd ${BUILDPATH}/SOURCES
