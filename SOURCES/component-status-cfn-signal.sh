@@ -1,8 +1,8 @@
 #!/bin/bash -x
 
-COMPONENT_NAME=$(cat /etc/bake-scripts/config.json | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["name"]')
-ENVIRONMENT=$(cat /etc/bake-scripts/config.json | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["environment"]')
-REGION=$(cat /etc/bake-scripts/config.json | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["configuration"]["aws_region"]')
+COMPONENT_NAME=$(cat /etc/bake-scripts/config.json | python3 -c 'import json,sys;obj=json.load(sys.stdin);print(obj["name"])')
+ENVIRONMENT=$(cat /etc/bake-scripts/config.json | python3 -c 'import json,sys;obj=json.load(sys.stdin);print(obj["environment"])')
+REGION=$(cat /etc/bake-scripts/config.json | python3 -c 'import json,sys;obj=json.load(sys.stdin);print(obj["configuration"]["aws_region"])')
 
 # STACKID should be changed to evaluate to the name of your Main stack
 STACKID=${ENVIRONMENT}-${COMPONENT_NAME}-main
