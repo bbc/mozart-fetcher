@@ -6,7 +6,6 @@ phases:
       - certee-fetch
   build:
     commands:
-      - env
       - mix deps.get
       - mix distillery.release
       - mkdir -p /root/rpmbuild/SOURCES
@@ -16,4 +15,5 @@ phases:
       - cd /root/rpmbuild/SOURCES
       - echo "Generating version file"
       - export COSMOS_VERSION=`cosmos-release generate-version mozart-fetcher`
-      - rpmbuild -ba --define "cosmos_version ${COSMOS_VERSION}" mozart-fetcher.spec
+      - env
+      - rpmbuild --define "_topdir /root/rpmbuild" --define "version ${COSMOS_VERSION}" -ba mozart-fetcher.spec

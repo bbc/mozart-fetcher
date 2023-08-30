@@ -1,5 +1,5 @@
 Name: mozart-fetcher
-Version: %{cosmosversion}
+Version: %{version}
 Release: 1%{?dist}
 License: MPL-2.0
 Group: Development/Frameworks
