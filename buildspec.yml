@@ -1,4 +1,7 @@
 version: 0.2
+env:
+  variables:
+    MIX_ENV: prod
 
 phases:
   install:
