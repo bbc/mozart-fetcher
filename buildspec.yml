@@ -6,9 +6,6 @@ env:
 phases:
   install:
     commands:
-      - ASSUME_ROLE_ARN="arn:aws:iam::134209033928:role/CodeBuildAppPipelineRole"
-      - TEMP_ROLE=$(aws sts assume-role --role-arn $ASSUME_ROLE_ARN --role-session-name test)
-      - env
       - certee-fetch
   build:
     commands:
