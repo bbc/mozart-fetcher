@@ -16,7 +16,6 @@ Source4: cloudformation-signal.service
 BuildRoot: /root/rpmbuild
 BuildArch: x86_64
 
-Requires: cosmos-ca-bundler cosmos-ca-tools
 Requires: amazon-cloudwatch-agent
 Requires: component-logger
 
