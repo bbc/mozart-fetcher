@@ -31,7 +31,6 @@ in parallel and aggregating the responses.
 %pre
 /usr/bin/getent group component >/dev/null || groupadd -r component
 /usr/bin/getent passwd component >/dev/null || useradd -r -g component -G component -s /sbin/nologin -c 'component service' component
-/usr/bin/chsh -s /bin/bash component
 
 %install
 mkdir -p %{buildroot}/home/component
