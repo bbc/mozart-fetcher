@@ -11,7 +11,10 @@ def main(argv):
 
     f = open("/etc/systemd/system/mozart-fetcher.service.d/env.conf", "w")
     f.write("[Service]\n")
-    for key, value in (key_values.items() | production_environment.items()):
+    print(key_values.items())
+    print(production_environment.items())
+    print((key_values.items() | production_environment.items()))
+    for key, value in key_values.items() + production_environment.items():
         f.write("Environment=%s=%s\n" % (key, pipes.quote(value)))
     f.close()
     return 0
