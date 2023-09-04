@@ -1,17 +1,16 @@
 .PHONY: dependencies
 COMPONENTNAME = mozart-fetcher
 REGION = eu-west-1
-CODEPATH = .
 BUILDPATH = /root/rpmbuild
 
 none:
 	@ echo Please specifiy a target
 
 dependencies:
-	cd ${CODEPATH}; mix deps.get
+	mix deps.get
 
 test:
-	cd ${CODEPATH}; MIX_ENV=test mix test
+	MIX_ENV=test mix test
 
 build:
 	$(eval COSMOS_VERSION:=$(shell cosmos-release generate-version ${COMPONENTNAME}-${REGION}))
