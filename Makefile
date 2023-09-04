@@ -14,7 +14,7 @@ test:
 
 build:
 	$(eval COSMOS_VERSION:=$(shell cosmos-release generate-version ${COMPONENTNAME}-${REGION}))
-        mix distillery.release
+	mix distillery.release
 	mkdir -p ${BUILDPATH}/SOURCES
 	cp _build/prod/rel/mozart_fetcher/releases/*/mozart_fetcher.tar.gz ${BUILDPATH}/SOURCES/
 	tar -zcf ${BUILDPATH}/SOURCES/bake-scripts.tar.gz bake-scripts/
