@@ -26,13 +26,11 @@ build:
 set_repositories:
 	git clone --single-branch --branch RESFRAME-5398 https://github.com/bbc/mozart-fetcher-build
 	for component in ${COMPONENTS}; do \
-		export COSMOS_CERT=/etc/pki/tls/certs/client.crt; \
-		export COSMOS_CERT_KEY=/etc/pki/tls/private/client.key; \
-		cosmos set-repositories $$component mozart-fetcher-build/repositories.json
-	done;
+		export COSMOS_CERT=/etc/pki/tls/certs/client.crt; export COSMOS_CERT_KEY=/etc/pki/tls/private/client.key; cosmos set-repositories "$$component" mozart-fetcher-build/repositories.json; \
+	done
 
 release:
 	echo "Releasing 'RPMS/**/*.rpm' to ${COMPONENTNAME}-${REGION}"
 	for component in ${COMPONENTS}; do \
-		cosmos-release service $$component --release-version=v ${BUILDPATH}/RPMS/x86_64/*.x86_64.rpm
-	done;
+		cosmos-release service "$$component" --release-version=v ${BUILDPATH}/RPMS/x86_64/*.x86_64.rpm; \
+	done
