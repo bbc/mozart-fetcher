@@ -1,5 +1,7 @@
 version: 0.2
-
+env:
+  # we need it to access https://github.com/bbc/mozart-fetcher-build
+  git-credential-helper: yes
 phases:
   install:
     commands:
@@ -11,4 +13,7 @@ phases:
       - make build
   post_build:
     commands:
+      - export COSMOS_CERT=/etc/pki/tls/certs/client.crt
+      - export COSMOS_CERT_KEY=/etc/pki/tls/private/client.key
+      - make set_repositories
       - make release

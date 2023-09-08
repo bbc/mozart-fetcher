@@ -22,6 +22,12 @@ build:
 	cp SOURCES/* ${BUILDPATH}/SOURCES/
 	rpmbuild --define "_topdir ${BUILDPATH}" --define "version ${COSMOS_VERSION}" --define '%dist .bbc.el8' -ba mozart-fetcher.spec
 
+set_repositories:
+	git clone --single-branch --branch RESFRAME-5398 https://github.com/bbc/mozart-fetcher-build
+	cosmos set-repositories "${COMPONENTNAME}-${REGION}" mozart-fetcher-build/repositories.json
+	cosmos set-repositories "${COMPONENTNAME}-weather-${REGION}" mozart-fetcher-build/repositories.json
+	cosmos set-repositories "${COMPONENTNAME}-sport-${REGION}" mozart-fetcher-build/repositories.json
+
 release:
 	echo "Releasing 'RPMS/**/*.rpm' to ${COMPONENTNAME}-${REGION}"
 	cosmos-release service "${COMPONENTNAME}-${REGION}" --release-version=v ${BUILDPATH}/RPMS/x86_64/*.x86_64.rpm
