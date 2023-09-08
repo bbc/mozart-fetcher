@@ -2,6 +2,7 @@
 COMPONENTNAME = mozart-fetcher
 REGION = eu-west-1
 BUILDPATH = /root/rpmbuild
+COMPONENTS = "mozart-fetcher-eu-west-1 mozart-fetcher-weather-eu-west-1 mozart-fetcher-sport-eu-west-1"
 
 none:
 	@ echo Please specifiy a target
@@ -24,12 +25,14 @@ build:
 
 set_repositories:
 	git clone --single-branch --branch RESFRAME-5398 https://github.com/bbc/mozart-fetcher-build
-	cosmos set-repositories "${COMPONENTNAME}-${REGION}" mozart-fetcher-build/repositories.json
-	cosmos set-repositories "${COMPONENTNAME}-weather-${REGION}" mozart-fetcher-build/repositories.json
-	cosmos set-repositories "${COMPONENTNAME}-sport-${REGION}" mozart-fetcher-build/repositories.json
+	for component in ${COMPONENTS}; do \
+		export COSMOS_CERT=/etc/pki/tls/certs/client.crt; \
+		export COSMOS_CERT_KEY=/etc/pki/tls/private/client.key; \
+		cosmos set-repositories $$component mozart-fetcher-build/repositories.json
+	done;
 
 release:
 	echo "Releasing 'RPMS/**/*.rpm' to ${COMPONENTNAME}-${REGION}"
-	cosmos-release service "${COMPONENTNAME}-${REGION}" --release-version=v ${BUILDPATH}/RPMS/x86_64/*.x86_64.rpm
-	cosmos-release service "${COMPONENTNAME}-weather-${REGION}" --release-version=v ${BUILDPATH}/RPMS/x86_64/*.x86_64.rpm
-	cosmos-release service "${COMPONENTNAME}-sport-${REGION}" --release-version=v ${BUILDPATH}/RPMS/x86_64/*.x86_64.rpm
+	for component in ${COMPONENTS}; do \
+		cosmos-release service $$component --release-version=v ${BUILDPATH}/RPMS/x86_64/*.x86_64.rpm
+	done;
