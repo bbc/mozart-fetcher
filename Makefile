@@ -25,12 +25,12 @@ build:
 
 set_repositories:
 	git clone --single-branch --branch RESFRAME-5398 https://github.com/bbc/mozart-fetcher-build
-	for component in ${COMPONENTS}; do \
-		export COSMOS_CERT=/etc/pki/tls/certs/client.crt; export COSMOS_CERT_KEY=/etc/pki/tls/private/client.key; cosmos set-repositories "$$component" mozart-fetcher-build/repositories.json; \
-	done
+	export COSMOS_CERT=/etc/pki/tls/certs/client.crt; export COSMOS_CERT_KEY=/etc/pki/tls/private/client.key; cosmos set-repositories "${COMPONENTNAME}-${REGION}" mozart-fetcher-build/repositories.json
+	export COSMOS_CERT=/etc/pki/tls/certs/client.crt; export COSMOS_CERT_KEY=/etc/pki/tls/private/client.key; cosmos set-repositories "${COMPONENTNAME}-weather-${REGION}" mozart-fetcher-build/repositories.json
+	export COSMOS_CERT=/etc/pki/tls/certs/client.crt; export COSMOS_CERT_KEY=/etc/pki/tls/private/client.key; cosmos set-repositories "${COMPONENTNAME}-sport-${REGION}" mozart-fetcher-build/repositories.json
 
 release:
 	echo "Releasing 'RPMS/**/*.rpm' to ${COMPONENTNAME}-${REGION}"
-	for component in ${COMPONENTS}; do \
-		cosmos-release service "$$component" --release-version=v ${BUILDPATH}/RPMS/x86_64/*.x86_64.rpm; \
-	done
+	cosmos-release service "${COMPONENTNAME}-${REGION}" --release-version=v ${BUILDPATH}/RPMS/x86_64/*.x86_64.rpm
+	cosmos-release service "${COMPONENTNAME}-weather-${REGION}" --release-version=v ${BUILDPATH}/RPMS/x86_64/*.x86_64.rpm
+	cosmos-release service "${COMPONENTNAME}-sport-${REGION}" --release-version=v ${BUILDPATH}/RPMS/x86_64/*.x86_64.rpm
