@@ -24,7 +24,7 @@ build:
 	rpmbuild --define "_topdir ${BUILDPATH}" --define "version ${COSMOS_VERSION}" --define '%dist .bbc.el8' -ba mozart-fetcher.spec
 
 set_repositories:
-	git clone --single-branch --branch RESFRAME-5398 https://github.com/bbc/mozart-fetcher-build
+	git clone --single-branch --branch master https://github.com/bbc/mozart-fetcher-build
 	export COSMOS_CERT=/etc/pki/tls/certs/client.crt; export COSMOS_CERT_KEY=/etc/pki/tls/private/client.key; cosmos set-repositories "${COMPONENTNAME}-${REGION}" mozart-fetcher-build/repositories.json
 	export COSMOS_CERT=/etc/pki/tls/certs/client.crt; export COSMOS_CERT_KEY=/etc/pki/tls/private/client.key; cosmos set-repositories "${COMPONENTNAME}-weather-${REGION}" mozart-fetcher-build/repositories.json
 	export COSMOS_CERT=/etc/pki/tls/certs/client.crt; export COSMOS_CERT_KEY=/etc/pki/tls/private/client.key; cosmos set-repositories "${COMPONENTNAME}-sport-${REGION}" mozart-fetcher-build/repositories.json
