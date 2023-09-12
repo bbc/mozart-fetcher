@@ -28,8 +28,6 @@ set_repositories:
 	for component in ${COMPONENTS}; do \
 		export COSMOS_CERT=/etc/pki/tls/certs/client.crt; \
 		export COSMOS_CERT_KEY=/etc/pki/tls/private/client.key; \
-		echo $$component; \
-		echo COSMOS_CERT; \
 		cosmos set-repositories $$component mozart-fetcher-build/repositories.json; \
 	done; \
 
