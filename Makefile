@@ -27,7 +27,7 @@ set_repositories:
 	git clone --single-branch --branch master https://github.com/bbc/mozart-fetcher-build
 	export COSMOS_CERT=/etc/pki/tls/certs/client.crt
 	export COSMOS_CERT_KEY=/etc/pki/tls/private/client.key
-	for component in $(COMPONENTS) do \
+	for component in $(COMPONENTS); do \
 		cosmos set-repositories $$component mozart-fetcher-build/repositories.json; \
 	done; \
 
