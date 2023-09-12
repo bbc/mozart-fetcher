@@ -25,9 +25,9 @@ build:
 
 set_repositories:
 	git clone --single-branch --branch master https://github.com/bbc/mozart-fetcher-build
-	export COSMOS_CERT=/etc/pki/tls/certs/client.crt; export COSMOS_CERT_KEY=/etc/pki/tls/private/client.key; cosmos set-repositories "${COMPONENTNAME}-${REGION}" mozart-fetcher-build/repositories.json
-	export COSMOS_CERT=/etc/pki/tls/certs/client.crt; export COSMOS_CERT_KEY=/etc/pki/tls/private/client.key; cosmos set-repositories "${COMPONENTNAME}-weather-${REGION}" mozart-fetcher-build/repositories.json
-	export COSMOS_CERT=/etc/pki/tls/certs/client.crt; export COSMOS_CERT_KEY=/etc/pki/tls/private/client.key; cosmos set-repositories "${COMPONENTNAME}-sport-${REGION}" mozart-fetcher-build/repositories.json
+	for component in ${COMPONENTS} do \
+	export COSMOS_CERT=/etc/pki/tls/certs/client.crt; export COSMOS_CERT_KEY=/etc/pki/tls/private/client.key; cosmos set-repositories $$component mozart-fetcher-build/repositories.json; \
+	done; \
 
 release:
 	echo "Releasing 'RPMS/**/*.rpm' to ${COMPONENTNAME}-${REGION}"
