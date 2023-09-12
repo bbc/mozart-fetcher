@@ -2,7 +2,6 @@
 COMPONENTNAME = mozart-fetcher
 REGION = eu-west-1
 BUILDPATH = /root/rpmbuild
-COMPONENTS = mozart-fetcher-eu-west-1 mozart-fetcher-weather-eu-west-1 mozart-fetcher-sport-eu-west-1
 
 none:
 	@ echo Please specifiy a target
@@ -32,7 +31,6 @@ set_repositories:
 	done; \
 
 release:
-	echo "Releasing 'RPMS/**/*.rpm' to ${COMPONENTNAME}-${REGION}"
 	for component in ${COMPONENTS}; do \
 		cosmos-release service $$component --release-version=v ${BUILDPATH}/RPMS/x86_64/*.x86_64.rpm; \
 	done; \
