@@ -13,9 +13,8 @@ phases:
   post_build:
     commands:
       - make set_repositories
-      - BRANCH=$(echo ${CODEBUILD_WEBHOOK_HEAD_REF} | cut -d "/" -f3-)
       - |
-        if [ "${BRANCH}"  = "master" ]; then
+        if [ "${CODEBUILD_WEBHOOK_HEAD_REF}" == "branch/master" ]; then
           make build;
           make release;
         fi
