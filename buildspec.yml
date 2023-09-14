@@ -10,8 +10,12 @@ phases:
     commands:
       - make dependencies
       - make test
-      - make build
   post_build:
     commands:
       - make set_repositories
-      - make release
+      - BRANCH=$(echo ${CODEBUILD_WEBHOOK_HEAD_REF} | cut -d "/" -f3-)
+      - |
+        if [ "${BRANCH}"  = "master" ]; then
+          make build;
+          make release;
+        fi
