@@ -1,28 +1,36 @@
-.PHONY: build compile run
+.PHONY: dependencies
+COMPONENTNAME = mozart-fetcher
+REGION = eu-west-1
+BUILDPATH = /root/rpmbuild
+
+none:
+	@ echo Please specifiy a target
+
+dependencies:
+	mix deps.get
+
+test:
+	MIX_ENV=test mix test
 
 build:
-	docker build -t mozart_fetcher .
+	$(eval COSMOS_VERSION:=$(shell cosmos-release generate-version ${COMPONENTNAME}-${REGION}))
+	mix distillery.release
+	mkdir -p ${BUILDPATH}/SOURCES
+	cp _build/prod/rel/mozart_fetcher/releases/*/mozart_fetcher.tar.gz ${BUILDPATH}/SOURCES/
+	tar -zcf ${BUILDPATH}/SOURCES/bake-scripts.tar.gz bake-scripts/
+	cp mozart-fetcher.spec ${BUILDPATH}/SOURCES/
+	cp SOURCES/* ${BUILDPATH}/SOURCES/
+	rpmbuild --define "_topdir ${BUILDPATH}" --define "version ${COSMOS_VERSION}" --define '%dist .bbc.el8' -ba mozart-fetcher.spec
 
-compile:
-	docker run \
-		--rm=true \
-		-v $(CURDIR):/opt/app \
-		-w /opt/app \
-		-e "DEV_CERT_PEM=$(DEV_CERT_PEM)" \
-		-e "APP_NAME=mozart_fetcher" \
-		-e "APP_VERSION=0.1.0" \
-		-e "RELEASE_DIR=_build/prod/rel/mozart_fetcher/releases/0.1.0/" \
-		-p 8080:8080 \
-		mozart_fetcher sh -c 'rm -rf _build tars && mkdir -p tars && mix release && cp _build/prod/rel/mozart_fetcher/releases/0.1.0/mozart_fetcher.tar.gz /opt/app/tars/'
+set_repositories:
+	git clone --single-branch --branch master https://github.com/bbc/mozart-fetcher-build
+	for component in ${COMPONENTS}; do \
+		export COSMOS_CERT=/etc/pki/tls/certs/client.crt; \
+		export COSMOS_CERT_KEY=/etc/pki/tls/private/client.key; \
+		cosmos set-repositories $$component mozart-fetcher-build/repositories.json; \
+	done; \
 
-run:
-	docker run \
-		--rm=true \
-		-v $(CURDIR):/opt/app \
-		-v $(DEV_CERT_PEM):$(DEV_CERT_PEM) \
-		-w /opt/app \
-		-e "DEV_CERT_PEM=$(DEV_CERT_PEM)" \
-		-e "APP_NAME=mozart_fetcher" \
-		-e "APP_VERSION=0.1.0" \
-		-p 8080:8080 \
-		mozart_fetcher sh -c 'mix run --no-halt'
+release:
+	for component in ${COMPONENTS}; do \
+		cosmos-release service $$component --release-version=v ${BUILDPATH}/RPMS/x86_64/*.x86_64.rpm; \
+	done; \

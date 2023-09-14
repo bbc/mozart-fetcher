@@ -1,5 +1,5 @@
 Name: mozart-fetcher
-Version: %{cosmosversion}
+Version: %{version}
 Release: 1%{?dist}
 License: MPL-2.0
 Group: Development/Frameworks
@@ -13,10 +13,9 @@ Source2: bake-scripts.tar.gz
 Source3: component-status-cfn-signal.sh
 Source4: cloudformation-signal.service
 
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
+BuildRoot: /root/rpmbuild
 BuildArch: x86_64
 
-Requires: cosmos-ca-chains cosmos-ca-tools
 Requires: amazon-cloudwatch-agent
 Requires: component-logger
 
@@ -27,7 +26,6 @@ in parallel and aggregating the responses.
 %pre
 /usr/bin/getent group component >/dev/null || groupadd -r component
 /usr/bin/getent passwd component >/dev/null || useradd -r -g component -G component -s /sbin/nologin -c 'component service' component
-/usr/bin/chsh -s /bin/bash component
 
 %install
 mkdir -p %{buildroot}/home/component

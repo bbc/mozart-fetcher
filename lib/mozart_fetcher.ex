@@ -23,17 +23,13 @@ defmodule MozartFetcher do
 
   def request_ssl do
     case environment() do
-      :prod -> [certfile: cert_path(), cacertfile: ca_cert_path(), keyfile: key_file_path()]
+      :prod -> [certfile: cert_path(), keyfile: key_file_path()]
       _ -> [certfile: System.get_env("DEV_CERT_PEM")]
     end
   end
 
   defp cert_path do
     System.get_env("cert_file_path")
-  end
-
-  defp ca_cert_path do
-    System.get_env("ca_file_path")
   end
 
   defp key_file_path do

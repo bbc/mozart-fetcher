@@ -1,0 +1,17 @@
+version: 0.2
+env:
+  # we need it to access https://github.com/bbc/mozart-fetcher-build
+  git-credential-helper: yes
+phases:
+  install:
+    commands:
+      - certee-fetch
+  build:
+    commands:
+      - make dependencies
+      - make test
+      - make build
+  post_build:
+    commands:
+      - make set_repositories
+      - make release
