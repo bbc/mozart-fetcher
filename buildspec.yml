@@ -12,9 +12,10 @@ phases:
       - make test
   post_build:
     commands:
-      - make set_repositories
       - |
-        if [ "${CODEBUILD_WEBHOOK_HEAD_REF}" == "branch/master" ]; then
+        RELEASABLE_BRANCH=$(git branch --contains ${CODEBUILD_RESOLVED_SOURCE_VERSION} --remote | grep -c -E '^\s*origin/master$' || true)
+        if [ "${RELEASABLE_BRANCH}" = "1" ] || [ "${FORCE}" = "true" ]; then
+          make set_repositories
           make build;
           make release;
         fi
