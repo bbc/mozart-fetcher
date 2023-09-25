@@ -18,6 +18,7 @@ BuildArch: x86_64
 
 Requires: amazon-cloudwatch-agent
 Requires: component-logger
+Requires: aws-cfn-bootstrap
 
 %description
 mozart-fetcher is a service for fetching multiple components
