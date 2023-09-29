@@ -50,8 +50,7 @@ systemctl enable cloudformation-signal
 /bin/chown -R component:component /var/log/component
 
 %files
-/home/component
-%attr(0755, component, component) /home/component/component-status-cfn-signal.sh
+%attr(0755, component, component) /home/component/*
 /usr/lib/systemd/system/cloudformation-signal.service
 /usr/lib/systemd/system/mozart-fetcher.service
 /var/log/component/app.log
