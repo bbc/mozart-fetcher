@@ -4,13 +4,16 @@ env:
   git-credential-helper: yes
 phases:
   install:
+    on-failure: ABORT
     commands:
       - certee-fetch
   build:
+    on-failure: ABORT
     commands:
       - make dependencies
       - make test
   post_build:
+    on-failure: ABORT
     commands:
       - |
         RELEASABLE_BRANCH=$(git branch --contains ${CODEBUILD_RESOLVED_SOURCE_VERSION} --remote | grep -c -E '^\s*origin/master$' || true)
