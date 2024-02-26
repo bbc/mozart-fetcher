@@ -23,11 +23,10 @@ build:
 	rpmbuild --define "_topdir ${BUILDPATH}" --define "version ${COSMOS_VERSION}" --define '%dist .bbc.el8' -ba mozart-fetcher.spec
 
 set_repositories:
-	git clone --single-branch --branch master https://github.com/bbc/mozart-fetcher-build
 	for component in ${COMPONENTS}; do \
-		export COSMOS_CERT=/etc/pki/tls/certs/client.crt; \
-		export COSMOS_CERT_KEY=/etc/pki/tls/private/client.key; \
-		cosmos set-repositories $$component mozart-fetcher-build/repositories.json; \
+		cosmos set-repositories $$component ${CODEPATH}/../infrastructure/stacks/repoconfig.json; \
+		status_code="`curl -s -w "%{http_code}" -H "content-type:application/json" -X PUT --data @${CODEPATH}/../infrastructure/stacks/repo_modules.json --cert $$COSMOS_CERT --key $$COSMOS_CERT_KEY https://cosmos.api.bbci.co.uk/v1/services/$$component/repository_modules`"; \
+		[[ "$$status_code" -eq 204 ]] || exit 1; \
 	done; \
 
 release:
