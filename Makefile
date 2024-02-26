@@ -22,8 +22,6 @@ build:
 set_repositories:
 	for component in ${COMPONENTS}; do \
 		cosmos set-repositories $$component repositories.json; \
-		status_code="`curl -s -w "%{http_code}" -H "content-type:application/json" -X PUT --data @${CODEPATH}/../infrastructure/stacks/repo_modules.json --cert $$COSMOS_CERT --key $$COSMOS_CERT_KEY https://cosmos.api.bbci.co.uk/v1/services/$$component/repository_modules`"; \
-		[[ "$$status_code" -eq 204 ]] || exit 1; \
 	done; \
 
 release:
