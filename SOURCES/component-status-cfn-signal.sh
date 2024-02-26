@@ -17,4 +17,4 @@ done
 
 # We should only reach here if the check above has confirmed that the app is up
 # resource should be set to the Logical Resource id of the instances AutoScalingGroup
-/usr/bin/cfn-signal --stack="${STACKID}" --region="${REGION}" --resource="ComponentAutoScalingGroup" --success=true
+/usr/bin/cfn-signal --stack="${STACKID}" --region="${REGION}" --resource="ApplicationAutoScalingGroup" --success=true
