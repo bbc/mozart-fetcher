@@ -1,0 +1,19 @@
+{
+    "news": {
+      "type": "mirrorlist",
+      "url": "https://repository.api.bbci.co.uk/news-libraries/revisions/head"
+    },
+    "cosmos-shared-libraries": {
+      "type": "mirrorlist",
+      "url": "https://repository.api.bbci.co.uk/cosmos-lib/revisions/head"
+    },
+    "aws-tools-el8-x86_64": {
+      "type": "mirrorlist",
+      "url": "https://repository.api.bbci.co.uk/aws-tools-el8-x86_64/revisions/stable",
+      "gpg_key": "-----BEGIN PGP PUBLIC KEY BLOCK-----\nVersion: GnuPG v2.0.14 (GNU/Linux)\n\nmQINBFU+OJsBEADSNABRPjwP7Skphu6I3sSUbGKMxQi3B//pIEuEjaDBljBm5U0Hpv3QGBeb9wj0\nMnPJfNHtxELzaEbDjLsD3ROc2kZQ+8FtblmoLZztN4aWd3fH4oaGGwKHkVQW4XNtyiNw4atdQ+/s\nmqQFpS9cfKDEJCtr4fvU4tH6YtbyFhu2shK3AilEHNPcL3XZsKKhvrCEakaDPYv7yzHt1BBQ5oNL\ntuu/d4THzkeoTQdn4DJjLWO68lfqV/JpmcR1QlakXfuIF9XqrEwC1w1nJXUKNPyopwoimNTYMyYN\nIkhtPa4+OIX0Cxu+qjJn7XJUn1z90X8eoH+BPtxCUoBdB+NUG0CE0WbdniflAugmDe0efzh/sQuX\nRYv/q81MNOP5xt6SAjl3YQjt7jt1+MAZ2OoUEGcsaU1lha9WShhTe5HAIpGhhJk0smqiKdLHIuBY\nrAcOK9eGcknNyj4cJoVh0jlQO1tnMawnWavkEc0m4wVDdvlh/ENS5HHaqFkk7IQNWffLqEg/htKe\n/ZlXMW9HF+ugNL/fqTdin+riJaKhcPk3qx/dHJDVpl5Kp/O+odqBfQsY77+uBr9RCj4yr+H//0fF\nwSjstlQ4Zp7edj9zjZ4zPjVmzCjAFTPYUeNKUnyeY9zkXwiQvoxzAYtdRfi6hMUWtS0RDnM+g8vo\niRYdGp+eUfF0kQARAQABtEtDbG91ZFRlYW0gSmVua2lucyAoY2kuY2xvdWR0ZWFtLnRvb2xzLmJi\nYy5jby51aykgPGZtb3RnY2xvdWR0ZWFtQGJiYy5jby51az6JAjgEEwECACIFAlU+OJsCGwMGCwkI\nBwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJEF0OaaiODRk7XAUP/iISIkl5na38wUjnTPYReB9IXDkg\nmwyWDoi4acZ/WcJkuIL0rkDxjUuwIi07VMMM9SA+MvHwTi2KItk5IsTwmVJNS/+vDvWtV238lJAN\nDTd+AfXesJol9V6PVVWrlwXT2GMBT3+C5OVep0z//vHFqfISdwPvXs/Kvs6zWFUQJUvhMr3rrIs8\nIs6Z+oRWqhcvG3YugUzZDJWXbWTtTzZ7QKs5/upDZffMtDf7NqtIlgXhkh90DhZ3KoAZjNo4CTwU\nfccucsqEfZcY5X6dFUq4vurrtxcqBPeLveNdQZYmcU1LRyZVYGJLQptShaxZUHWd4Hmi+qxnrSI6\nRph6Xh7yXOW9SUu57EpxhizJRzHwhOT2IuGOiig77r8OTDMYxPkENxCH1kZJXksTli60qF03f/x5\nq5YFMKCyVrjl4V0dLPGr9SxWyE3hRjJnEOR4sI5Jo/eeR4bgUSTsMRh0WVROJLav1isEkzrd8afc\ntS4LLqq3B8nD9QGxNU2dPF+IjdViXBbFOv6fY+hNr9tmA37SmXR8zhIJYw386ceYA8DIlRn83igZ\n8eUwUWuRcnNA8HvehqQlQ4o/0khaS2QzVH/gpBstxUGUHT145k3m+HSFb6xVNMQboLbvLgdCtWx7\nAjYfyWI5rUF/RqDVFV1cjIJssI4H6gAiSWLD2ODR1NMlQaQJ\n=iBwI\n-----END PGP PUBLIC KEY BLOCK-----\n"
+    },
+    "cosmic-el8": {
+      "type": "mirrorlist",
+      "url": "https://repository.api.bbci.co.uk/cosmic-el8/revisions/head"
+    }
+  }
