@@ -1,6 +1,5 @@
 version: 0.2
 env:
-  # we need it to access https://github.com/bbc/mozart-fetcher-build
   git-credential-helper: yes
   variables:
     COSMOS_CERT: "/etc/pki/tls/certs/client.crt"
@@ -9,8 +8,8 @@ phases:
    pre_build:
     on-failure: ABORT
     commands:
-    - export RELEASABLE_BRANCH=$(git branch --contains ${CODEBUILD_RESOLVED_SOURCE_VERSION} --remote | grep -c -E '^\s*origin/(main|master)$' || true)
-    - export COSMOS_VERSION=$(cosmos-release generate-version mozart-fetcher-eu-west-1)
+      - export RELEASABLE_BRANCH=$(git branch --contains ${CODEBUILD_RESOLVED_SOURCE_VERSION} --remote | grep -c -E '^\s*origin/(main|master)$' || true)
+      - export COSMOS_VERSION=$(cosmos-release generate-version mozart-fetcher-eu-west-1)
   install:
     on-failure: ABORT
     commands:
