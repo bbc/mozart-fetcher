@@ -1,4 +1,4 @@
-.PHONY: dependencies
+.PHONY: lint test build release install_cosmos_deploy
 BUILDPATH = /root/rpmbuild
 
 none:
