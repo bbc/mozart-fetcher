@@ -39,6 +39,24 @@ defmodule HTTPClientTest do
       assert {'User-Agent', 'MozartFetcher'} in resp.request.headers
     end
 
+    test "adds the correct header for FABL requests" do
+      defmodule MockClientSuccessfulResponse do
+        def get(endpoint, headers, _) do
+          {:ok,
+           %HTTPoison.Response{
+             request_url: "#{endpoint}/called",
+             request: %HTTPoison.Request{
+               url: endpoint,
+               headers: headers
+             }
+           }}
+        end
+      end
+
+      {:ok, resp} = HTTPClient.get("https://fabl.api.something/test", MockClientSuccessfulResponse)
+      assert {"ctx-unwrapped", "1"} in resp.request.headers
+    end
+
     test "makes only one request on success" do
       defmodule MockClientSuccessfulResponse do
         def get(endpoint, _, _) do
