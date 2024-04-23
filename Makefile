@@ -1,6 +1,4 @@
-.PHONY: dependencies
-COMPONENTNAME = mozart-fetcher
-REGION = eu-west-1
+.PHONY: lint test build release install_cosmos_deploy
 BUILDPATH = /root/rpmbuild
 
 none:
@@ -13,7 +11,6 @@ test:
 	MIX_ENV=test mix test
 
 build:
-	$(eval COSMOS_VERSION:=$(shell cosmos-release generate-version ${COMPONENTNAME}-${REGION}))
 	mix distillery.release
 	mkdir -p ${BUILDPATH}/SOURCES
 	cp _build/prod/rel/mozart_fetcher/releases/*/mozart_fetcher.tar.gz ${BUILDPATH}/SOURCES/
@@ -23,14 +20,16 @@ build:
 	rpmbuild --define "_topdir ${BUILDPATH}" --define "version ${COSMOS_VERSION}" --define '%dist .bbc.el8' -ba mozart-fetcher.spec
 
 set_repositories:
-	git clone --single-branch --branch master https://github.com/bbc/mozart-fetcher-build
 	for component in ${COMPONENTS}; do \
-		export COSMOS_CERT=/etc/pki/tls/certs/client.crt; \
-		export COSMOS_CERT_KEY=/etc/pki/tls/private/client.key; \
-		cosmos set-repositories $$component mozart-fetcher-build/repositories.json; \
+		cosmos set-repositories $$component repositories.json; \
 	done; \
 
 release:
 	for component in ${COMPONENTS}; do \
 		cosmos-release service $$component --release-version=v ${BUILDPATH}/RPMS/x86_64/*.x86_64.rpm; \
+	done; \
+
+deploy:
+	for component in ${COMPONENTS}; do \
+		cosmos deploy $$component test --force --release ${COSMOS_VERSION}; \
 	done; \
