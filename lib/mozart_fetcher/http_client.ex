@@ -7,7 +7,7 @@ defmodule HTTPClient do
   def get(endpoint, client \\ client()) do
     try do
       ExMetrics.timeframe "function.timing.http_client.get" do
-        headers = [{"accept-encoding", "gzip"}]
+        headers = set_request_headers(endpoint)
 
         options = [
           recv_timeout: TimeoutParser.parse(endpoint),
@@ -32,6 +32,9 @@ defmodule HTTPClient do
         {:error, %HTTPoison.Error{reason: :unexpected}}
     end
   end
+
+  defp set_request_headers("https://fabl.api." <> _), do: [{"accept-encoding", "gzip"}, {"ctx-unwrapped", "1"}]
+  defp set_request_headers(_endpoint), do: [{"accept-encoding", "gzip"}]
 
   defp sanitise(endpoint) do
     String.replace(endpoint, " ", "%20")
