@@ -1,13 +1,15 @@
 defmodule MozartFetcher.MixProject do
   use Mix.Project
 
+  @version "1.0.0"
   def project do
     [
       app: :mozart_fetcher,
-      version: "1.0.0",
-      elixir: "~> 1.7",
+      version: @version,
+      elixir: "~> 1.16",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      releases: releases()
     ]
   end
 
@@ -16,6 +18,20 @@ defmodule MozartFetcher.MixProject do
     [
       extra_applications: [:logger, :cowboy, :plug, :httpoison, :con_cache],
       mod: {MozartFetcher.Application, [env: Mix.env()]}
+    ]
+  end
+
+  defp releases do
+    [
+      mozart_fetcher: [
+        version: @version,
+        validate_compile_env: false,
+        include_executables_for: [:unix],
+        applications: [runtime_tools: :permanent],
+        steps: [:assemble, :tar],
+        include_erts: true,
+        include_src: false
+      ]
     ]
   end
 
