@@ -40,7 +40,7 @@ defmodule HTTPClientTest do
     end
 
     test "adds the correct header for FABL requests" do
-      defmodule MockClientSuccessfulResponse do
+      defmodule MockClientSuccessfulResponseWithHeaders do
         def get(endpoint, headers, _) do
           {:ok,
            %HTTPoison.Response{
@@ -53,7 +53,9 @@ defmodule HTTPClientTest do
         end
       end
 
-      {:ok, resp} = HTTPClient.get("https://fabl.api.something/test", MockClientSuccessfulResponse)
+      {:ok, resp} =
+        HTTPClient.get("https://fabl.api.something/test", MockClientSuccessfulResponseWithHeaders)
+
       assert {"ctx-unwrapped", "1"} in resp.request.headers
     end
 
