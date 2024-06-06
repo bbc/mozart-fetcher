@@ -41,7 +41,6 @@ defmodule MozartFetcher.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:httpoison, "~> 1.8"},
       {:con_cache, "~> 1.0"},
-      {:distillery, "~> 2.0", runtime: false},
       {:parse_trans, "~> 3.4", override: true},
       {:hackney, "~> 1.20.1"},
       {:ex_metrics, git: "https://github.com/bbc/ExMetrics.git"},
