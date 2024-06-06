@@ -1,6 +1,6 @@
 import Config
 
-config :logger, level: :warn
+config :logger, level: :warning
 
 config :mozart_fetcher,
   default_content_timeout: 500,
