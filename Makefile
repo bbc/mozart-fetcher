@@ -10,13 +10,15 @@ dependencies:
 	mix deps.get
 
 test:
+	MIX_ENV=test mix compile
 	MIX_ENV=test mix test
 
 build:
 	$(eval COSMOS_VERSION:=$(shell cosmos-release generate-version ${COMPONENTNAME}-${REGION}))
-	mix distillery.release
+	mix release
 	mkdir -p ${BUILDPATH}/SOURCES
 	cp _build/prod/rel/mozart_fetcher/releases/*/mozart_fetcher.tar.gz ${BUILDPATH}/SOURCES/
+	cp _build/prod/mozart_fetcher-1.0.0.tar.gz ${BUILDPATH}/SOURCES/mozart_fetcher.tar.gz
 	tar -zcf ${BUILDPATH}/SOURCES/bake-scripts.tar.gz bake-scripts/
 	cp mozart-fetcher.spec ${BUILDPATH}/SOURCES/
 	cp SOURCES/* ${BUILDPATH}/SOURCES/
