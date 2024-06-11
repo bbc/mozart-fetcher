@@ -1,4 +1,4 @@
-.PHONY: dependencies
+.PHONY: dependencies test
 COMPONENTNAME = mozart-fetcher
 REGION = eu-west-1
 BUILDPATH = /root/rpmbuild
