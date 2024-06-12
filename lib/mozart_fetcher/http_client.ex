@@ -33,7 +33,7 @@ defmodule HTTPClient do
     end
   end
 
-  defp set_request_headers("https://fabl.api." <> _), do: [{"accept-encoding", "gzip"}, {"ctx-unwrapped", "1"}]
+  defp set_request_headers("https://fabl.api." <> _), do: [{"accept-encoding", "gzip"}, {"ctx-unwrapped", "1"}, {"ctx-service-env", MozartFetcher.environment()}]
   defp set_request_headers(_endpoint), do: [{"accept-encoding", "gzip"}]
 
   defp sanitise(endpoint) do
