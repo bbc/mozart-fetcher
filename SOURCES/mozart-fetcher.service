@@ -7,7 +7,8 @@ Environment=PORT=8080
 User=component
 Group=component
 WorkingDirectory=/home/component/mozart-fetcher
-ExecStart=/home/component/mozart-fetcher/bin/mozart_fetcher foreground
+ExecStart=/home/component/mozart-fetcher/bin/mozart_fetcher start
+ExecStop=/home/component/mozart-fetcher/bin/mozart_fetcher stop
 Restart=on-failure
 [Install]
 WantedBy=multi-user.target
