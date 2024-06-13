@@ -14,9 +14,9 @@ defmodule MozartFetcher.MetricDefinitions do
 
       def fetcher_metrics() do
         [
-          counter("success.components.decode"),
-          counter("error.components.decode"),
-          counter("error.empty_component_list"),
+          counter("success.components.decode", event_name: [:success, :components, :decode]),
+          counter("error.components.decode", event_name: [:error, :components, :decode]),
+          counter("error.empty_component_list", event_name: [:error, :empty_component_list]),
           summary("function.timing.fetcher.process",
             event_name: [:function, :timing, :fetcher, :process],
             measurement: :duration,
@@ -27,8 +27,8 @@ defmodule MozartFetcher.MetricDefinitions do
             measurement: :duration,
             unit: {:native, :millisecond}
           ),
-          counter("http.component.retry"),
-          counter("http.component.error"),
+          counter("http.component.retry", event_name: [:http, :component, :retry]),
+          counter("http.component.error", event_name: [:http, :component, :error]),
           counter("success.component.process",
             event_name: [:success, :component, :process],
             tags: [:status_code, :component_id]
@@ -36,7 +36,18 @@ defmodule MozartFetcher.MetricDefinitions do
           counter("error.component.process",
             event_name: [:error, :component, :process],
             tags: [:status_code, :component_id]
-          )
+          ),
+          counter("web.request.count", event_name: [:web, :response, :request]),
+          counter("web.response.count", event_name: [:web, :response, :count]),
+          counter("web.response.status",
+            event_name: [:web, :response, :status],
+            tags: [:status_code]
+          ),
+          counter("web.response.timing",
+            event_name: [:web, :response, :timing],
+            tags: [:status_code]
+          ),
+          counter("web.response.timing.page", event_name: [:web, :response, :timing, :page])
         ]
       end
     end
