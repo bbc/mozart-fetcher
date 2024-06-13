@@ -37,7 +37,7 @@ defmodule MozartFetcher.MetricDefinitions do
             event_name: [:error, :component, :process],
             tags: [:status_code, :component_id]
           ),
-          counter("web.request.count", event_name: [:web, :response, :request]),
+          counter("web.request.count", event_name: [:web, :request, :count]),
           counter("web.response.count", event_name: [:web, :response, :count]),
           counter("web.response.status",
             event_name: [:web, :response, :status],
