@@ -43,7 +43,9 @@ defmodule MozartFetcher.MixProject do
       {:con_cache, "~> 1.0"},
       {:parse_trans, "~> 3.4", override: true},
       {:hackney, "~> 1.20.1"},
-      {:ex_metrics, git: "https://github.com/bbc/ExMetrics.git"},
+      {:telemetry, "~> 1.0"},
+      {:telemetry_metrics, "~> 0.6"},
+      {:telemetry_metrics_statsd, "~> 0.7"},
       {:logger_file_backend, "~> 0.0.10"},
       {:jason, "~> 1.3"}
     ]

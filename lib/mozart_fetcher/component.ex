@@ -46,14 +46,17 @@ defmodule MozartFetcher.Component do
   end
 
   defp metric(id, _endpoint, 200) do
-    ExMetrics.increment("success.component.process")
-    ExMetrics.increment("success.component.process.#{id}.200")
+    :telemetry.execute([:success, :component, :process], %{}, %{
+      status_code: 200,
+      component_id: id
+    })
   end
 
   defp metric(id, endpoint, status) when is_integer(status) do
-    ExMetrics.increment("error.component.process.#{id}")
-    ExMetrics.increment("error.component.process.#{id}.#{status}")
-    ExMetrics.increment("error.component.process.#{status}")
+    :telemetry.execute([:error, :component, :process], %{}, %{
+      status_code: status,
+      component_id: id
+    })
 
     Logger.error("Non-200 response", %{
       status: status,
@@ -63,8 +66,7 @@ defmodule MozartFetcher.Component do
   end
 
   defp metric(id, endpoint, reason) do
-    ExMetrics.increment("error.component.process")
-    ExMetrics.increment("error.component.process.#{id}")
+    :telemetry.execute([:error, :component, :process], %{}, %{component_id: id})
 
     Logger.error("Failed to process HTTP request", %{
       reason: reason,

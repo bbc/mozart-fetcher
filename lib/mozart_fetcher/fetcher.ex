@@ -2,19 +2,17 @@ defmodule MozartFetcher.Fetcher do
   require Logger
   alias MozartFetcher.{Component, TimeoutParser, Envelope}
 
-  use ExMetrics
-
   @timeout_buffer 50
   @max_concurrency 50
 
   def process([]) do
-    ExMetrics.increment("error.empty_component_list")
+    :telemetry.execute([:error, :empty_component_list], %{})
     Logger.error("Error cannot process empty component list")
     {:error}
   end
 
   def process(configs, buffer \\ @timeout_buffer) do
-    ExMetrics.timeframe "function.timing.fetcher.process" do
+    :telemetry.span([:function, :timing, :fetcher, :process], %{}, fn ->
       max_timeout = TimeoutParser.max(configs) + buffer
 
       stream_opts = [
@@ -29,7 +27,7 @@ defmodule MozartFetcher.Fetcher do
       |> zip(configs)
       |> decorate_response()
       |> Jason.encode!()
-    end
+    end)
   end
 
   defp decorate_response(envelopes) do

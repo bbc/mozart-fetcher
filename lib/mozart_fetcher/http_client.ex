@@ -1,12 +1,11 @@
 defmodule HTTPClient do
   require Logger
-  use ExMetrics
 
   alias MozartFetcher.TimeoutParser
 
   def get(endpoint, client \\ client()) do
     try do
-      ExMetrics.timeframe "function.timing.http_client.get" do
+      :telemetry.span([:function, :timing, :http_client, :get], %{}, fn ->
         headers = set_request_headers(endpoint)
 
         options = [
@@ -17,17 +16,17 @@ defmodule HTTPClient do
 
         case make_request(sanitise(endpoint), headers, options, client) do
           {:error, %HTTPoison.Error{reason: :closed}} ->
-            ExMetrics.increment("http.component.retry")
+            :telemetry.execute([:http, :component, :retry], %{})
             make_request(sanitise(endpoint), headers, options, client)
 
           {k, resp} ->
             handle_response({k, resp})
         end
         |> log_errors_and_return()
-      end
+      end)
     rescue
       _ ->
-        ExMetrics.increment("http.component.error")
+        :telemetry.execute([:http, :component, :error], %{})
         Logger.error("HTTP Client error caught")
         {:error, %HTTPoison.Error{reason: :unexpected}}
     end

@@ -35,5 +35,4 @@ config :logger, :console,
   format: {MozartFetcher.Logger.Formatter, :format},
   metadata: :all
 
-import_config "metrics.exs"
 import_config "#{Mix.env()}.exs"
