@@ -36,7 +36,7 @@ defmodule HTTPClientTest do
 
     test "the request headers contain a User-Agent header with the value MozartFetcher" do
       {:ok, resp} = HTTPClient.get("http://localhost:8082/foo/bar")
-      assert {'User-Agent', 'MozartFetcher'} in resp.request.headers
+      assert {"User-Agent", "MozartFetcher"} in resp.request.headers
     end
 
     test "adds the correct header for FABL requests" do
