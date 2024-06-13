@@ -12,22 +12,26 @@ defmodule MozartFetcher.Fetcher do
   end
 
   def process(configs, buffer \\ @timeout_buffer) do
-    :telemetry.span([:function, :timing, :fetcher, :process], %{}, fn ->
-      max_timeout = TimeoutParser.max(configs) + buffer
+    before_time = System.monotonic_time(:millisecond)
+    max_timeout = TimeoutParser.max(configs) + buffer
 
-      stream_opts = [
-        timeout: max_timeout,
-        on_timeout: :kill_task,
-        max_concurrency: @max_concurrency
-      ]
+    stream_opts = [
+      timeout: max_timeout,
+      on_timeout: :kill_task,
+      max_concurrency: @max_concurrency
+    ]
 
+    c =
       configs
       |> Enum.with_index()
       |> Task.async_stream(&Component.fetch/1, stream_opts)
       |> zip(configs)
       |> decorate_response()
       |> Jason.encode!()
-    end)
+
+    timing = (System.monotonic_time(:millisecond) - before_time) |> abs
+    :telemetry.execute([:function, :timing, :fetcher, :process], %{duration: timing})
+    c
   end
 
   defp decorate_response(envelopes) do

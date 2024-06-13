@@ -5,15 +5,16 @@ defmodule HTTPClient do
 
   def get(endpoint, client \\ client()) do
     try do
-      :telemetry.span([:function, :timing, :http_client, :get], %{}, fn ->
-        headers = set_request_headers(endpoint)
+      before_time = System.monotonic_time(:millisecond)
+      headers = set_request_headers(endpoint)
 
-        options = [
-          recv_timeout: TimeoutParser.parse(endpoint),
-          ssl: MozartFetcher.request_ssl(),
-          hackney: [pool: :origin_pool]
-        ]
+      options = [
+        recv_timeout: TimeoutParser.parse(endpoint),
+        ssl: MozartFetcher.request_ssl() ++ [verify: :verify_none],
+        hackney: [pool: :origin_pool]
+      ]
 
+      response =
         case make_request(sanitise(endpoint), headers, options, client) do
           {:error, %HTTPoison.Error{reason: :closed}} ->
             :telemetry.execute([:http, :component, :retry], %{})
@@ -23,7 +24,10 @@ defmodule HTTPClient do
             handle_response({k, resp})
         end
         |> log_errors_and_return()
-      end)
+
+      timing = (System.monotonic_time(:millisecond) - before_time) |> abs
+      :telemetry.execute([:function, :timing, :http_client, :get], %{duration: timing})
+      response
     rescue
       _ ->
         :telemetry.execute([:http, :component, :error], %{})
@@ -87,7 +91,8 @@ defmodule HTTPClient do
     response
   end
 
-  defp log_errors_and_return(response = {:ok, _}), do: response
+  defp log_errors_and_return(response = {:ok, _}),
+    do: response
 
   defp client() do
     HTTPoison
