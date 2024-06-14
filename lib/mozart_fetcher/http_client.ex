@@ -10,7 +10,7 @@ defmodule HTTPClient do
 
       options = [
         recv_timeout: TimeoutParser.parse(endpoint),
-        ssl: MozartFetcher.request_ssl() ++ [verify: :verify_none],
+        ssl: MozartFetcher.request_ssl(),
         hackney: [pool: :origin_pool]
       ]
 

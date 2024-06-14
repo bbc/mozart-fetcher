@@ -25,7 +25,7 @@ defmodule MozartFetcher do
     case environment() do
       :prod -> [certfile: cert_path(), keyfile: key_file_path()]
       _ -> [certfile: System.get_env("DEV_CERT_PEM")]
-    end
+    end ++ [verify: :verify_none]
   end
 
   defp cert_path do
