@@ -21,7 +21,7 @@ defmodule MozartFetcher.Fetcher do
       max_concurrency: @max_concurrency
     ]
 
-    c =
+    decoded_components =
       configs
       |> Enum.with_index()
       |> Task.async_stream(&Component.fetch/1, stream_opts)
@@ -31,7 +31,7 @@ defmodule MozartFetcher.Fetcher do
 
     timing = (System.monotonic_time(:millisecond) - before_time) |> abs
     :telemetry.execute([:function, :timing, :fetcher, :process], %{duration: timing})
-    c
+    decoded_components
   end
 
   defp decorate_response(envelopes) do
