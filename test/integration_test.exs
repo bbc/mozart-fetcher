@@ -26,8 +26,8 @@ defmodule MozartFetcher.IntegrationTest do
               id: "stream-icons",
               envelope: %{
                 head: [],
-                bodyLast: [],
-                bodyInline: "<DIV id=\"site-container\">"
+                bodyInline: "<DIV id=\"site-container\">",
+                bodyLast: []
               }
             }
           ]
@@ -62,9 +62,9 @@ defmodule MozartFetcher.IntegrationTest do
               id: "big-component",
               envelope: %{
                 head: [],
-                bodyLast: [],
                 bodyInline:
-                  "<DIV id=\"big-component\" class=\"big\"><h1>This is a really big component</h1></DIV>"
+                  "<DIV id=\"big-component\" class=\"big\"><h1>This is a really big component</h1></DIV>",
+                bodyLast: []
               }
             }
           ]

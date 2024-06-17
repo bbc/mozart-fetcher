@@ -3,9 +3,8 @@ defmodule MozartFetcher.Router do
   alias MozartFetcher.{Fetcher, Config, Decoder}
 
   use Plug.Router
-  use ExMetrics
   plug(Plug.Head)
-  plug(ExMetrics.Plug.PageMetrics)
+  plug(MozartFetcher.Plug.PageMetrics)
 
   plug(:match)
   plug(:dispatch)
@@ -42,11 +41,11 @@ defmodule MozartFetcher.Router do
   def config(body) do
     case Decoder.decode_config(body, %Config{}) do
       {:ok, components} ->
-        ExMetrics.increment("success.components.decode")
+        :telemetry.execute([:success, :components, :decode], %{})
         {:ok, components}
 
       {:error} ->
-        ExMetrics.increment("error.components.decode")
+        :telemetry.execute([:error, :components, :decode], %{})
         Logger.error("Failed to decode components into list")
         {:error, %{message: "Internal Server Error", status: 500}}
     end

@@ -1,39 +1,44 @@
 defmodule HTTPClient do
   require Logger
-  use ExMetrics
 
   alias MozartFetcher.TimeoutParser
 
   def get(endpoint, client \\ client()) do
     try do
-      ExMetrics.timeframe "function.timing.http_client.get" do
-        headers = set_request_headers(endpoint)
+      before_time = System.monotonic_time(:millisecond)
+      headers = set_request_headers(endpoint)
 
-        options = [
-          recv_timeout: TimeoutParser.parse(endpoint),
-          ssl: MozartFetcher.request_ssl(),
-          hackney: [pool: :origin_pool]
-        ]
+      options = [
+        recv_timeout: TimeoutParser.parse(endpoint),
+        ssl: MozartFetcher.request_ssl(),
+        hackney: [pool: :origin_pool]
+      ]
 
+      response =
         case make_request(sanitise(endpoint), headers, options, client) do
           {:error, %HTTPoison.Error{reason: :closed}} ->
-            ExMetrics.increment("http.component.retry")
+            :telemetry.execute([:http, :component, :retry], %{})
             make_request(sanitise(endpoint), headers, options, client)
 
           {k, resp} ->
             handle_response({k, resp})
         end
         |> log_errors_and_return()
-      end
+
+      timing = (System.monotonic_time(:millisecond) - before_time) |> abs
+      :telemetry.execute([:function, :timing, :http_client, :get], %{duration: timing})
+      response
     rescue
       _ ->
-        ExMetrics.increment("http.component.error")
+        :telemetry.execute([:http, :component, :error], %{})
         Logger.error("HTTP Client error caught")
         {:error, %HTTPoison.Error{reason: :unexpected}}
     end
   end
 
-  defp set_request_headers("https://fabl.api." <> _), do: [{"accept-encoding", "gzip"}, {"ctx-unwrapped", "1"}]
+  defp set_request_headers("https://fabl.api." <> _),
+    do: [{"accept-encoding", "gzip"}, {"ctx-unwrapped", "1"}]
+
   defp set_request_headers(_endpoint), do: [{"accept-encoding", "gzip"}]
 
   defp sanitise(endpoint) do
@@ -45,7 +50,7 @@ defmodule HTTPClient do
   end
 
   defp request_headers(headers) do
-    headers ++ [{'User-Agent', 'MozartFetcher'}]
+    headers ++ [{"User-Agent", "MozartFetcher"}]
   end
 
   defp handle_response({:ok, response}) do
@@ -86,7 +91,8 @@ defmodule HTTPClient do
     response
   end
 
-  defp log_errors_and_return(response = {:ok, _}), do: response
+  defp log_errors_and_return(response = {:ok, _}),
+    do: response
 
   defp client() do
     HTTPoison

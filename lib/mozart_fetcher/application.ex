@@ -3,12 +3,14 @@ defmodule MozartFetcher.Application do
   require Logger
 
   use Application
+  alias MozartFetcher.Metrics
 
   @connection_timeout MozartFetcher.connection_timeout()
   @max_connections MozartFetcher.max_connections()
 
   defp children(env: :test) do
     [
+      Metrics.TelemetrySupervisor,
       Plug.Cowboy.child_spec(
         scheme: :http,
         plug: MozartFetcher.FakeOrigin,
@@ -20,6 +22,7 @@ defmodule MozartFetcher.Application do
 
   defp children(_) do
     [
+      Metrics.TelemetrySupervisor,
       Plug.Cowboy.child_spec(
         scheme: :http,
         plug: MozartFetcher.Router,
