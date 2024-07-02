@@ -7,6 +7,7 @@ defmodule HTTPClient do
     try do
       before_time = System.monotonic_time(:millisecond)
       headers = set_request_headers(endpoint)
+      endpoint = process_request_url(endpoint)
 
       options = [
         recv_timeout: TimeoutParser.parse(endpoint),
@@ -36,9 +37,19 @@ defmodule HTTPClient do
     end
   end
 
-  defp set_request_headers("https://fabl.api." <> _) do
-    service_env = if MozartFetcher.environment() === :prod , do: "live", else: "test"
-    [{"accept-encoding", "gzip"}, {"ctx-unwrapped", "1"}, {"ctx-service-env", service_env}]
+  def process_request_url(endpoint = "https://fabl.api." <> _) do
+    # Remove param that is passed to set FABL ctx-service-env header
+    String.replace(endpoint, ~r"&fabl-ctx-service-env=(test|live)", "")
+  end
+
+  def process_request_url(endpoint) do
+    endpoint
+  end
+
+  defp set_request_headers(endpoint = "https://fabl.api." <> _) do
+    # Default to live to match FABL default behaviour
+    ctx_service_env = if String.match?(endpoint , ~r"fabl-ctx-service-env=test"), do: "test", else: "live"
+    [{"accept-encoding", "gzip"}, {"ctx-unwrapped", "1"}, {"ctx-service-env", ctx_service_env}]
   end
 
   defp set_request_headers(_endpoint), do: [{"accept-encoding", "gzip"}]
