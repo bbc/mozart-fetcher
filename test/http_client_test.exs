@@ -39,26 +39,6 @@ defmodule HTTPClientTest do
       assert {"User-Agent", "MozartFetcher"} in resp.request.headers
     end
 
-    test "adds the correct header for FABL requests" do
-      defmodule MockClientSuccessfulResponseWithHeaders do
-        def get(endpoint, headers, _) do
-          {:ok,
-           %HTTPoison.Response{
-             request_url: "#{endpoint}/called",
-             request: %HTTPoison.Request{
-               url: endpoint,
-               headers: headers
-             }
-           }}
-        end
-      end
-
-      {:ok, resp} =
-        HTTPClient.get("https://fabl.api.something/test", MockClientSuccessfulResponseWithHeaders)
-
-      assert {"ctx-unwrapped", "1"} in resp.request.headers
-    end
-
     test "makes only one request on success" do
       defmodule MockClientSuccessfulResponse do
         def get(endpoint, _, _) do
@@ -165,6 +145,48 @@ defmodule HTTPClientTest do
                   request: nil,
                   status_code: 200
                 }}
+    end
+  end
+
+  describe "get FABL" do
+    defmodule MockClientSuccessfulResponseFABL do
+      def get(endpoint, headers, _) do
+        {:ok,
+          %HTTPoison.Response{
+            request_url: "#{endpoint}",
+            request: %HTTPoison.Request{
+              url: endpoint,
+              headers: headers
+            }
+          }}
+      end
+    end
+
+    test "sets the ctx-service-env header to live by default for FABL requests" do
+      {:ok, resp} =
+        HTTPClient.get("https://fabl.api.something/test?param=test", MockClientSuccessfulResponseFABL)
+
+      assert resp.request_url == "https://fabl.api.something/test?param=test"
+      assert {"ctx-unwrapped", "1"} in resp.request.headers
+      assert {"ctx-service-env", "live"} in resp.request.headers
+    end
+
+    test "sets the ctx-service-env header to live for FABL requests" do
+      {:ok, resp} =
+        HTTPClient.get("https://fabl.api.something/test?param=test&fabl-ctx-service-env=live", MockClientSuccessfulResponseFABL)
+
+      assert resp.request_url == "https://fabl.api.something/test?param=test"
+      assert {"ctx-unwrapped", "1"} in resp.request.headers
+      assert {"ctx-service-env", "live"} in resp.request.headers
+    end
+
+    test "sets the ctx-service-env header to test for FABL requests" do
+      {:ok, resp} =
+        HTTPClient.get("https://fabl.api.something/test?param=test&fabl-ctx-service-env=test", MockClientSuccessfulResponseFABL)
+
+      assert resp.request_url == "https://fabl.api.something/test?param=test"
+      assert {"ctx-unwrapped", "1"} in resp.request.headers
+      assert {"ctx-service-env", "test"} in resp.request.headers
     end
   end
 end
