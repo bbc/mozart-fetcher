@@ -12,7 +12,7 @@ defmodule MozartFetcher.Fetcher do
   end
 
   def process(configs, buffer \\ @timeout_buffer) do
-    before_time = System.monotonic_time(:millisecond)
+    before_time = System.monotonic_time(:nanosecond)
     max_timeout = TimeoutParser.max(configs) + buffer
 
     stream_opts = [
@@ -29,7 +29,7 @@ defmodule MozartFetcher.Fetcher do
       |> decorate_response()
       |> Jason.encode!()
 
-    timing = (System.monotonic_time(:millisecond) - before_time) |> abs
+    timing = (System.monotonic_time(:nanosecond) - before_time) |> abs
     :telemetry.execute([:function, :timing, :fetcher, :process], %{duration: timing})
     decoded_components
   end
