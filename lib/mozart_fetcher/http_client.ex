@@ -5,7 +5,7 @@ defmodule HTTPClient do
 
   def get(endpoint, client \\ client()) do
     try do
-      before_time = System.monotonic_time(:millisecond)
+      before_time = System.monotonic_time(:nanosecond)
       headers = set_request_headers(endpoint)
 
       options = [
@@ -25,7 +25,7 @@ defmodule HTTPClient do
         end
         |> log_errors_and_return()
 
-      timing = (System.monotonic_time(:millisecond) - before_time) |> abs
+      timing = (System.monotonic_time(:nanosecond) - before_time) |> abs
       :telemetry.execute([:function, :timing, :http_client, :get], %{duration: timing})
       response
     rescue

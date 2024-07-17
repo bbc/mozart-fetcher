@@ -5,11 +5,11 @@ defmodule MozartFetcher.Plug.PageMetrics do
   def init(opts), do: opts
 
   def call(conn, _opts) do
-    before_time = System.monotonic_time(:millisecond)
+    before_time = System.monotonic_time(:nanosecond)
     :telemetry.execute([:web, :request, :count], %{})
 
     register_before_send(conn, fn conn ->
-      timing = (System.monotonic_time(:millisecond) - before_time) |> abs
+      timing = (System.monotonic_time(:nanosecond) - before_time) |> abs
 
       :telemetry.execute([:web, :response, :status], %{}, %{status_code: conn.status})
 

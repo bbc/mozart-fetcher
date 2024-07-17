@@ -19,11 +19,13 @@ defmodule MozartFetcher.MetricDefinitions do
           counter("error.empty_component_list", event_name: [:error, :empty_component_list]),
           summary("function.timing.fetcher.process",
             event_name: [:function, :timing, :fetcher, :process],
-            measurement: :duration
+            measurement: :duration,
+            unit: {:native, :millisecond}
           ),
           summary("function.timing.http_client.get",
-            event_name: [:function, :timin, :http_client, :get],
-            measurement: :duration
+            event_name: [:function, :timing, :http_client, :get],
+            measurement: :duration,
+            unit: {:native, :millisecond}
           ),
           counter("http.component.retry", event_name: [:http, :component, :retry]),
           counter("http.component.error", event_name: [:http, :component, :error]),
@@ -41,9 +43,10 @@ defmodule MozartFetcher.MetricDefinitions do
             event_name: [:web, :response, :status],
             tags: [:status_code]
           ),
-          counter("web.response.timing",
+          summary("web.response.timing",
             event_name: [:web, :response, :timing],
-            tags: [:status_code]
+            tags: [:status_code],
+            unit: {:native, :millisecond}
           ),
           counter("web.response.timing.page", event_name: [:web, :response, :timing, :page])
         ]
