@@ -22,7 +22,7 @@ defmodule MozartFetcher.MetricDefinitions do
             measurement: :duration
           ),
           summary("function.timing.http_client.get",
-            event_name: [:function, :timin, :http_client, :get],
+            event_name: [:function, :timing, :http_client, :get],
             measurement: :duration
           ),
           counter("http.component.retry", event_name: [:http, :component, :retry]),
