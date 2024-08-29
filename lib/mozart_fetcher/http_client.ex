@@ -3,10 +3,9 @@ defmodule HTTPClient do
 
   alias MozartFetcher.TimeoutParser
 
-  def get(endpoint, client \\ client()) do
+  def get(endpoint, headers \\ [], client \\ client()) do
     try do
       before_time = System.monotonic_time(:millisecond)
-      headers = set_request_headers(endpoint)
 
       options = [
         recv_timeout: TimeoutParser.parse(endpoint),
@@ -36,11 +35,6 @@ defmodule HTTPClient do
     end
   end
 
-  defp set_request_headers("https://fabl.api." <> _),
-    do: [{"accept-encoding", "gzip"}, {"ctx-unwrapped", "1"}]
-
-  defp set_request_headers(_endpoint), do: [{"accept-encoding", "gzip"}]
-
   defp sanitise(endpoint) do
     String.replace(endpoint, " ", "%20")
   end
@@ -50,7 +44,7 @@ defmodule HTTPClient do
   end
 
   defp request_headers(headers) do
-    headers ++ [{"User-Agent", "MozartFetcher"}]
+    [{"accept-encoding", "gzip"}] ++ headers ++ [{"User-Agent", "MozartFetcher"}]
   end
 
   defp handle_response({:ok, response}) do

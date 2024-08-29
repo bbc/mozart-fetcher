@@ -26,6 +26,17 @@ defmodule MozartFetcher.FakeOrigin do
     )
   end
 
+  get "/module/metadata" do
+    if get_req_header(conn, "fabl-ctx-service-env") == ["live"] &&
+         get_req_header(conn, "ctx-unwrapped") == ["1"] do
+      send_resp(
+        conn,
+        200,
+        ~s({"head":[],"bodyInline":"<DIV id=\\"fabl-component\\">","bodyLast":[]})
+      )
+    end
+  end
+
   get "/invalid_json_data" do
     send_resp(
       conn,
