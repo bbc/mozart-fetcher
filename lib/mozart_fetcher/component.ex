@@ -34,7 +34,11 @@ defmodule MozartFetcher.Component do
   end
 
   defp get(config) do
-    LocalCache.get_or_store(config.endpoint, fn -> HTTPClient.get(config.endpoint) end)
+    headers = config.headers || %{}
+
+    LocalCache.get_or_store(config.endpoint, fn ->
+      HTTPClient.get(config.endpoint, Map.to_list(headers))
+    end)
   end
 
   defp failed_component(component_index, :timeout, id) do

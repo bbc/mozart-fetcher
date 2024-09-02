@@ -39,8 +39,8 @@ defmodule HTTPClientTest do
       assert {"User-Agent", "MozartFetcher"} in resp.request.headers
     end
 
-    test "adds the correct header for FABL requests" do
-      defmodule MockClientSuccessfulResponseWithHeaders do
+    test "adds the ctx-unwrapped header for FABL requests" do
+      defmodule MockClientSuccessfulResponseWithFablCtxUnwrappedHeader do
         def get(endpoint, headers, _) do
           {:ok,
            %HTTPoison.Response{
@@ -54,9 +54,37 @@ defmodule HTTPClientTest do
       end
 
       {:ok, resp} =
-        HTTPClient.get("https://fabl.api.something/test", MockClientSuccessfulResponseWithHeaders)
+        HTTPClient.get(
+          "https://fabl.api.something/test",
+          _headers = [{"ctx-unwrapped", "1"}],
+          MockClientSuccessfulResponseWithFablCtxUnwrappedHeader
+        )
 
       assert {"ctx-unwrapped", "1"} in resp.request.headers
+    end
+
+    test "adds the fabl-ctx-service-env header for FABL requests" do
+      defmodule MockClientSuccessfulResponseWithFablCtxServiceEnvHeader do
+        def get(endpoint, headers, _) do
+          {:ok,
+           %HTTPoison.Response{
+             request_url: "#{endpoint}/called",
+             request: %HTTPoison.Request{
+               url: endpoint,
+               headers: headers
+             }
+           }}
+        end
+      end
+
+      {:ok, resp} =
+        HTTPClient.get(
+          "https://fabl.api.something/test",
+          _headers = [{"fabl-ctx-service-env", "test"}],
+          MockClientSuccessfulResponseWithFablCtxServiceEnvHeader
+        )
+
+      assert {"fabl-ctx-service-env", "test"} in resp.request.headers
     end
 
     test "makes only one request on success" do
@@ -70,7 +98,7 @@ defmodule HTTPClientTest do
       end
 
       returned_response =
-        HTTPClient.get("http://localhost:8082/foo", MockClientSuccessfulResponse)
+        HTTPClient.get("http://localhost:8082/foo", _headers = [], MockClientSuccessfulResponse)
 
       assert returned_response ==
                {:ok, %HTTPoison.Response{request_url: "http://localhost:8082/foo/called"}}
@@ -101,7 +129,11 @@ defmodule HTTPClientTest do
       MockClientClosedResponseSuccessfulSecondTime.start_link()
 
       returned_response =
-        HTTPClient.get("http://localhost:8082/foo", MockClientClosedResponseSuccessfulSecondTime)
+        HTTPClient.get(
+          "http://localhost:8082/foo",
+          _headers = [],
+          MockClientClosedResponseSuccessfulSecondTime
+        )
 
       assert returned_response ==
                {:ok, %HTTPoison.Response{request_url: "http://localhost:8082/foo/called"}}
@@ -120,6 +152,7 @@ defmodule HTTPClientTest do
       returned_response =
         HTTPClient.get(
           "http://localhost:8082/foo",
+          _headers = [],
           MockClientClosedResponseUnsuccessfulSecondTime
         )
 
@@ -136,6 +169,7 @@ defmodule HTTPClientTest do
       returned_response =
         HTTPClient.get(
           "http://localhost:8082/foo",
+          _headers = [],
           MockClientRaisesException
         )
 
@@ -155,7 +189,11 @@ defmodule HTTPClientTest do
       end
 
       returned_response =
-        HTTPClient.get("http://localhost:8082/foo", MockCompressedSuccessfulResponse)
+        HTTPClient.get(
+          "http://localhost:8082/foo",
+          _headers = [],
+          MockCompressedSuccessfulResponse
+        )
 
       assert returned_response ==
                {:ok,

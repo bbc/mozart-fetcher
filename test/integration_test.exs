@@ -163,6 +163,46 @@ defmodule MozartFetcher.IntegrationTest do
     end
   end
 
+  describe "when fetching a fabl component" do
+    test "it will return a response" do
+      json_body = ~s({
+        "components": [{
+                        "endpoint": "localhost:8082/module/metadata",
+                        "headers": {
+                          "fabl-ctx-service-env": "live",
+                          "ctx-unwrapped": "1"
+                        },
+                        "id": "fabl-component",
+                        "must_succeed": true
+                        }]
+                      }
+                    )
+      conn = conn(:post, "/collect", json_body)
+      conn = Router.call(conn, @opts)
+
+      expected_body =
+        Jason.encode!(%{
+          components: [
+            %{
+              status: 200,
+              index: 0,
+              id: "fabl-component",
+              envelope: %{
+                head: [],
+                bodyInline: ~s(<DIV id="fabl-component">),
+                bodyLast: []
+              }
+            }
+          ]
+        })
+
+      assert conn.state == :sent
+      assert conn.status == 200
+      assert get_resp_header(conn, "content-type") == ["application/json; charset=utf-8"]
+      assert conn.resp_body == expected_body
+    end
+  end
+
   describe "when fetching a component returns a 404" do
     test "it returns a 200, with the failing component status set as 404 and its original id still set" do
       json_body = ~s({
