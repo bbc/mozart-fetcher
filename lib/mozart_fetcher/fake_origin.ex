@@ -27,7 +27,7 @@ defmodule MozartFetcher.FakeOrigin do
   end
 
   get "/module/metadata" do
-    if get_req_header(conn, "fabl-ctx-service-env") == ["live"] &&
+    if get_req_header(conn, "ctx-service-env") == ["live"] &&
          get_req_header(conn, "ctx-unwrapped") == ["1"] do
       send_resp(
         conn,

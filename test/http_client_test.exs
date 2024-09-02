@@ -63,7 +63,7 @@ defmodule HTTPClientTest do
       assert {"ctx-unwrapped", "1"} in resp.request.headers
     end
 
-    test "adds the fabl-ctx-service-env header for FABL requests" do
+    test "adds the ctx-service-env header for FABL requests" do
       defmodule MockClientSuccessfulResponseWithFablCtxServiceEnvHeader do
         def get(endpoint, headers, _) do
           {:ok,
@@ -80,11 +80,11 @@ defmodule HTTPClientTest do
       {:ok, resp} =
         HTTPClient.get(
           "https://fabl.api.something/test",
-          _headers = [{"fabl-ctx-service-env", "test"}],
+          _headers = [{"ctx-service-env", "test"}],
           MockClientSuccessfulResponseWithFablCtxServiceEnvHeader
         )
 
-      assert {"fabl-ctx-service-env", "test"} in resp.request.headers
+      assert {"ctx-service-env", "test"} in resp.request.headers
     end
 
     test "makes only one request on success" do
