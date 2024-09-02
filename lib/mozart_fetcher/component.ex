@@ -34,10 +34,12 @@ defmodule MozartFetcher.Component do
   end
 
   defp get(config) do
-    headers = config.headers || %{}
+    headers =
+      (config.headers || %{})
+      |> Enum.map(fn {k, v} -> {to_string(k), v} end)
 
     LocalCache.get_or_store(config.endpoint, fn ->
-      HTTPClient.get(config.endpoint, Map.to_list(headers))
+      HTTPClient.get(config.endpoint, headers)
     end)
   end
 
