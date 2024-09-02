@@ -169,7 +169,7 @@ defmodule MozartFetcher.IntegrationTest do
         "components": [{
                         "endpoint": "localhost:8082/module/metadata",
                         "headers": {
-                          "fabl-ctx-service-env": "live",
+                          "ctx-service-env": "live",
                           "ctx-unwrapped": "1"
                         },
                         "id": "fabl-component",
