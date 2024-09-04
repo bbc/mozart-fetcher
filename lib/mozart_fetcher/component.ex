@@ -1,6 +1,6 @@
 defmodule MozartFetcher.Component do
   require Logger
-  alias MozartFetcher.{Config, Envelope}
+  alias MozartFetcher.{Config, Envelope, LocalCache}
 
   def fetch({config = %Config{}, component_index}) do
     process(component_index, config, get(config))
@@ -38,7 +38,9 @@ defmodule MozartFetcher.Component do
       (config.headers || %{})
       |> Enum.map(fn {k, v} -> {to_string(k), v} end)
 
-    HTTPClient.get(config.endpoint, headers)
+    LocalCache.get_or_store(config.endpoint, fn ->
+      HTTPClient.get(config.endpoint, headers)
+    end)
   end
 
   defp failed_component(component_index, :timeout, id) do

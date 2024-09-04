@@ -15,7 +15,8 @@ defmodule MozartFetcher.Application do
         scheme: :http,
         plug: MozartFetcher.FakeOrigin,
         options: [port: 8082]
-      )
+      ),
+      {ConCache, [name: :fetcher_cache, ttl_check_interval: false]}
     ]
   end
 
@@ -26,7 +27,13 @@ defmodule MozartFetcher.Application do
         scheme: :http,
         plug: MozartFetcher.Router,
         options: [port: 8080]
-      )
+      ),
+      {ConCache,
+       [
+         name: :fetcher_cache,
+         ttl_check_interval: :timer.seconds(1),
+         global_ttl: :timer.seconds(to_ttl(System.get_env("local_cache_ttl")))
+       ]}
     ]
   end
 
@@ -44,5 +51,18 @@ defmodule MozartFetcher.Application do
         max_connections: @max_connections
       )
     ]
+  end
+
+  defp to_ttl(ttl) when is_integer(ttl), do: ttl
+
+  defp to_ttl(ttl) do
+    String.to_integer(ttl)
+  rescue
+    ArgumentError ->
+      Logger.error("Invalid TTL Value, you must provide an integer value for the tll", %{
+        ttl: ttl
+      })
+
+      10
   end
 end
