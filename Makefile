@@ -1,5 +1,6 @@
 .PHONY: dependencies test
 COMPONENTNAME = mozart-fetcher
+COMPONENT = mozart-fetcher-eu-west-1
 REGION = eu-west-1
 BUILDPATH = /root/rpmbuild
 
@@ -25,13 +26,9 @@ build:
 
 set_repositories:
 	git clone --single-branch --branch master https://github.com/bbc/mozart-fetcher-build
-	for component in ${COMPONENTS}; do \
 		export COSMOS_CERT=/etc/pki/tls/certs/client.crt; \
 		export COSMOS_CERT_KEY=/etc/pki/tls/private/client.key; \
-		cosmos set-repositories $$component mozart-fetcher-build/repositories.json; \
-	done; \
+		cosmos set-repositories ${COMPONENT} mozart-fetcher-build/repositories.json; \
 
 release:
-	for component in ${COMPONENTS}; do \
-		cosmos-release service $$component --release-version=v ${BUILDPATH}/RPMS/x86_64/*.x86_64.rpm; \
-	done; \
+	cosmos-release service ${COMPONENT} --release-version=v ${BUILDPATH}/RPMS/x86_64/*.x86_64.rpm;
