@@ -42,12 +42,16 @@ cp %{SOURCE3} %{buildroot}/home/component/component-status-cfn-signal.sh
 cp %{SOURCE4} %{buildroot}/usr/lib/systemd/system/cloudformation-signal.service
 mkdir -p %{buildroot}/var/log/component
 touch %{buildroot}/var/log/component/app.log
+mkdir -p %{buildroot}/etc/mozart-fetcher
+touch %{buildroot}/etc/mozart-fetcher/environment
+touch %{buildroot}/etc/mozart-fetcher/config.json
 
 %post
 systemctl enable mozart-fetcher
 systemctl enable cloudformation-signal
 /bin/chown -R component:component /home/component
 /bin/chown -R component:component /var/log/component
+/bin/chown -R component:component /etc/mozart-fetcher/config.json
 
 %files
 %attr(0755, component, component) /home/component/*
@@ -56,3 +60,5 @@ systemctl enable cloudformation-signal
 /var/log/component/app.log
 /etc/bake-scripts/%{name}
 /etc/systemd/system/mozart-fetcher.service.d/env.conf
+%attr(0644, component, component) /etc/mozart-fetcher/environment
+%attr(0644, component, component) /etc/mozart-fetcher/config.json

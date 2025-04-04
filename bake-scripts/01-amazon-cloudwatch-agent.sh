@@ -1,7 +1,7 @@
 #!/bin/bash
 
-COMPONENT_NAME=$(cat /etc/bake-scripts/config.json | python3 -c 'import json,sys;obj=json.load(sys.stdin);print(obj["name"])')
-ENVIRONMENT=$(cat /etc/bake-scripts/config.json | python3 -c 'import json,sys;obj=json.load(sys.stdin);print(obj["environment"])')
+COMPONENT_NAME=$(cat $BAKE_METADATA/service_name)
+ENVIRONMENT=$(cat $BAKE_METADATA/environment)
 
 cat > /etc/cloudwatch-agent-config.json <<EOF
 {
