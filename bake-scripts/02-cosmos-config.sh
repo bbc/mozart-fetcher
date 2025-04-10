@@ -3,8 +3,8 @@ import json
 import pipes
 import sys
 
-def main(argv):
-    config_json = json.load(open(argv[1], "r"))
+def main():
+    config_json = json.load(open("/etc/mozart-fetcher/config.json", "r"))
     key_values = config_json["configuration"]
     noecho_key_values = config_json["secure_configuration"]
     production_environment = {"PRODUCTION_ENVIRONMENT": config_json["environment"]}
@@ -17,4 +17,4 @@ def main(argv):
     return 0
 
 if __name__ == "__main__":
-    sys.exit(main(sys.argv))
+    sys.exit(main())
