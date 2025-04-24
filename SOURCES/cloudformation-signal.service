@@ -2,6 +2,7 @@
 Description=Start the cloudformation signal generator script
 After=network.target network-online.target
 [Service]
+EnvironmentFile=/etc/mozart-fetcher/environment
 ExecStart=/home/component/component-status-cfn-signal.sh
 [Install]
 WantedBy=multi-user.target
