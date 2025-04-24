@@ -1,0 +1,65 @@
+[
+  {
+    "name": "aws_region",
+    "values": {
+      "live": "eu-west-1",
+      "test": "eu-west-1"
+    }
+  },
+  {
+    "name": "ca_file_path",
+    "values": {
+      "live": "/etc/pki/cosmos/current/client.crt",
+      "test": "/etc/pki/cosmos/current/client.crt"
+    }
+  },
+  {
+    "name": "cert_file_path",
+    "values": {
+      "live": "/etc/pki/tls/certs/client.crt",
+      "test": "/etc/pki/tls/certs/client.crt"
+    }
+  },
+  {
+    "name": "key_file_path",
+    "values": {
+      "live": "/etc/pki/tls/private/client.key",
+      "test": "/etc/pki/tls/private/client.key"
+    }
+  },
+  {
+    "name": "local_cache_ttl",
+    "values": {
+      "live": "10",
+      "test": "10"
+    }
+  },
+  {
+    "name": "td_ingest_bucket",
+    "values": {
+      "live": "prod-mozart-logs-eu-west-1",
+      "test": "dev-mozart-logs-eu-west-1"
+    }
+  },
+  {
+    "name": "td_ingest_bucket_region",
+    "values": {
+      "live": "eu-west-1",
+      "test": "eu-west-1"
+    }
+  },
+  {
+    "key": "td_logs_to_ship",
+    "values": {
+      "live": "/var/log/component/app.log",
+      "test": "/var/log/component/app.log"
+    }
+  },
+  {
+    "key": "td_logs_path_format",
+    "values": {
+      "live": "date_separator",
+      "test": "date_separator"
+    }
+  }
+]

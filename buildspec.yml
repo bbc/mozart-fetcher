@@ -1,7 +1,8 @@
 version: 0.2
 env:
-  # we need it to access https://github.com/bbc/mozart-fetcher-build
-  git-credential-helper: yes
+  variables:
+    COSMOS_CERT: "/etc/pki/tls/certs/client.crt"
+    COSMOS_CERT_KEY: "/etc/pki/tls/private/client.key"
 phases:
   install:
     on-failure: ABORT
@@ -12,13 +13,12 @@ phases:
     commands:
       - make dependencies
       - make test
+      - make build
   post_build:
     on-failure: ABORT
     commands:
       - |
         RELEASABLE_BRANCH=$(git branch --contains ${CODEBUILD_RESOLVED_SOURCE_VERSION} --remote | grep -c -E '^\s*origin/master$' || true)
         if [ "${RELEASABLE_BRANCH}" = "1" ] || [ "${FORCE}" = "true" ]; then
-          make set_repositories
-          make build;
           make release;
         fi
