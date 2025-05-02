@@ -49,14 +49,14 @@
     }
   },
   {
-    "key": "td_logs_to_ship",
+    "name": "td_logs_to_ship",
     "values": {
       "live": "/var/log/component/app.log",
       "test": "/var/log/component/app.log"
     }
   },
   {
-    "key": "td_logs_path_format",
+    "name": "td_logs_path_format",
     "values": {
       "live": "date_separator",
       "test": "date_separator"
