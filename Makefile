@@ -27,4 +27,4 @@ build:
 
 release:
 	cosmos set-repositories ${COMPONENT} repositories.json; \
-	cosmos-release service ${COMPONENT} --release-version=v ${BUILDPATH}/RPMS/x86_64/*.x86_64.rpm;
+	cosmos-release service ${COMPONENT} --release-version=v ${BUILD_PATH}/RPMS/x86_64/*.x86_64.rpm;
