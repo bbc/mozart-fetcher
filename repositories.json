@@ -1,8 +1,4 @@
 {
-  "news-libraries": {
-    "type": "mirrorlist",
-    "url": "https://repository.api.bbci.co.uk/news-libraries/revisions/head"
-  },
   "aws-tools-el9-x86_64": {
     "type": "mirrorlist",
     "url": "https://repository.api.bbci.co.uk/aws-tools-el9-x86_64/revisions/stable",
@@ -13,9 +9,8 @@
     "url": "https://mirrors.fedoraproject.org/metalink?repo=epel-9&arch=x86_64",
     "gpg_key": "-----BEGIN PGP PUBLIC KEY BLOCK-----\n\nmQINBGE3mOsBEACsU+XwJWDJVkItBaugXhXIIkb9oe+7aadELuVo0kBmc3HXt/Yp\nCJW9hHEiGZ6z2jwgPqyJjZhCvcAWvgzKcvqE+9i0NItV1rzfxrBe2BtUtZmVcuE6\n2b+SPfxQ2Hr8llaawRjt8BCFX/ZzM4/1Qk+EzlfTcEcpkMf6wdO7kD6ulBk/tbsW\nDHX2lNcxszTf+XP9HXHWJlA2xBfP+Dk4gl4DnO2Y1xR0OSywE/QtvEbN5cY94ieu\nn7CBy29AleMhmbnx9pw3NyxcFIAsEZHJoU4ZW9ulAJ/ogttSyAWeacW7eJGW31/Z\n39cS+I4KXJgeGRI20RmpqfH0tuT+X5Da59YpjYxkbhSK3HYBVnNPhoJFUc2j5iKy\nXLgkapu1xRnEJhw05kr4LCbud0NTvfecqSqa+59kuVc+zWmfTnGTYc0PXZ6Oa3rK\n44UOmE6eAT5zd/ToleDO0VesN+EO7CXfRsm7HWGpABF5wNK3vIEF2uRr2VJMvgqS\n9eNwhJyOzoca4xFSwCkc6dACGGkV+CqhufdFBhmcAsUotSxe3zmrBjqA0B/nxIvH\nDVgOAMnVCe+Lmv8T0mFgqZSJdIUdKjnOLu/GRFhjDKIak4jeMBMTYpVnU+HhMHLq\nuDiZkNEvEEGhBQmZuI8J55F/a6UURnxUwT3piyi3Pmr2IFD7ahBxPzOBCQARAQAB\ntCdGZWRvcmEgKGVwZWw5KSA8ZXBlbEBmZWRvcmFwcm9qZWN0Lm9yZz6JAk4EEwEI\nADgWIQT/itE0RZcQbs6BO5GKOHK/MihGfAUCYTeY6wIbDwULCQgHAgYVCgkICwIE\nFgIDAQIeAQIXgAAKCRCKOHK/MihGfFX/EACBPWv20+ttYu1A5WvtHJPzwbj0U4yF\n3zTQpBglQ2UfkRpYdipTlT3Ih6j5h2VmgRPtINCc/ZE28adrWpBoeFIS2YAKOCLC\nnZYtHl2nCoLq1U7FSttUGsZ/t8uGCBgnugTfnIYcmlP1jKKA6RJAclK89evDQX5n\nR9ZD+Cq3CBMlttvSTCht0qQVlwycedH8iWyYgP/mF0W35BIn7NuuZwWhgR00n/VG\n4nbKPOzTWbsP45awcmivdrS74P6mL84WfkghipdmcoyVb1B8ZP4Y/Ke0RXOnLhNe\nCfrXXvuW+Pvg2RTfwRDtehGQPAgXbmLmz2ZkV69RGIr54HJv84NDbqZovRTMr7gL\n9k3ciCzXCiYQgM8yAyGHV0KEhFSQ1HV7gMnt9UmxbxBE2pGU7vu3CwjYga5DpwU7\nw5wu1TmM5KgZtZvuWOTDnqDLf0cKoIbW8FeeCOn24elcj32bnQDuF9DPey1mqcvT\n/yEo/Ushyz6CVYxN8DGgcy2M9JOsnmjDx02h6qgWGWDuKgb9jZrvRedpAQCeemEd\nfhEs6ihqVxRFl16HxC4EVijybhAL76SsM2nbtIqW1apBQJQpXWtQwwdvgTVpdEtE\nr4ArVJYX5LrswnWEQMOelugUG6S3ZjMfcyOa/O0364iY73vyVgaYK+2XtT2usMux\nVL469Kj5m13T6w==\n=Mjs/\n-----END PGP PUBLIC KEY BLOCK-----\n"
   },
-  "cosmos-el9-x86_64": {
+  "news-libraries": {
     "type": "mirrorlist",
-    "url": "https://repository.api.bbci.co.uk/cosmos-el9-x86_64/revisions/stable",
-    "gpg_key": "-----BEGIN PGP PUBLIC KEY BLOCK-----\nVersion: GnuPG v2.0.14 (GNU/Linux)\n\nmQINBFU+OJsBEADSNABRPjwP7Skphu6I3sSUbGKMxQi3B//pIEuEjaDBljBm5U0H\npv3QGBeb9wj0MnPJfNHtxELzaEbDjLsD3ROc2kZQ+8FtblmoLZztN4aWd3fH4oaG\nGwKHkVQW4XNtyiNw4atdQ+/smqQFpS9cfKDEJCtr4fvU4tH6YtbyFhu2shK3AilE\nHNPcL3XZsKKhvrCEakaDPYv7yzHt1BBQ5oNLtuu/d4THzkeoTQdn4DJjLWO68lfq\nV/JpmcR1QlakXfuIF9XqrEwC1w1nJXUKNPyopwoimNTYMyYNIkhtPa4+OIX0Cxu+\nqjJn7XJUn1z90X8eoH+BPtxCUoBdB+NUG0CE0WbdniflAugmDe0efzh/sQuXRYv/\nq81MNOP5xt6SAjl3YQjt7jt1+MAZ2OoUEGcsaU1lha9WShhTe5HAIpGhhJk0smqi\nKdLHIuBYrAcOK9eGcknNyj4cJoVh0jlQO1tnMawnWavkEc0m4wVDdvlh/ENS5HHa\nqFkk7IQNWffLqEg/htKe/ZlXMW9HF+ugNL/fqTdin+riJaKhcPk3qx/dHJDVpl5K\np/O+odqBfQsY77+uBr9RCj4yr+H//0fFwSjstlQ4Zp7edj9zjZ4zPjVmzCjAFTPY\nUeNKUnyeY9zkXwiQvoxzAYtdRfi6hMUWtS0RDnM+g8voiRYdGp+eUfF0kQARAQAB\ntEtDbG91ZFRlYW0gSmVua2lucyAoY2kuY2xvdWR0ZWFtLnRvb2xzLmJiYy5jby51\naykgPGZtb3RnY2xvdWR0ZWFtQGJiYy5jby51az6JAjgEEwECACIFAlU+OJsCGwMG\nCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJEF0OaaiODRk7XAUP/iISIkl5na38\nwUjnTPYReB9IXDkgmwyWDoi4acZ/WcJkuIL0rkDxjUuwIi07VMMM9SA+MvHwTi2K\nItk5IsTwmVJNS/+vDvWtV238lJANDTd+AfXesJol9V6PVVWrlwXT2GMBT3+C5OVe\np0z//vHFqfISdwPvXs/Kvs6zWFUQJUvhMr3rrIs8Is6Z+oRWqhcvG3YugUzZDJWX\nbWTtTzZ7QKs5/upDZffMtDf7NqtIlgXhkh90DhZ3KoAZjNo4CTwUfccucsqEfZcY\n5X6dFUq4vurrtxcqBPeLveNdQZYmcU1LRyZVYGJLQptShaxZUHWd4Hmi+qxnrSI6\nRph6Xh7yXOW9SUu57EpxhizJRzHwhOT2IuGOiig77r8OTDMYxPkENxCH1kZJXksT\nli60qF03f/x5q5YFMKCyVrjl4V0dLPGr9SxWyE3hRjJnEOR4sI5Jo/eeR4bgUSTs\nMRh0WVROJLav1isEkzrd8afctS4LLqq3B8nD9QGxNU2dPF+IjdViXBbFOv6fY+hN\nr9tmA37SmXR8zhIJYw386ceYA8DIlRn83igZ8eUwUWuRcnNA8HvehqQlQ4o/0kha\nS2QzVH/gpBstxUGUHT145k3m+HSFb6xVNMQboLbvLgdCtWx7AjYfyWI5rUF/RqDV\nFV1cjIJssI4H6gAiSWLD2ODR1NMlQaQJ\n=iBwI\n-----END PGP PUBLIC KEY BLOCK-----\n"
+    "url": "https://repository.api.bbci.co.uk/news-libraries/revisions/head"
   }
 }
