@@ -58,5 +58,4 @@ echo "  \"secure_configuration\": {}" >> "$CONFIG_JSON"
 echo "}" >> "$CONFIG_JSON"
 
 # cat and echo the JSON file
-cat $CONFIG_JSON
 echo "Configuration JSON created at $CONFIG_JSON"
