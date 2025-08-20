@@ -11,11 +11,7 @@ defmodule MozartFetcher.Application do
   defp children(env: :test) do
     [
       Metrics.TelemetrySupervisor,
-      Plug.Cowboy.child_spec(
-        scheme: :http,
-        plug: MozartFetcher.FakeOrigin,
-        options: [port: 8082]
-      ),
+      {Bandit, plug: MozartFetcher.FakeOrigin, scheme: :http, port: 8082},
       {ConCache, [name: :fetcher_cache, ttl_check_interval: false]}
     ]
   end
@@ -23,11 +19,7 @@ defmodule MozartFetcher.Application do
   defp children(_) do
     [
       Metrics.TelemetrySupervisor,
-      Plug.Cowboy.child_spec(
-        scheme: :http,
-        plug: MozartFetcher.Router,
-        options: [port: 8080]
-      ),
+      {Bandit, plug: MozartFetcher.Router, scheme: :http, port: 8080},
       {ConCache,
        [
          name: :fetcher_cache,

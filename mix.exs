@@ -16,7 +16,7 @@ defmodule MozartFetcher.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger, :cowboy, :plug, :httpoison, :con_cache],
+      extra_applications: [:logger, :plug, :httpoison, :con_cache],
       mod: {MozartFetcher.Application, [env: Mix.env()]}
     ]
   end
@@ -38,7 +38,7 @@ defmodule MozartFetcher.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:plug_cowboy, "~> 2.5"},
+      {:bandit, "~> 1.0"},
       {:httpoison, "~> 1.8"},
       {:con_cache, "~> 1.0"},
       {:parse_trans, "~> 3.4", override: true},
