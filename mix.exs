@@ -38,7 +38,7 @@ defmodule MozartFetcher.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:bandit, "~> 1.0"},
+      {:bandit, "~> 1.8"},
       {:httpoison, "~> 1.8"},
       {:con_cache, "~> 1.0"},
       {:parse_trans, "~> 3.4", override: true},
