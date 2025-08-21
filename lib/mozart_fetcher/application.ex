@@ -11,7 +11,8 @@ defmodule MozartFetcher.Application do
   defp children(env: :test) do
     [
       Metrics.TelemetrySupervisor,
-      {Bandit, plug: MozartFetcher.FakeOrigin, scheme: :http, port: 8082},
+      {Bandit,
+       plug: MozartFetcher.FakeOrigin, scheme: :http, port: 8082, http_options: [compress: false]},
       {ConCache, [name: :fetcher_cache, ttl_check_interval: false]}
     ]
   end
@@ -19,7 +20,8 @@ defmodule MozartFetcher.Application do
   defp children(_) do
     [
       Metrics.TelemetrySupervisor,
-      {Bandit, plug: MozartFetcher.Router, scheme: :http, port: 8080},
+      {Bandit,
+       plug: MozartFetcher.Router, scheme: :http, port: 8080, http_options: [compress: false]},
       {ConCache,
        [
          name: :fetcher_cache,
