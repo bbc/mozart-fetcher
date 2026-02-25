@@ -6,7 +6,7 @@ defmodule MozartFetcher.MixProject do
     [
       app: :mozart_fetcher,
       version: @version,
-      elixir: "~> 1.19.5",
+      elixir: "~> 1.19",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       releases: releases()
