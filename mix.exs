@@ -6,7 +6,7 @@ defmodule MozartFetcher.MixProject do
     [
       app: :mozart_fetcher,
       version: @version,
-      elixir: "~> 1.18",
+      elixir: "~> 1.19",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       releases: releases()
@@ -38,16 +38,15 @@ defmodule MozartFetcher.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:bandit, "~> 1.8"},
-      {:httpoison, "~> 1.8"},
-      {:con_cache, "~> 1.0"},
-      {:parse_trans, "~> 3.4", override: true},
-      {:hackney, "~> 1.20.1"},
-      {:telemetry, "~> 1.0"},
-      {:telemetry_metrics, "~> 0.6"},
-      {:telemetry_metrics_statsd, "~> 0.7"},
-      {:logger_file_backend, "~> 0.0.10"},
-      {:jason, "~> 1.3"}
+      {:bandit, "~> 1.10.3"},
+      {:con_cache, "~> 1.1.1"},
+      {:httpoison, "~> 2.3.0"},
+      {:jason, "~> 1.4.4"},
+      {:logger_file_backend, "~> 0.0.14"},
+      {:parse_trans, "~> 3.4.2", override: true},
+      {:telemetry, "~> 1.3.0"},
+      {:telemetry_metrics, "~> 1.1.0"},
+      {:telemetry_metrics_statsd, "~> 0.7.2"}
     ]
   end
 end

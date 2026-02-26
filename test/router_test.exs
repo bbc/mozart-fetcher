@@ -63,8 +63,8 @@ defmodule MozartFetcher.RouterTest do
               id: "stream-icons",
               envelope: %{
                 head: [],
-                bodyLast: [],
-                bodyInline: "<DIV id=\"site-container\">"
+                bodyInline: "<DIV id=\"site-container\">",
+                bodyLast: []
               }
             }
           ]
