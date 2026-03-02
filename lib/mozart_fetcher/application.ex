@@ -35,7 +35,11 @@ defmodule MozartFetcher.Application do
     children = children(args)
 
     opts = [strategy: :one_for_one, name: MozartFetcher.Supervisor]
-    Supervisor.start_link(children ++ hackney_setup(), opts)
+    {:ok, pid} = Supervisor.start_link(children ++ hackney_setup(), opts)
+
+    LoggerBackends.add(LoggerFileBackend)
+
+    {:ok, pid}
   end
 
   defp hackney_setup do

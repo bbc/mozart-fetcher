@@ -46,7 +46,8 @@ defmodule MozartFetcher.MixProject do
       {:parse_trans, "~> 3.4.2", override: true},
       {:telemetry, "~> 1.3.0"},
       {:telemetry_metrics, "~> 1.1.0"},
-      {:telemetry_metrics_statsd, "~> 0.7.2"}
+      {:telemetry_metrics_statsd, "~> 0.7.2"},
+      {:logger_backends, "~> 1.0"}
     ]
   end
 end
