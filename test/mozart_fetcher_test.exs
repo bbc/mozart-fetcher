@@ -6,7 +6,7 @@ defmodule MozartFetcherTest do
 
   test "request_ssl/0 on non-prod environment" do
     certfile = System.get_env("DEV_CERT_PEM")
-    assert [certfile: certfile, verify: :verify_none] == MozartFetcher.request_ssl()
+    assert [certfile: certfile, verify: :verify_none, ssl_override: true] == MozartFetcher.request_ssl()
   end
 
   describe "on prod environment" do
@@ -26,7 +26,8 @@ defmodule MozartFetcherTest do
       assert [
                certfile: @fake_cert_file_path,
                keyfile: @fake_key_file_path,
-               verify: :verify_none
+               verify: :verify_none,
+                ssl_override: true
              ] ==
                MozartFetcher.request_ssl()
     end
