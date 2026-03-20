@@ -16,7 +16,7 @@ defmodule MozartFetcher.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger, :plug, :httpoison, :con_cache],
+      extra_applications: [:plug, :httpoison, :con_cache],
       mod: {MozartFetcher.Application, [env: Mix.env()]}
     ]
   end
