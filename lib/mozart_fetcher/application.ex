@@ -32,12 +32,12 @@ defmodule MozartFetcher.Application do
   end
 
   def start(_type, args) do
+    LoggerBackends.add({LoggerFileBackend, :file})
+
     children = children(args)
 
     opts = [strategy: :one_for_one, name: MozartFetcher.Supervisor]
     {:ok, pid} = Supervisor.start_link(children ++ hackney_setup(), opts)
-
-    LoggerBackends.add(LoggerFileBackend)
 
     {:ok, pid}
   end
